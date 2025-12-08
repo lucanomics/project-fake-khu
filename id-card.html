@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F.A.K.E ID - Smart Actor Platform</title>
+    
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body { 
+            background-color: #0f172a; 
+            color: white; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .glass-panel { 
+            background: rgba(30, 41, 59, 0.7); 
+            backdrop-filter: blur(12px); 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+        }
+
+        #cardCanvas {
+            display: block; 
+            margin: 20px auto;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            max-width: 90%; 
+            height: auto;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+        .loading-shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        .loading-shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shine 1.5s infinite;
+        }
+        
+        select option {
+            background-color: #1e293b;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useRef, useEffect } = React;
+
+        const IconWrapper = ({ children, size = 24, className = "" }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>{children}</svg>
+        );
+        const Sparkles = (props) => (<IconWrapper {...props}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L12 3Z"/></IconWrapper>);
+        const Camera = (props) => (<IconWrapper {...props}><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></IconWrapper>);
+        const Wallet = (props) => (<IconWrapper {...props}><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12a2 2 0 0 0 2 2h14v-4"/><path d="M18 12a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v-8Z"/></IconWrapper>);
+        const ImageIcon = (props) => (<IconWrapper {...props}><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></IconWrapper>);
+        const Download = (props) => (<IconWrapper {...props}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></IconWrapper>);
+        const CheckCircle2 = (props) => (<IconWrapper {...props}><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></IconWrapper>);
+        const Loader2 = (props) => (<IconWrapper {...props}><path d="M21 12a9 9 0 1 1-6.219-8.56"/></IconWrapper>);
+        const UserCircle = (props) => (<IconWrapper {...props}><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/></IconWrapper>);
+        const Trash2 = (props) => (<IconWrapper {...props}><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></IconWrapper>);
+
+        const App = () => {
+            const [view, setView] = useState('create'); 
+            const [rawImage, setRawImage] = useState(null);     
+            const [cardImage, setCardImage] = useState(null);   
+            const [metaData, setMetaData] = useState({ name: '', role: 'Smart Actor Trainee' });
+            
+            const [serialData, setSerialData] = useState({ classNum: '101', serialNum: '000001' });
+
+            const [status, setStatus] = useState('idle'); 
+            
+            const [myCards, setMyCards] = useState(() => {
+                const saved = localStorage.getItem('fake_id_cards');
+                return saved ? JSON.parse(saved) : [];
+            });
+            
+            const [statusMsg, setStatusMsg] = useState('');
+            
+            const canvasRef = useRef(null);
+
+            useEffect(() => {
+                localStorage.setItem('fake_id_cards', JSON.stringify(myCards));
+            }, [myCards]);
+
+            const generateRandomSerial = () => {
+                const randomClass = Math.floor(Math.random() * 250) + 101;
+                const randomSerial = Math.floor(Math.random() * 9999) + 1;
+                const formattedSerial = randomSerial.toString().padStart(6, '0');
+                
+                return {
+                    classNum: randomClass.toString(),
+                    serialNum: formattedSerial
+                };
+            };
+
+            const generateCard = () => {
+                const canvas = canvasRef.current;
+                const ctx = canvas.getContext('2d');
+                
+                const width = 600;
+                const height = 900;
+                canvas.width = width;
+                canvas.height = height;
+
+                const img = new Image();
+                img.src = rawImage;
+
+                img.onload = () => {
+                    let themeColor = "#F87171"; 
+                    
+                    switch(metaData.role) {
+                        case 'Smart Actor Trainee': themeColor = "#F87171"; break;
+                        case 'Junior Smart Actor': themeColor = "#FACC15"; break;
+                        case 'Senior Smart Actor': themeColor = "#4ADE80"; break;
+                        case 'Campus Ambassador': themeColor = "#60A5FA"; break;
+                        default: themeColor = "#F87171";
+                    }
+
+                    ctx.fillStyle = "#000";
+                    ctx.fillRect(0, 0, width, height);
+                    
+                    const scale = Math.max(width / img.width, height / img.height);
+                    const x = (width / scale - img.width) / 2;
+                    const y = (height / scale - img.height) / 2;
+                    ctx.drawImage(img, x * scale, y * scale, img.width * scale, img.height * scale);
+
+                    const gradient = ctx.createLinearGradient(0, height / 2, 0, height);
+                    gradient.addColorStop(0, "rgba(0,0,0,0)");
+                    gradient.addColorStop(0.6, "rgba(0,0,0,0.3)");
+                    gradient.addColorStop(1, "rgba(0,0,0,0.9)");
+                    ctx.fillStyle = gradient;
+                    ctx.fillRect(0, 0, width, height);
+
+                    ctx.lineWidth = 12;
+                    ctx.strokeStyle = themeColor;
+                    ctx.strokeRect(20, 20, width - 40, height - 40);
+                    
+                    ctx.fillStyle = themeColor; 
+                    ctx.fillRect(20, 20, width - 40, 12);
+
+                    ctx.fillStyle = "#ffffff";
+                    
+                    ctx.font = "600 24px monospace";
+                    ctx.fillStyle = themeColor; 
+                    ctx.textAlign = "left";
+                    ctx.fillText(metaData.role.toUpperCase(), 45, height - 100);
+
+                    const displayName = metaData.name || "NO NAME";
+                    ctx.font = "bold 56px sans-serif";
+                    ctx.fillStyle = "#ffffff";
+                    ctx.fillText(displayName.toUpperCase(), 40, height - 45, 420); 
+
+                    const objektSerial = `${serialData.classNum}Z#${serialData.serialNum}`;
+                    ctx.textAlign = "right";
+                    ctx.font = "500 28px monospace";
+                    ctx.fillStyle = "rgba(255,255,255,0.8)";
+                    ctx.fillText(objektSerial, width - 40, height - 45);
+
+                    setCardImage(canvas.toDataURL("image/png"));
+                };
+            };
+
+            useEffect(() => {
+                if (rawImage) {
+                    const newSerial = generateRandomSerial();
+                    setSerialData(newSerial);
+                }
+            }, [rawImage]);
+
+            useEffect(() => {
+                if (rawImage && canvasRef.current) {
+                    generateCard();
+                }
+            }, [rawImage, metaData.name, metaData.role, serialData]);
+
+            const handleImageChange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        setRawImage(reader.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+
+            const handleNameChange = (e) => {
+                setMetaData({ ...metaData, name: e.target.value });
+            };
+
+            const handleRoleChange = (e) => {
+                setMetaData({ ...metaData, role: e.target.value });
+            };
+
+            const saveCard = async () => {
+                if (!cardImage) {
+                    setStatusMsg("사진을 먼저 업로드해주세요!");
+                    setTimeout(() => setStatusMsg(""), 3000);
+                    return;
+                }
+
+                setStatusMsg("ID 카드를 제작 중입니다...");
+                setStatus('processing');
+                
+                await new Promise(r => setTimeout(r, 2000));
+
+                const newCard = {
+                    id: Date.now(),
+                    image: cardImage,
+                    name: metaData.name || "NO NAME",
+                    role: metaData.role, 
+                    serial: `${serialData.classNum}Z#${serialData.serialNum}`,
+                    date: new Date().toLocaleDateString()
+                };
+
+                setMyCards([newCard, ...myCards]);
+                setStatus('success');
+                setStatusMsg("발급 완료!");
+
+                setTimeout(() => {
+                    setStatus('idle');
+                    setRawImage(null);
+                    setCardImage(null);
+                    setMetaData({ name: '', role: 'Smart Actor Trainee' }); 
+                    setStatusMsg("");
+                    setView('gallery');
+                }, 1500);
+            };
+
+            const deleteCard = (id) => {
+                if (confirm('정말 이 ID 카드를 삭제하시겠습니까?')) {
+                    const updatedCards = myCards.filter(card => card.id !== id);
+                    setMyCards(updatedCards);
+                }
+            };
+
+            return (
+                <div className="min-h-screen pb-20">
+                    <canvas ref={canvasRef} id="cardCanvas" style={{display: 'none'}}></canvas>
+
+                    <header className="glass-panel sticky top-0 z-50 px-5 py-4 flex justify-between items-center">
+                        <div className="flex items-center gap-2">
+                            <div className="w-8 h-8 bg-gradient-to-tr from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                                <Sparkles className="text-white w-5 h-5" />
+                            </div>
+                            <span className="font-bold text-lg tracking-tight">F.A.K.E ID</span>
+                        </div>
+                    </header>
+
+                    <main className="max-w-md mx-auto mt-6 px-4">
+                        <div className="flex bg-slate-800 p-1 rounded-2xl mb-8">
+                            <button 
+                                onClick={() => setView('create')}
+                                className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${
+                                    view === 'create' ? 'bg-slate-600 text-white shadow-lg' : 'text-slate-500 hover:text-slate-300'
+                                }`}
+                            >
+                                ID 제작하기
+                            </button>
+                            <button 
+                                onClick={() => setView('gallery')}
+                                className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${
+                                    view === 'gallery' ? 'bg-slate-600 text-white shadow-lg' : 'text-slate-500 hover:text-slate-300'
+                                }`}
+                            >
+                                ID 보관함 ({myCards.length})
+                            </button>
+                        </div>
+
+                        {view === 'create' ? (
+                            <div className="animate-fade-in space-y-6">
+                                <div className="relative aspect-[2/3] bg-slate-800 rounded-2xl overflow-hidden shadow-2xl border border-slate-700/50">
+                                    {cardImage ? (
+                                        <img src={cardImage} className="w-full h-full object-cover" alt="Card Preview" />
+                                    ) : (
+                                        <div className="flex flex-col items-center justify-center h-full text-slate-500">
+                                            <div className="w-16 h-16 rounded-full bg-slate-700 flex items-center justify-center mb-4">
+                                                <Camera size={32} className="opacity-50" />
+                                            </div>
+                                            <p className="text-sm">프로필 사진 업로드</p>
+                                        </div>
+                                    )}
+
+                                    {status !== 'idle' && (
+                                        <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center backdrop-blur-sm z-20">
+                                            {status === 'processing' ? (
+                                                <div className="text-center">
+                                                    <Loader2 size={48} className="text-purple-500 animate-spin mx-auto mb-4" />
+                                                    <p className="text-purple-200 font-bold">ID 카드 인쇄 중...</p>
+                                                </div>
+                                            ) : (
+                                                <div className="text-center animate-bounce">
+                                                    <CheckCircle2 size={56} className="text-green-500 mx-auto mb-4" />
+                                                    <p className="text-green-400 font-bold text-lg">발급 완료!</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="space-y-4">
+                                    <label className="block w-full py-4 bg-slate-800 border-2 border-dashed border-slate-600 hover:border-purple-500 hover:text-purple-400 text-slate-400 font-bold rounded-2xl text-center cursor-pointer transition-all">
+                                        <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
+                                        <div className="flex items-center justify-center gap-2">
+                                            <ImageIcon size={20} /> 
+                                            {rawImage ? '사진 변경하기' : '사진 업로드'}
+                                        </div>
+                                    </label>
+
+                                    <div className="bg-slate-800 rounded-2xl p-1 relative">
+                                        <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400">
+                                            <UserCircle size={20} />
+                                        </div>
+                                        <select 
+                                            value={metaData.role}
+                                            onChange={handleRoleChange}
+                                            className="w-full pl-12 pr-4 py-3 bg-transparent text-white font-bold focus:outline-none cursor-pointer appearance-none"
+                                        >
+                                            <option value="Smart Actor Trainee">1. Smart Actor Trainee (Red)</option>
+                                            <option value="Junior Smart Actor">2. Junior Smart Actor (Yellow)</option>
+                                            <option value="Senior Smart Actor">3. Senior Smart Actor (Green)</option>
+                                            <option value="Campus Ambassador">4. Campus Ambassador (Blue)</option>
+                                        </select>
+                                    </div>
+
+                                    <div className="bg-slate-800 rounded-2xl p-1">
+                                        <input 
+                                            type="text" 
+                                            placeholder="이름 (예: JADEN)" 
+                                            className="w-full px-4 py-3 bg-transparent text-white font-bold text-center focus:outline-none placeholder-slate-600 tracking-wider"
+                                            value={metaData.name}
+                                            onChange={handleNameChange}
+                                            maxLength={15}
+                                        />
+                                    </div>
+
+                                    <div className="grid grid-cols-5 gap-3 pt-2">
+                                        <a 
+                                            href={cardImage} 
+                                            download="my_fake_id.png"
+                                            className={`col-span-1 flex items-center justify-center bg-slate-700 rounded-2xl transition-all ${!cardImage ? 'opacity-50 pointer-events-none' : 'hover:bg-slate-600'}`}
+                                        >
+                                            <Download size={24} className="text-white" />
+                                        </a>
+
+                                        <button 
+                                            onClick={saveCard}
+                                            className={`col-span-4 py-4 rounded-2xl font-bold text-lg shadow-lg transition-all transform active:scale-95 ${
+                                                status !== 'idle'
+                                                ? 'bg-slate-800 text-slate-500 cursor-not-allowed' 
+                                                : (!cardImage ? 'bg-slate-700 text-slate-300 hover:bg-slate-600' : 'bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:shadow-purple-500/40 loading-shimmer')
+                                            }`}
+                                        >
+                                            {status === 'idle' ? 'ID 카드 발급받기' : '처리 중...'}
+                                        </button>
+                                    </div>
+                                    
+                                    <div className="text-center h-6">
+                                        {statusMsg && <p className="text-sm text-pink-400 font-medium animate-pulse">{statusMsg}</p>}
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="animate-fade-in">
+                                {myCards.length === 0 ? (
+                                    <div className="text-center py-20 bg-slate-800/50 rounded-3xl border border-dashed border-slate-700">
+                                        <div className="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                                            <Wallet className="text-slate-600" />
+                                        </div>
+                                        <p className="text-slate-500">발급된 ID가 없습니다</p>
+                                        <button onClick={() => setView('create')} className="mt-4 text-purple-400 font-bold text-sm hover:underline">
+                                            첫 F.A.K.E ID 만들기
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className="grid grid-cols-2 gap-4 pb-10">
+                                        {myCards.map((obj) => (
+                                            <div key={obj.id} className="space-y-2">
+                                                <div className="relative aspect-[2/3] rounded-xl overflow-hidden shadow-lg group">
+                                                    <img src={obj.image} className="w-full h-full object-cover" />
+                                                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                                                        <a href={obj.image} download={`fake_id_${obj.id}.png`} className="p-2 bg-white rounded-full text-black hover:bg-purple-100 transition shadow-lg">
+                                                            <Download size={18} />
+                                                        </a>
+                                                        <button 
+                                                            onClick={() => deleteCard(obj.id)}
+                                                            className="p-2 bg-red-500 rounded-full text-white hover:bg-red-600 transition shadow-lg"
+                                                        >
+                                                            <Trash2 size={18} />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div className="px-1">
+                                                    <h3 className="font-bold text-sm truncate">{obj.name}</h3>
+                                                    <p className="text-[10px] text-purple-400 font-mono truncate">{obj.serial}</p>
+                                                    <p className="text-xs text-slate-500">{obj.date}</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </main>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
