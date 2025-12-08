@@ -578,8 +578,8 @@
         </div>
     </div>
 
-    <script>
-                        // --- Language Translation Logic ---
+        <script>
+        // --- Language Translation Logic ---
         const translations = {
             ko: {
                 menu_test: "진단하기",
@@ -588,8 +588,6 @@
                 hero_title: "검증된 정보와 안전한 기술,<br>우리가 함께 여는 올바른 AI 시대.",
                 hero_desc: "안전한 디지털 캠퍼스를 위한 대학생 AI 리터러시 프로젝트 F.A.K.E., 지금 시작합니다.",
                 hero_btn: "내 AI 사용 유형 진단해 보기",
-                
-                // 👇 새로 추가된 부분 👇
                 pledge_title: "함께 연대해 주세요",
                 pledge_desc: "\"나는 확인되지 않은 정보를 공유하지 않고,<br>디지털 범죄 피해자와 연대하는 '스마트 액터'가 되겠습니다.\"",
                 pledge_btn_sign: "서명하고 동참하기",
@@ -602,8 +600,6 @@
                 hero_title: "Verified Truth & Safe Tech,<br>Together We Open the Right AI Era.",
                 hero_desc: "Project F.A.K.E.: An AI Literacy Initiative for a Safer Digital Campus.",
                 hero_btn: "Start My AI Ethics Self-Check",
-
-                // 👇 새로 추가된 부분 👇
                 pledge_title: "Stand With Us",
                 pledge_desc: "\"I will not share unverified information,<br>and I pledge to stand in solidarity with digital crime victims as a 'Smart Actor'.\"",
                 pledge_btn_sign: "Sign the Pledge",
@@ -624,6 +620,7 @@
                 }
             });
         }
+
         // --- Modal Logic ---
         const reportModal = document.getElementById('reportModal');
         const testModal = document.getElementById('testModal');
@@ -634,62 +631,71 @@
         function openModal(m) { m.style.display = 'block'; setTimeout(() => m.classList.add('show'), 10); document.body.style.overflow = 'hidden'; }
         function closeModal(m) { m.classList.remove('show'); setTimeout(() => m.style.display = 'none', 300); document.body.style.overflow = 'auto'; }
 
-        openReportBtn.onclick = () => { openModal(reportModal); updateChart(); };
-        closeReportBtn.onclick = () => closeModal(reportModal);
+        if(openReportBtn) openReportBtn.onclick = () => { openModal(reportModal); updateChart(); };
+        if(closeReportBtn) closeReportBtn.onclick = () => closeModal(reportModal);
         
         function openTestModal(e) { if(e) e.preventDefault(); openModal(testModal); resetTest(); }
-        closeTestBtn.onclick = () => closeModal(testModal);
+        if(closeTestBtn) closeTestBtn.onclick = () => closeModal(testModal);
 
         window.onclick = (e) => { if(e.target == reportModal) closeModal(reportModal); if(e.target == testModal) closeModal(testModal); }
 
         // --- Chart.js: Dashboard Logic (Load Charts on Page Load) ---
         window.onload = function() {
             // 1. Risk Chart (Doughnut)
-            new Chart(document.getElementById('riskChart'), {
-                type: 'doughnut',
-                data: {
-                    labels: ['주 1회 이상 목격', '기타'],
-                    datasets: [{ data: [66.9, 33.1], backgroundColor: ['#ff6b6b', '#e9ecef'], borderWidth: 0 }]
-                },
-                options: { cutout: '70%', plugins: { legend: { display: false }, tooltip: { enabled: false } } }
-            });
+            const riskCtx = document.getElementById('riskChart');
+            if (riskCtx) {
+                new Chart(riskCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['주 1회 이상 목격', '기타'],
+                        datasets: [{ data: [66.9, 33.1], backgroundColor: ['#ff6b6b', '#e9ecef'], borderWidth: 0 }]
+                    },
+                    options: { cutout: '70%', plugins: { legend: { display: false }, tooltip: { enabled: false } } }
+                });
+            }
 
             // 3. Witness Chart (Horizontal Bar)
-            new Chart(document.getElementById('witnessChart'), {
-                type: 'bar',
-                data: {
-                    labels: ['직접 목격 경험', '없음'],
-                    datasets: [{ data: [35.6, 64.4], backgroundColor: ['#fab005', '#e9ecef'], borderRadius: 6 }]
-                },
-                options: {
-                    indexAxis: 'y',
-                    plugins: { legend: { display: false } },
-                    scales: { x: { display: false, max: 100 }, y: { grid: { display: false } } }
-                }
-            });
+            const witnessCtx = document.getElementById('witnessChart');
+            if (witnessCtx) {
+                new Chart(witnessCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['직접 목격 경험', '없음'],
+                        datasets: [{ data: [35.6, 64.4], backgroundColor: ['#fab005', '#e9ecef'], borderRadius: 6 }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        plugins: { legend: { display: false } },
+                        scales: { x: { display: false, max: 100 }, y: { grid: { display: false } } }
+                    }
+                });
+            }
 
-                        // 4. Universal Risk Chart (Bar - Replaced)
-            new Chart(document.getElementById('universalRiskChart'), {
-                type: 'bar',
-                data: {
-                    labels: ['라이트 유저 목격 (38%)', '미목격'],
-                    datasets: [{ 
-                        data: [38.2, 61.8], 
-                        backgroundColor: ['#ff6b6b', '#e9ecef'], 
-                        borderRadius: 6 
-                    }]
-                },
-                options: { 
-                    indexAxis: 'y', 
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: { x: { display: false, max: 100 }, y: { grid: { display: false } } }
-                }
-            });
+            // 4. Universal Risk Chart (Bar - Replaced)
+            const riskUniversalCtx = document.getElementById('universalRiskChart');
+            if (riskUniversalCtx) {
+                new Chart(riskUniversalCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['라이트 유저 목격 (38%)', '미목격'],
+                        datasets: [{ 
+                            data: [38.2, 61.8], 
+                            backgroundColor: ['#ff6b6b', '#e9ecef'], 
+                            borderRadius: 6 
+                        }]
+                    },
+                    options: { 
+                        indexAxis: 'y', 
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: { x: { display: false, max: 100 }, y: { grid: { display: false } } }
+                    }
+                });
+            }
+        };
 
-
-        // --- Interactive Chart Logic (Report Modal - Expanded to 6 items) ---
+        // --- Interactive Chart Logic (Report Modal) ---
         let dynamicChart = null;
         const chartData = {
             'purpose': {
@@ -734,7 +740,7 @@
                 data: [28.0, 21.2, 17.8, 14.4],
                 label: '목격 빈도 (%)',
                 color: '#fab005',
-                indexAxis: 'x', // Vertical
+                indexAxis: 'x',
                 desc: "💡 분석 인사이트:<br>절반 가까운 학생들이 '일주일에 한 번 이상' 허위정보를 마주치고 있어요. 특히 '거의 매일' 본다는 응답도 17.8%나 되어, 디지털 공해가 심각한 수준이에요."
             },
             'reporting': {
@@ -749,10 +755,16 @@
         };
 
         function updateChart() {
-            const selected = document.getElementById('chartSelector').value;
+            const selector = document.getElementById('chartSelector');
+            if (!selector) return;
+            
+            const selected = selector.value;
             const data = chartData[selected];
-            const ctx = document.getElementById('dynamicChart').getContext('2d');
+            const canvas = document.getElementById('dynamicChart');
             const desc = document.getElementById('chartDesc');
+
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
 
             if (dynamicChart) dynamicChart.destroy();
 
@@ -773,36 +785,40 @@
                     maintainAspectRatio: false,
                     indexAxis: data.indexAxis,
                     plugins: { 
-                        legend: { position: 'bottom', display: data.type !== 'bar' || data.indexAxis === 'x' }, // Hide legend for horizontal bar sometimes
+                        legend: { position: 'bottom', display: data.type !== 'bar' || data.indexAxis === 'x' },
                         tooltip: { enabled: true }
                     }
                 }
             };
 
             dynamicChart = new Chart(ctx, config);
-            desc.innerHTML = data.desc;
+            if (desc) desc.innerHTML = data.desc;
         }
 
-        document.getElementById('chartSelector').addEventListener('change', updateChart);
-
+        const chartSelector = document.getElementById('chartSelector');
+        if (chartSelector) {
+            chartSelector.addEventListener('change', updateChart);
+        }
 
         // --- Test Logic ---
         let currentStep = 0;
         let totalScore = 0;
         const cards = document.querySelectorAll('.question-card');
         const progressBar = document.getElementById('testProgressFill');
-        const totalSteps = cards.length;
         let recommendedToolkitId = '';
 
         function nextStep(score) {
             totalScore += score;
             setTimeout(() => {
-                cards[currentStep].style.display = 'none';
+                if (cards[currentStep]) cards[currentStep].style.display = 'none';
                 currentStep++;
-                progressBar.style.width = ((currentStep) / 5) * 100 + '%';
+                if (progressBar) progressBar.style.width = ((currentStep) / 5) * 100 + '%';
+                
                 if (currentStep < 5) {
-                    cards[currentStep].style.display = 'block';
-                    cards[currentStep].classList.add('active');
+                    if (cards[currentStep]) {
+                        cards[currentStep].style.display = 'block';
+                        cards[currentStep].classList.add('active');
+                    }
                 } else {
                     showResult();
                 }
@@ -810,9 +826,13 @@
         }
 
         function showResult() {
-            document.getElementById('quizContainer').style.display = 'none';
-            document.querySelector('.test-progress-bar').style.display = 'none';
-            document.getElementById('resultView').style.display = 'block';
+            const quizContainer = document.getElementById('quizContainer');
+            const resultView = document.getElementById('resultView');
+            const progress = document.querySelector('.test-progress-bar');
+            
+            if (quizContainer) quizContainer.style.display = 'none';
+            if (progress) progress.style.display = 'none';
+            if (resultView) resultView.style.display = 'block';
             
             const rIcon = document.getElementById('resIcon');
             const rTitle = document.getElementById('resTitle');
@@ -854,12 +874,18 @@
 
         function resetTest() {
             currentStep = 0; totalScore = 0;
-            document.getElementById('resultView').style.display = 'none';
-            document.getElementById('quizContainer').style.display = 'block';
-            document.querySelector('.test-progress-bar').style.display = 'block';
-            progressBar.style.width = '0%';
+            const quizContainer = document.getElementById('quizContainer');
+            const resultView = document.getElementById('resultView');
+            const progress = document.querySelector('.test-progress-bar');
+            
+            if (resultView) resultView.style.display = 'none';
+            if (quizContainer) quizContainer.style.display = 'block';
+            if (progress) progress.style.display = 'block';
+            if (progressBar) progressBar.style.width = '0%';
+            
             cards.forEach(c => { c.style.display = 'none'; c.classList.remove('active'); });
-            cards[0].style.display = 'block'; cards[0].classList.add('active');
+            if (cards[0]) { cards[0].style.display = 'block'; cards[0].classList.add('active'); }
+            
             document.querySelectorAll('.q-option input').forEach(i => i.checked = false);
         }
     </script>
