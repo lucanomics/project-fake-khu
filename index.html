@@ -357,114 +357,121 @@
         </div>
     </section>
 
-    <!-- Stats Section (Dashboard) -->
+        <!-- Stats Section -->
     <section class="stats-section">
         <div class="section-header">
-            <h2 class="section-title">데이터로 본 현실</h2>
-            <p class="section-subtitle">2025년 11월, 대학생 118명의 목소리를 조사하였습니다. (조사기간: 11.01~11.14)</p>
+            <h2 class="section-title" data-lang="stats_title">데이터로 본 현실</h2>
+            <p class="section-subtitle" data-lang="stats_subtitle">2025년 11월, 대학생 118명의 목소리를 조사하였습니다. (조사기간: 11.01~11.14)</p>
         </div>
         
         <div class="bento-grid">
-            <!-- Card 1: Risk Exposure (Doughnut) -->
+            <!-- Card 1 -->
             <div class="bento-card col-span-1">
-                <span class="stat-label"><i class="fas fa-exclamation-circle"></i> 위험 노출도</span>
-                <div class="chart-wrapper">
-                    <canvas id="riskChart"></canvas>
+                <span class="stat-label" data-lang="stat_risk_label"><i class="fas fa-exclamation-circle"></i> 위험 노출도</span>
+                <div class="chart-wrapper"><canvas id="riskChart"></canvas></div>
+                <div class="stat-title" style="margin-top: 1rem; text-align: center;">
+                    <span data-lang="stat_risk_main">주 1회 이상 목격</span><br>
+                    <span style="color:var(--danger); font-size: 1.8rem;">66.9%</span>
                 </div>
-                <div class="stat-title" style="margin-top: 1rem; text-align: center;">주 1회 이상 목격<br><span style="color:var(--danger); font-size: 1.8rem;">66.9%</span></div>
-                <p class="stat-insight" style="text-align: center;">3명 중 2명은 매주 허위정보를 목격해요. 허위정보로 인한 피해는 더 이상 남의 일이 아니예요.</p>
+                <p class="stat-insight" style="text-align: center;" data-lang="stat_risk_desc">3명 중 2명은 매주 허위정보를 목격해요. 허위정보로 인한 피해는 더 이상 남의 일이 아니예요.</p>
             </div>
 
-            <!-- Card 2: Institutional Void (Big Number) -->
-            <div class="bento-card col-span-1" style="justify-content: center; align-items: center; text-align: center;">
-                <span class="stat-label" style="align-self: flex-start;"><i class="fas fa-shield-alt"></i> 안전망 인식</span>
+            <!-- Card 2 -->
+            <div class="bento-card col-span-1" style="...">
+                <span class="stat-label" style="..." data-lang="stat_void_label"><i class="fas fa-shield-alt"></i> 안전망 인식</span>
                 <div style="margin: auto 0;">
-                    <i class="fas fa-eye-slash" style="font-size: 5rem; color: #ffe3e3; margin-bottom: 1rem;"></i>
-                    <div class="stat-number-big" style="color: var(--danger);">66.1%</div>
-                    <h3 class="stat-title">"신고처를<br>전혀 몰라요"</h3>
+                    <i class="fas fa-eye-slash" style="..."></i>
+                    <div class="stat-number-big" style="...">66.1%</div>
+                    <h3 class="stat-title" data-lang="stat_void_main">"신고처를<br>전혀 몰라요"</h3>
                 </div>
-                <p class="stat-insight">시스템은 있지만, 우리의 일상과는 연결되지 못하고 있어요. 우리 모두 '사각지대'에 놓여있다고 할 수 있죠.</p>
+                <p class="stat-insight" data-lang="stat_void_desc">시스템은 있지만, 우리의 일상과는 연결되지 못하고 있어요. 우리 모두 '사각지대'에 놓여있다고 할 수 있죠.</p>
             </div>
 
-            <!-- Card 3: Witness Experience (Horizontal Bar) -->
+            <!-- Card 3 -->
             <div class="bento-card col-span-1">
-                <span class="stat-label"><i class="fas fa-eye"></i> 직접 목격 경험</span>
-                <div class="chart-wrapper">
-                    <canvas id="witnessChart"></canvas>
-                </div>
-                <p class="stat-insight" style="margin-top: 1rem;">가짜뉴스나 딥페이크 등 비윤리적 행위를 직접 목격한 경험도 35.6%나 돼요. 생각보다 우리 가까이에 있답니다.</p>
+                <span class="stat-label" data-lang="stat_witness_label"><i class="fas fa-eye"></i> 직접 목격 경험</span>
+                <div class="chart-wrapper"><canvas id="witnessChart"></canvas></div>
+                <p class="stat-insight" style="margin-top: 1rem;" data-lang="stat_witness_desc">가짜뉴스나 딥페이크 등 비윤리적 행위를 직접 목격한 경험도 35.6%나 돼요. 생각보다 우리 가까이에 있답니다.</p>
             </div>
 
-            <!-- Card 4: Universal Risk (Light User Witness Rate) -->
+            <!-- Card 4 -->
             <div class="bento-card col-span-1">
-                <span class="stat-label"><i class="fas fa-user-shield"></i> 라이트 유저 위험도</span>
-                <div class="chart-wrapper">
-                    <canvas id="universalRiskChart"></canvas>
-                </div>
-                <p class="stat-insight" style="margin-top: 1rem; color: var(--danger); font-weight: 600;">⚠️ 안전지대는 없다<br><span style="font-weight: 400; font-size: 0.95rem; color: #495057;">하루 2시간도 안 쓰는 '라이트 유저'조차 38%가 유해 콘텐츠를 목격했어요. 잠깐 쓴다고 해서 결코 안전하지 않습니다.</span></p>
+                <span class="stat-label" data-lang="stat_light_label"><i class="fas fa-user-shield"></i> 라이트 유저 위험도</span>
+                <div class="chart-wrapper"><canvas id="universalRiskChart"></canvas></div>
+                <p class="stat-insight" style="margin-top: 1rem; color: var(--danger); font-weight: 600;">
+                    <span data-lang="stat_light_title">⚠️ 안전지대는 없다</span><br>
+                    <span style="..." data-lang="stat_light_desc">하루 2시간도 안 쓰는 '라이트 유저'조차 38%가 유해 콘텐츠를 목격했어요. 잠깐 쓴다고 해서 결코 안전하지 않습니다.</span>
+                </p>
             </div>
 
-            <!-- Action Card: Full Report Button (Final Fix - Slim & Centered) -->
-            <div style="grid-column: 1 / -1; display: flex; justify-content: center; margin-top: 2rem;">
-                <button id="openReportBtn" class="btn btn-primary" style="box-shadow: 0 4px 15px rgba(76, 110, 245, 0.3);">
-                    <i class="fas fa-chart-pie"></i> 📊 설문 결과 전체 상세 보기
+            <!-- Full Report Button -->
+            <div style="...">
+                <button id="openReportBtn" class="btn btn-primary" style="...">
+                    <i class="fas fa-chart-pie"></i> <span data-lang="btn_full_report">📊 설문 결과 전체 상세 보기</span>
                 </button>
             </div>
         </div>
     </section>
 
-    <!-- Toolkit Section -->
+       <!-- Toolkit Section -->
     <section id="toolkit" class="toolkit-section">
-        <h2 class="section-title">F.A.K.E. 툴킷 창고</h2>
-        <p class="section-subtitle" style="margin-bottom: 3rem; color: #666; font-size: 1.1rem;">레벨에 맞는 장비를 챙겨서 디지털 세상을 안전하게 항해해 보세요!</p>
+        <h2 class="section-title" data-lang="toolkit_title">F.A.K.E. 툴킷 창고</h2>
+        <p class="section-subtitle" style="..." data-lang="toolkit_subtitle">레벨에 맞는 장비를 챙겨서 디지털 세상을 안전하게 항해해 보세요!</p>
         
         <div class="toolkit-grid">
-            <div class="toolkit-card" id="toolkit-1" style="border-color: #ff6b6b;">
-                <div class="toolkit-icon" style="color: #ff6b6b;">🎒</div>
-                <h3 class="toolkit-title">Lv.1 서바이벌 툴킷</h3>
-                <p class="toolkit-desc">위험한 AI 정글에서 살아남기 위한 필수 생존 키트예요.</p>
+            <!-- Toolkit 1 -->
+            <div class="toolkit-card" id="toolkit-1" style="...">
+                <div class="toolkit-icon" style="...">🎒</div>
+                <h3 class="toolkit-title" data-lang="tk1_title">Lv.1 서바이벌 툴킷</h3>
+                <p class="toolkit-desc" data-lang="tk1_desc">위험한 AI 정글에서 살아남기 위한 필수 생존 키트예요.</p>
                 <ul class="toolkit-list">
-                    <li>기초 용어집 PDF</li>
-                    <li>응급 신고처 목록</li>
+                    <li data-lang="tk1_item1">기초 용어집 PDF</li>
+                    <li data-lang="tk1_item2">응급 신고처 목록</li>
                 </ul>
-                <a href="https://docs.google.com/document/d/1pkKRHfcO6w9bk1Rl5u-SeKMVp9czQWCRlFWCxAS8Ivk/edit?usp=sharing" target="_blank" class="btn-download" style="border-color:#ff6b6b; color:#ff6b6b; text-decoration:none;">
-                    <i class="fas fa-download"></i> 다운로드
+                <a href="..." target="_blank" class="btn-download" style="...">
+                    <i class="fas fa-download"></i> <span data-lang="btn_download">다운로드</span>
                 </a>
             </div>
-            <div class="toolkit-card" id="toolkit-2" style="border-color: #fab005;">
-                <div class="toolkit-icon" style="color: #fab005;">🛡️</div>
-                <h3 class="toolkit-title">Lv.2 보안관 꿈나무 툴킷</h3>
-                <p class="toolkit-desc">나와 지인의 정보를 안전하게 보호하는 방어구 세트예요.</p>
+            
+            <!-- Toolkit 2 -->
+            <div class="toolkit-card" id="toolkit-2" style="...">
+                <div class="toolkit-icon" style="...">🛡️</div>
+                <h3 class="toolkit-title" data-lang="tk2_title">Lv.2 보안관 꿈나무 툴킷</h3>
+                <p class="toolkit-desc" data-lang="tk2_desc">나와 지인의 정보를 안전하게 보호하는 방어구 세트예요.</p>
                 <ul class="toolkit-list">
-                    <li>SNS 비공개 설정 가이드</li>
-                    <li>워터마크 생성기 링크</li>
+                    <li data-lang="tk2_item1">SNS 비공개 설정 가이드</li>
+                    <li data-lang="tk2_item2">워터마크 생성기 링크</li>
                 </ul>
-                <a href="https://docs.google.com/document/d/1ieaA36l3-y8e1Lp_W1kl6h93Ct9aCVo3MJLX3pYrXxY/edit?usp=sharing" target="_blank" class="btn-download" style="border-color:#fab005; color:#fab005; text-decoration:none;">
-                    <i class="fas fa-download"></i> 다운로드
+                <a href="..." target="_blank" class="btn-download" style="...">
+                    <i class="fas fa-download"></i> <span data-lang="btn_download">다운로드</span>
                 </a>
             </div>
-            <div class="toolkit-card" id="toolkit-3" style="border-color: #20c997;">
-                <div class="toolkit-icon" style="color: #20c997;">🔎</div>
-                <h3 class="toolkit-title">Lv.3 보안관 심화 툴킷</h3>
-                <p class="toolkit-desc">거짓 정보를 꿰뚫어보고 검증하는 전문가 장비예요.</p>
+
+            <!-- Toolkit 3 -->
+            <div class="toolkit-card" id="toolkit-3" style="...">
+                <div class="toolkit-icon" style="...">🔎</div>
+                <h3 class="toolkit-title" data-lang="tk3_title">Lv.3 보안관 심화 툴킷</h3>
+                <p class="toolkit-desc" data-lang="tk3_desc">거짓 정보를 꿰뚫어보고 검증하는 전문가 장비예요.</p>
                 <ul class="toolkit-list">
-                    <li>딥페이크 탐지 AI 모음</li>
-                    <li>팩트체크 체크리스트</li>
+                    <li data-lang="tk3_item1">딥페이크 탐지 AI 모음</li>
+                    <li data-lang="tk3_item2">팩트체크 체크리스트</li>
                 </ul>
-                <a href="https://docs.google.com/document/d/1zFOpyoSdUK5l6zFB56-K_LZ1qWgcAlhNCvvjLC13oLs/edit?usp=sharing" target="_blank" class="btn-download" style="border-color:#20c997; color:#20c997; text-decoration:none;">
-                    <i class="fas fa-download"></i> 다운로드
+                <a href="..." target="_blank" class="btn-download" style="...">
+                    <i class="fas fa-download"></i> <span data-lang="btn_download">다운로드</span>
                 </a>
             </div>
-            <div class="toolkit-card" id="toolkit-4" style="border-color: #4c6ef5;">
-                <div class="toolkit-icon" style="color: #4c6ef5;">👑</div>
-                <h3 class="toolkit-title">Lv.4 캠퍼스 앰버서더 툴킷</h3>
-                <p class="toolkit-desc">캠퍼스의 문화를 바꾸는 리더를 위한 활동 패키지예요.</p>
+
+            <!-- Toolkit 4 -->
+            <div class="toolkit-card" id="toolkit-4" style="...">
+                <div class="toolkit-icon" style="...">👑</div>
+                <h3 class="toolkit-title" data-lang="tk4_title">Lv.4 캠퍼스 앰버서더 툴킷</h3>
+                <p class="toolkit-desc" data-lang="tk4_desc">캠퍼스의 문화를 바꾸는 리더를 위한 활동 패키지예요.</p>
                 <ul class="toolkit-list">
-                    <li>친구들을 위한 10분 교육 PPT</li>
-                    <li>공식 앰배서더 인증 배지</li>
+                    <li data-lang="tk4_item1">친구들을 위한 10분 교육 PPT</li>
+                    <li data-lang="tk4_item2">공식 앰배서더 인증 배지</li>
                 </ul>
-                <a href="https://docs.google.com/document/d/1qODK23YI3IvpNwDcmNMzEOjIWakZGPlJcnH5N7IVCMU/edit?usp=sharing" target="_blank" class="btn-download" style="border-color:#4c6ef5; color:#4c6ef5; text-decoration:none;">
-                    <i class="fas fa-download"></i> 다운로드
+                <a href="..." target="_blank" class="btn-download" style="...">
+                    <i class="fas fa-download"></i> <span data-lang="btn_download">다운로드</span>
                 </a>
             </div>
         </div>
@@ -597,27 +604,107 @@
     </div>
 
         <script>
-        // --- Language Translation Logic ---
+                // --- Language Translation Logic ---
         const translations = {
             ko: {
+                // Header & Hero
                 menu_test: "진단하기",
                 menu_toolkit: "툴킷",
                 menu_pledge: "연대하기",
                 hero_title: "검증된 정보와 안전한 기술,<br>우리가 함께 여는 올바른 AI 시대.",
                 hero_desc: "안전한 디지털 캠퍼스를 위한 대학생 AI 리터러시 프로젝트 F.A.K.E., 지금 시작합니다.",
                 hero_btn: "내 AI 사용 유형 진단해 보기",
+                
+                // Stats Section
+                stats_title: "데이터로 본 현실",
+                stats_subtitle: "2025년 11월, 대학생 118명의 목소리를 조사하였습니다. (조사기간: 11.01~11.14)",
+                stat_risk_label: "위험 노출도",
+                stat_risk_main: "주 1회 이상 목격",
+                stat_risk_desc: "3명 중 2명은 매주 허위정보를 목격해요. 허위정보로 인한 피해는 더 이상 남의 일이 아니예요.",
+                stat_void_label: "안전망 인식",
+                stat_void_main: "\"신고처를<br>전혀 몰라요\"",
+                stat_void_desc: "시스템은 있지만, 우리의 일상과는 연결되지 못하고 있어요. 우리 모두 '사각지대'에 놓여있다고 할 수 있죠.",
+                stat_witness_label: "직접 목격 경험",
+                stat_witness_desc: "가짜뉴스나 딥페이크 등 비윤리적 행위를 직접 목격한 경험도 35.6%나 돼요. 생각보다 우리 가까이에 있답니다.",
+                stat_light_label: "라이트 유저 위험도",
+                stat_light_title: "⚠️ 안전지대는 없다",
+                stat_light_desc: "하루 2시간도 안 쓰는 '라이트 유저'조차 38%가 유해 콘텐츠를 목격했어요. 잠깐 쓴다고 해서 결코 안전하지 않습니다.",
+                btn_full_report: "📊 설문 결과 전체 상세 보기",
+
+                // Toolkit Section
+                toolkit_title: "F.A.K.E. 툴킷 창고",
+                toolkit_subtitle: "레벨에 맞는 장비를 챙겨서 디지털 세상을 안전하게 항해해 보세요!",
+                tk1_title: "Lv.1 서바이벌 툴킷",
+                tk1_desc: "위험한 AI 정글에서 살아남기 위한 필수 생존 키트예요.",
+                tk1_item1: "기초 용어집 PDF",
+                tk1_item2: "응급 신고처 목록",
+                tk2_title: "Lv.2 보안관 꿈나무 툴킷",
+                tk2_desc: "나와 지인의 정보를 안전하게 보호하는 방어구 세트예요.",
+                tk2_item1: "SNS 비공개 설정 가이드",
+                tk2_item2: "워터마크 생성기 링크",
+                tk3_title: "Lv.3 보안관 심화 툴킷",
+                tk3_desc: "거짓 정보를 꿰뚫어보고 검증하는 전문가 장비예요.",
+                tk3_item1: "딥페이크 탐지 AI 모음",
+                tk3_item2: "팩트체크 체크리스트",
+                tk4_title: "Lv.4 캠퍼스 앰버서더 툴킷",
+                tk4_desc: "캠퍼스의 문화를 바꾸는 리더를 위한 활동 패키지예요.",
+                tk4_item1: "친구들을 위한 10분 교육 PPT",
+                tk4_item2: "공식 앰배서더 인증 배지",
+                btn_download: "다운로드",
+
+                // Pledge
                 pledge_title: "함께 연대해 주세요",
                 pledge_desc: "\"나는 확인되지 않은 정보를 공유하지 않고,<br>디지털 범죄 피해자와 연대하는 '스마트 액터'가 되겠습니다.\"",
                 pledge_btn_sign: "서명하고 동참하기",
                 pledge_btn_id: "F.A.K.E. ID 발급받기"
             },
             en: {
+                // Header & Hero
                 menu_test: "Self-Check",
                 menu_toolkit: "Toolkit",
                 menu_pledge: "Pledge",
                 hero_title: "Verified Truth & Safe Tech,<br>Together We Open the Right AI Era.",
                 hero_desc: "Project F.A.K.E.: An AI Literacy Initiative for a Safer Digital Campus.",
                 hero_btn: "Start My AI Ethics Self-Check",
+
+                // Stats Section
+                stats_title: "Reality in Data",
+                stats_subtitle: "Survey of 118 university students in Nov 2025. (Period: 11.01~11.14)",
+                stat_risk_label: "Risk Exposure",
+                stat_risk_main: "Weekly Witness",
+                stat_risk_desc: "2 out of 3 students witness fake info weekly. The damage is no longer someone else's problem.",
+                stat_void_label: "Safety Net Awareness",
+                stat_void_main: "\"Don't Know<br>Where to Report\"",
+                stat_void_desc: "The system exists, but it's disconnected from our daily lives. We are all in a 'blind spot'.",
+                stat_witness_label: "Direct Witness",
+                stat_witness_desc: "35.6% have directly witnessed unethical acts like fake news or deepfakes. It's closer than you think.",
+                stat_light_label: "Light User Risk",
+                stat_light_title: "⚠️ No Safety Zone",
+                stat_light_desc: "Even 'Light Users' (<2hrs/day) aren't safe—38% witnessed harmful content. Brief usage doesn't guarantee safety.",
+                btn_full_report: "📊 View Full Survey Report",
+
+                // Toolkit Section
+                toolkit_title: "F.A.K.E. Toolkit Armory",
+                toolkit_subtitle: "Equip yourself with the right gear to navigate the digital world safely!",
+                tk1_title: "Lv.1 Survival Toolkit",
+                tk1_desc: "Essential survival kit to stay alive in the dangerous AI jungle.",
+                tk1_item1: "Basic Terminology PDF",
+                tk1_item2: "Emergency Contact List",
+                tk2_title: "Lv.2 Junior Sheriff Toolkit",
+                tk2_desc: "Defense set to protect the privacy of you and your acquaintances.",
+                tk2_item1: "SNS Privacy Guide",
+                tk2_item2: "Watermark Generator Link",
+                tk3_title: "Lv.3 Senior Sheriff Toolkit",
+                tk3_desc: "Expert gear to pierce through lies and verify the truth.",
+                tk3_item1: "Deepfake Detection AI Tools",
+                tk3_item2: "Fact-Check Checklist",
+                tk4_title: "Lv.4 Campus Ambassador Toolkit",
+                tk4_desc: "Activity package for leaders changing the campus culture.",
+                tk4_item1: "10-min Edu PPT for Friends",
+                tk4_item2: "Official Ambassador Badge",
+                btn_download: "Download",
+
+                // Pledge
                 pledge_title: "Stand With Us",
                 pledge_desc: "\"I will not share unverified information,<br>and I pledge to stand in solidarity with digital crime victims as a 'Smart Actor'.\"",
                 pledge_btn_sign: "Sign the Pledge",
