@@ -312,18 +312,36 @@
 </head>
 <body>
 
-        <!-- Header -->
+            <!-- Header -->
     <header>
         <div class="logo">F.A.K.E.</div>
+        
+        <!-- 내비게이션 메뉴 -->
         <nav class="nav-links">
             <a onclick="openTestModal(event)" data-lang="menu_test">진단하기</a>
             <a href="#toolkit" data-lang="menu_toolkit">툴킷</a>
             <a href="#pledge" data-lang="menu_pledge">연대하기</a>
-            <!-- Language Toggle Button -->
-             <button onclick="toggleLanguage()" class="btn-outline" style="padding: 0.3rem 0.8rem; margin-left: 1rem; font-size: 0.9rem; border-radius: 10px; cursor: pointer; position: relative; z-index: 1001; pointer-events: auto;">
-                <i class="fas fa-globe"></i> <span id="langBtnText">EN</span>
-            </button>
         </nav>
+
+        <!-- 언어 전환 버튼 (메뉴 밖으로 꺼내서 오른쪽 끝에 고정) -->
+        <button onclick="toggleLanguage()" style="
+            margin-left: auto; 
+            padding: 0.4rem 0.8rem; 
+            font-size: 0.9rem; 
+            font-weight: bold;
+            border-radius: 20px; 
+            cursor: pointer; 
+            background: white; 
+            border: 2px solid #4c6ef5; 
+            color: #4c6ef5;
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: 0.2s;
+        " onmouseover="this.style.background='#4c6ef5'; this.style.color='white'" onmouseout="this.style.background='white'; this.style.color='#4c6ef5'">
+            <i class="fas fa-globe"></i> <span id="langBtnText">EN</span>
+        </button>
     </header>
 
        <!-- Hero Section -->
