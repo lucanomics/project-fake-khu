@@ -179,8 +179,6 @@
         .bento-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            /* 수정: 행 높이를 강제하지 않고, 내용에 따르되 카드의 최소 높이로 조절 */
-            /* grid-auto-rows: minmax(320px, 1fr);  <-- 삭제 */
             gap: 1.5rem;
             max-width: 1000px;
             margin: 0 auto;
@@ -197,7 +195,6 @@
             position: relative;
             overflow: hidden;
             border: 1px solid rgba(0,0,0,0.03);
-            /* 수정: 카드의 최소 높이를 지정하여 통일감 유지 */
             min-height: 320px; 
             height: 100%;
         }
@@ -460,57 +457,57 @@
         
         <div class="toolkit-grid">
             <!-- Toolkit 1 -->
-            <div class="toolkit-card" id="toolkit-1" style="...">
-                <div class="toolkit-icon" style="...">🎒</div>
+            <div class="toolkit-card" id="toolkit-1">
+                <div class="toolkit-icon">🎒</div>
                 <h3 class="toolkit-title" data-lang="tk1_title">Lv.1 서바이벌 툴킷</h3>
                 <p class="toolkit-desc" data-lang="tk1_desc">위험한 AI 정글에서 살아남기 위한 필수 생존 키트예요.</p>
                 <ul class="toolkit-list">
                     <li data-lang="tk1_item1">기초 용어집 PDF</li>
                     <li data-lang="tk1_item2">응급 신고처 목록</li>
                 </ul>
-                <a href="..." target="_blank" class="btn-download" style="...">
+                <a href="https://docs.google.com/document/d/1pkKRHfcO6w9bk1Rl5u-SeKMVp9czQWCRlFWCxAS8Ivk/edit?usp=sharing" target="_blank" class="btn-download">
                     <i class="fas fa-download"></i> <span data-lang="btn_download">다운로드</span>
                 </a>
             </div>
             
             <!-- Toolkit 2 -->
-            <div class="toolkit-card" id="toolkit-2" style="...">
-                <div class="toolkit-icon" style="...">🛡️</div>
+            <div class="toolkit-card" id="toolkit-2">
+                <div class="toolkit-icon">🛡️</div>
                 <h3 class="toolkit-title" data-lang="tk2_title">Lv.2 보안관 꿈나무 툴킷</h3>
                 <p class="toolkit-desc" data-lang="tk2_desc">나와 지인의 정보를 안전하게 보호하는 방어구 세트예요.</p>
                 <ul class="toolkit-list">
                     <li data-lang="tk2_item1">SNS 비공개 설정 가이드</li>
                     <li data-lang="tk2_item2">워터마크 생성기 링크</li>
                 </ul>
-                <a href="..." target="_blank" class="btn-download" style="...">
+                <a href="https://docs.google.com/document/d/1ieaA36l3-y8e1Lp_W1kl6h93Ct9aCVo3MJLX3pYrXxY/edit?usp=sharing" target="_blank" class="btn-download">
                     <i class="fas fa-download"></i> <span data-lang="btn_download">다운로드</span>
                 </a>
             </div>
 
             <!-- Toolkit 3 -->
-            <div class="toolkit-card" id="toolkit-3" style="...">
-                <div class="toolkit-icon" style="...">🔎</div>
+            <div class="toolkit-card" id="toolkit-3">
+                <div class="toolkit-icon">🔎</div>
                 <h3 class="toolkit-title" data-lang="tk3_title">Lv.3 보안관 심화 툴킷</h3>
                 <p class="toolkit-desc" data-lang="tk3_desc">거짓 정보를 꿰뚫어보고 검증하는 전문가 장비예요.</p>
                 <ul class="toolkit-list">
                     <li data-lang="tk3_item1">딥페이크 탐지 AI 모음</li>
                     <li data-lang="tk3_item2">팩트체크 체크리스트</li>
                 </ul>
-                <a href="..." target="_blank" class="btn-download" style="...">
+                <a href="https://docs.google.com/document/d/1zFOpyoSdUK5l6zFB56-K_LZ1qWgcAlhNCvvjLC13oLs/edit?usp=sharing" target="_blank" class="btn-download">
                     <i class="fas fa-download"></i> <span data-lang="btn_download">다운로드</span>
                 </a>
             </div>
 
             <!-- Toolkit 4 -->
-            <div class="toolkit-card" id="toolkit-4" style="...">
-                <div class="toolkit-icon" style="...">👑</div>
+            <div class="toolkit-card" id="toolkit-4">
+                <div class="toolkit-icon">👑</div>
                 <h3 class="toolkit-title" data-lang="tk4_title">Lv.4 캠퍼스 앰버서더 툴킷</h3>
                 <p class="toolkit-desc" data-lang="tk4_desc">캠퍼스의 문화를 바꾸는 리더를 위한 활동 패키지예요.</p>
                 <ul class="toolkit-list">
                     <li data-lang="tk4_item1">친구들을 위한 10분 교육 PPT</li>
                     <li data-lang="tk4_item2">공식 앰배서더 인증 배지</li>
                 </ul>
-                <a href="..." target="_blank" class="btn-download" style="...">
+                <a href="https://docs.google.com/document/d/1qODK23YI3IvpNwDcmNMzEOjIWakZGPlJcnH5N7IVCMU/edit?usp=sharing" target="_blank" class="btn-download">
                     <i class="fas fa-download"></i> <span data-lang="btn_download">다운로드</span>
                 </a>
             </div>
