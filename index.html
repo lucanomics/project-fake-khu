@@ -325,7 +325,7 @@
     <!-- Hero Section -->
     <section class="hero">
         <span class="tagline">Falsity Auditors & Knowledge Emancipators</span>
-        <h1>가짜에 속지 말고,<br>진실을 검증해 보세요.</h1>
+        <h1>검증된 정보와 안전한 기술,<br>우리가 함께 여는 올바른 AI 시대.</h1>
         <p>안전한 디지털 캠퍼스를 위한 대학생 AI 리터러시 프로젝트 F.A.K.E., 지금 시작합니다.</p>
         <div class="hero-btns">
             <!-- Button triggers Test Modal -->
@@ -337,7 +337,7 @@
     <section class="stats-section">
         <div class="section-header">
             <h2 class="section-title">데이터로 본 현실</h2>
-            <p class="section-subtitle">2025년 11월, 대학생 118명의 목소리 (조사기간: 11.01~11.14)</p>
+            <p class="section-subtitle">2025년 11월, 대학생 118명의 목소리를 조사하였습니다. (조사기간: 11.01~11.14)</p>
         </div>
         
         <div class="bento-grid">
@@ -371,17 +371,17 @@
                 <p class="stat-insight" style="margin-top: 1rem;">가짜뉴스나 딥페이크 등 비윤리적 행위를 직접 목격한 경험도 35.6%나 돼요. 생각보다 우리 가까이에 있답니다.</p>
             </div>
 
-            <!-- Card 4: Usage Time (Pie) -->
+            <!-- Card 4: Universal Risk (Light User Witness Rate) -->
             <div class="bento-card col-span-1">
-                <span class="stat-label"><i class="fas fa-clock"></i> AI 사용 시간</span>
+                <span class="stat-label"><i class="fas fa-user-shield"></i> 라이트 유저 위험도</span>
                 <div class="chart-wrapper">
-                    <canvas id="usageChart"></canvas>
+                    anvas id="universalRiskChart"></canvas>
                 </div>
-                <p class="stat-insight" style="margin-top: 1rem; color: var(--dark); font-weight: 600;">⚠️ 헤비 유저의 위험성<br><span style="font-weight: 400; font-size: 0.95rem; color: #495057;">사용 시간이 길수록(헤비 유저) 위험 노출 빈도가 오히려 더 높다는 사실, 알고 계셨나요?</span></p>
+                <p class="stat-insight" style="margin-top: 1rem; color: var(--danger); font-weight: 600;">⚠️ 안전지대는 없다<br><span style="font-weight: 400; font-size: 0.95rem; color: #495057;">하루 2시간도 안 쓰는 '라이트 유저'조차 38%가 유해 콘텐츠를 목격했어요. 잠깐 쓴다고 해서 결코 안전하지 않습니다.</span></p>
             </div>
 
             <!-- Action Card: Full Report Button (Final Fix - Slim & Centered) -->
-            <div class="col-span-2" style="text-align: center; margin-top: 2rem;">
+            <div style="grid-column: 1 / -1; display: flex; justify-content: center; margin-top: 2rem;">
                 <button id="openReportBtn" class="btn btn-primary" style="box-shadow: 0 4px 15px rgba(76, 110, 245, 0.3);">
                     <i class="fas fa-chart-pie"></i> 📊 설문 결과 전체 상세 보기
                 </button>
@@ -392,7 +392,7 @@
     <!-- Toolkit Section -->
     <section id="toolkit" class="toolkit-section">
         <h2 class="section-title">F.A.K.E. 툴킷 창고</h2>
-        <p class="section-subtitle" style="margin-bottom: 3rem; color: #666; font-size: 1.1rem;">레벨에 맞는 장비를 챙겨서 디지털 세상을 안전하게 항해해 보세요.</p>
+        <p class="section-subtitle" style="margin-bottom: 3rem; color: #666; font-size: 1.1rem;">레벨에 맞는 장비를 챙겨서 디지털 세상을 안전하게 항해해 보세요!</p>
         
         <div class="toolkit-grid">
             <div class="toolkit-card" id="toolkit-1" style="border-color: #ff6b6b;">
@@ -604,19 +604,25 @@
                 }
             });
 
-            // 4. Usage Chart (Pie)
-            new Chart(document.getElementById('usageChart'), {
-                type: 'pie',
+                        // 4. Universal Risk Chart (Bar - Replaced)
+            new Chart(document.getElementById('universalRiskChart'), {
+                type: 'bar',
                 data: {
-                    labels: ['2시간 미만 (라이트)', '2시간 이상 (헤비)'],
-                    datasets: [{ data: [75.4, 24.6], backgroundColor: ['#20c997', '#4c6ef5'], borderWidth: 0 }]
+                    labels: ['라이트 유저 목격 (38%)', '미목격'],
+                    datasets: [{ 
+                        data: [38.2, 61.8], 
+                        backgroundColor: ['#ff6b6b', '#e9ecef'], 
+                        borderRadius: 6 
+                    }]
                 },
-                options: { plugins: { legend: { position: 'bottom' } } }
+                options: { 
+                    indexAxis: 'y', 
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { x: { display: false, max: 100 }, y: { grid: { display: false } } }
+                }
             });
-            
-            // Initial call for modal chart to set default
-            updateChart();
-        };
 
 
         // --- Interactive Chart Logic (Report Modal - Expanded to 6 items) ---
@@ -629,7 +635,7 @@
                 label: '응답 비율 (%)',
                 color: '#4c6ef5',
                 indexAxis: 'y',
-                desc: "💡 분석 인사이트:<br>학생들은 AI를 주로 **'자료 검색'**과 **'과제 작성'**의 보조 도구로 쓰고 있어요. 단순 흥미보다는 학업 효율성을 높이기 위한 실용적 목적으로 자리 잡았네요."
+                desc: "💡 분석 인사이트:<br>학생들은 AI를 주로 '자료 검색'과 '과제 작성'의 보조 도구로 쓰고 있어요. 단순 흥미보다는 학업 효율성을 높이기 위한 실용적 목적으로 자리 잡았네요."
             },
             'unethical': {
                 type: 'bar',
@@ -638,7 +644,7 @@
                 label: '비윤리적 행위 인식 (%)',
                 color: '#ff6b6b',
                 indexAxis: 'y',
-                desc: "💡 분석 인사이트:<br>**'딥페이크를 장난으로 소비하는 행위'**를 가장 심각한 문제로 꼽았어요. 직접 만드는 것뿐만 아니라, 보고 즐기는 것도 공범이라는 인식이 확산되고 있습니다."
+                desc: "💡 분석 인사이트:<br>'딥페이크를 장난으로 소비하는 행위'를 가장 심각한 문제로 꼽았어요. 직접 만드는 것뿐만 아니라, 보고 즐기는 것도 공범이라는 인식이 확산되고 있습니다."
             },
             'responsibility': {
                 type: 'doughnut',
@@ -647,7 +653,7 @@
                 label: '책임 인식 (%)',
                 color: ['#ff6b6b', '#fab005', '#20c997', '#adb5bd'],
                 indexAxis: 'x',
-                desc: "💡 분석 인사이트:<br>압도적으로 **'최초 생성자'**에게 책임을 묻고 있지만, **'무비판적으로 공유한 이용자'**의 책임도 30% 가까이 됩니다. 나르기만 해도 책임이 있다는 사실, 잊지 마세요!"
+                desc: "💡 분석 인사이트:<br>압도적으로 '최초 생성자'에게 책임을 묻고 있지만, '무비판적으로 공유한 이용자'의 책임도 30% 가까이 됩니다. 나르기만 해도 책임이 있다는 사실, 잊지 마세요!"
             },
             'deepfake': {
                 type: 'pie',
@@ -656,7 +662,7 @@
                 label: '비율 (%)',
                 color: ['#4c6ef5', '#e9ecef', '#ff6b6b'],
                 indexAxis: 'x',
-                desc: "💡 분석 인사이트:<br>10명 중 8명 이상이 **'장난이라도 처벌해야 한다'**고 답했어요. 우리 대학생들의 윤리적 눈높이는 이미 법보다 엄격합니다."
+                desc: "💡 분석 인사이트:<br>10명 중 8명 이상이 '장난이라도 처벌해야 한다'고 답했어요. 우리 대학생들의 윤리적 눈높이는 이미 법보다 엄격합니다."
             },
             'frequency': {
                 type: 'bar',
