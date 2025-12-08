@@ -452,12 +452,25 @@
         </div>
     </section>
 
-    <!-- Pledge Section -->
+        <!-- Pledge Section -->
     <section id="pledge" class="pledge-section">
         <div class="pledge-box">
-            <h2 style="font-size: 2.8rem; margin-bottom: 1.5rem;">함께 연대해 주세요</h2>
-            <p style="font-size: 1.3rem; margin-bottom: 2.5rem; opacity: 0.9;">"나는 확인되지 않은 정보를 공유하지 않고,<br>디지털 범죄 피해자와 연대하는 '스마트 액터'가 되겠습니다."</p>
-            <a href="https://forms.gle/17dRfyub7eZMfXa58" target="_blank" class="btn btn-white">✋ 서명하고 동참하기</a>
+            <h2 style="font-size: 2.8rem; margin-bottom: 1.5rem;" data-lang="pledge_title">함께 연대해 주세요</h2>
+            <p style="font-size: 1.3rem; margin-bottom: 2.5rem; opacity: 0.9;" data-lang="pledge_desc">
+                "나는 확인되지 않은 정보를 공유하지 않고,<br>디지털 범죄 피해자와 연대하는 '스마트 액터'가 되겠습니다."
+            </p>
+            
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <!-- 기존 서명 버튼 -->
+                <a href="https://forms.gle/17dRfyub7eZMfXa58" target="_blank" class="btn btn-white">
+                    ✋ <span data-lang="pledge_btn_sign">서명하고 동참하기</span>
+                </a>
+                
+                <!-- ✨ 새로 추가한 ID 발급 버튼 ✨ -->
+                <a href="id-card.html" target="_blank" class="btn btn-primary" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
+                    💳 <span data-lang="pledge_btn_id">F.A.K.E. ID 발급받기</span>
+                </a>
+            </div>
         </div>
     </section>
 
@@ -566,7 +579,7 @@
     </div>
 
     <script>
-                // --- Language Translation Logic ---
+                        // --- Language Translation Logic ---
         const translations = {
             ko: {
                 menu_test: "진단하기",
@@ -574,7 +587,13 @@
                 menu_pledge: "연대하기",
                 hero_title: "검증된 정보와 안전한 기술,<br>우리가 함께 여는 올바른 AI 시대.",
                 hero_desc: "안전한 디지털 캠퍼스를 위한 대학생 AI 리터러시 프로젝트 F.A.K.E., 지금 시작합니다.",
-                hero_btn: "내 AI 사용 유형 진단해 보기"
+                hero_btn: "내 AI 사용 유형 진단해 보기",
+                
+                // 👇 새로 추가된 부분 👇
+                pledge_title: "함께 연대해 주세요",
+                pledge_desc: "\"나는 확인되지 않은 정보를 공유하지 않고,<br>디지털 범죄 피해자와 연대하는 '스마트 액터'가 되겠습니다.\"",
+                pledge_btn_sign: "서명하고 동참하기",
+                pledge_btn_id: "F.A.K.E. ID 발급받기"
             },
             en: {
                 menu_test: "Self-Check",
@@ -582,7 +601,13 @@
                 menu_pledge: "Pledge",
                 hero_title: "Verified Truth & Safe Tech,<br>Together We Open the Right AI Era.",
                 hero_desc: "Project F.A.K.E.: An AI Literacy Initiative for a Safer Digital Campus.",
-                hero_btn: "Start My AI Ethics Self-Check"
+                hero_btn: "Start My AI Ethics Self-Check",
+
+                // 👇 새로 추가된 부분 👇
+                pledge_title: "Stand With Us",
+                pledge_desc: "\"I will not share unverified information,<br>and I pledge to stand in solidarity with digital crime victims as a 'Smart Actor'.\"",
+                pledge_btn_sign: "Sign the Pledge",
+                pledge_btn_id: "Get My F.A.K.E. ID"
             }
         };
 
