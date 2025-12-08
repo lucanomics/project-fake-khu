@@ -178,17 +178,18 @@
 
         .bento-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* 2 Columns Forced */
+            grid-template-columns: repeat(2, 1fr);
+            /* 핵심 수정: 모든 행의 높이를 자동으로 균일하게 맞춤 */
+            grid-auto-rows: minmax(320px, 1fr); 
             gap: 1.5rem;
             max-width: 1000px;
             margin: 0 auto;
-            /* Auto rows for cards, but button row will be auto */
         }
 
         .bento-card {
             background: var(--white);
             border-radius: var(--radius);
-            padding: 2rem;
+            padding: 1.8rem;
             box-shadow: var(--shadow-sm);
             display: flex;
             flex-direction: column;
@@ -196,19 +197,26 @@
             position: relative;
             overflow: hidden;
             border: 1px solid rgba(0,0,0,0.03);
-            min-height: 350px;
+            /* 높이를 Grid Row에 맞추기 위해 100% 설정 */
+            height: 100%; 
         }
         .bento-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
 
-        .stat-label { font-size: 0.9rem; font-weight: 700; color: #adb5bd; text-transform: uppercase; margin-bottom: 1rem; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
+        .stat-label { font-size: 0.9rem; font-weight: 700; color: #adb5bd; text-transform: uppercase; margin-bottom: 0.8rem; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
         .stat-title { font-size: 1.4rem; font-weight: 700; color: var(--dark); margin-bottom: 0.5rem; line-height: 1.3; font-family: var(--font-title); word-break: keep-all; }
-        .stat-insight { font-size: 0.95rem; color: #495057; line-height: 1.6; word-break: keep-all; margin-top: auto; }
+        .stat-insight { font-size: 0.9rem; color: #495057; line-height: 1.5; word-break: keep-all; margin-top: auto; }
         
-        /* Big Number Style for Card 2 */
-        .stat-number-big { font-size: 4rem; font-weight: 800; color: var(--danger); line-height: 1; margin-bottom: 0.5rem; font-family: var(--font-title); letter-spacing: -1px; }
-        
-        /* Chart Wrapper */
-        .chart-wrapper { position: relative; width: 100%; flex-grow: 1; min-height: 180px; display: flex; align-items: center; justify-content: center; }
+        /* Chart Wrapper: 높이를 제한하여 통일성 유지 */
+        .chart-wrapper { 
+            position: relative; 
+            width: 100%; 
+            height: 180px; /* 높이 고정 */
+            flex-grow: 1; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin-bottom: 0.5rem;
+        }
 
         /* --- Toolkit Section --- */
         .toolkit-section { padding: 8rem 5%; background: var(--white); text-align: center; }
@@ -305,8 +313,9 @@
             .bento-grid, .toolkit-grid { grid-template-columns: 1fr; }
             .col-span-2 { grid-column: span 1; }
             .btn { width: 100%; justify-content: center; }
-            .chart-wrapper { height: 250px; }
-            .stat-number-big { font-size: 3.5rem; }
+            /* 모바일에서는 차트 높이 재조정 */
+            .chart-wrapper { height: 220px; }
+            .bento-grid { grid-auto-rows: auto; } /* 모바일은 자동 높이 */
         }
     </style>
 </head>
@@ -325,7 +334,7 @@
             <a href="#pledge" data-lang="menu_pledge">연대하기</a>
         </nav>
 
-        <!-- 언어 전환 버튼 (메뉴 밖으로 꺼내서 오른쪽 끝에 고정) -->
+        <!-- 언어 전환 버튼 -->
         <button onclick="toggleLanguage()" style="
             margin-left: auto; 
             padding: 0.4rem 0.8rem; 
@@ -367,73 +376,74 @@
         </div>
         
         <div class="bento-grid">
-            <!-- Card 1: Risk Exposure (Doughnut) -->
-            <div class="bento-card col-span-1" style="align-items: center; text-align: center;">
-                <span class="stat-label" data-lang="stat_risk_label"><i class="fas fa-exclamation-circle"></i> 위험 노출도</span>
+            <!-- Card 1: Risk Exposure (Doughnut - Modified to fit uniform size) -->
+            <div class="bento-card col-span-1" style="align-items: center; text-align: center; justify-content: space-between;">
+                <span class="stat-label" style="align-self: flex-start;" data-lang="stat_risk_label"><i class="fas fa-exclamation-circle"></i> 위험 노출도</span>
                 <div class="chart-wrapper">
                     <canvas id="riskChart"></canvas>
                 </div>
-                <div class="stat-title" style="margin-top: 1rem;">
+                <div class="stat-title" style="margin-top: 0.5rem; margin-bottom: 0;">
                     <span data-lang="stat_risk_main">주 1회 이상 목격</span><br>
                     <span style="color:var(--danger); font-size: 1.8rem;">66.9%</span>
                 </div>
-                <p class="stat-insight" data-lang="stat_risk_desc">3명 중 2명은 매주 허위정보를 목격해요. 허위정보로 인한 피해는 더 이상 남의 일이 아니예요.</p>
+                <p class="stat-insight" data-lang="stat_risk_desc">3명 중 2명은 매주 허위정보를 목격해요. 허위정보 피해는 더 이상 남의 일이 아닙니다.</p>
             </div>
 
-            <!-- Card 2: Institutional Void (Vertical Icon-Number-Text) -->
-<div class="bento-card col-span-1" style="display: flex; flex-direction: column; align-items: center; text-align: center; justify-content: space-between; padding: 1.5rem;">
-    
-    <!-- 1. 상단 라벨 (카드의 제목 역할이므로 좌측 상단 유지) -->
-    <span class="stat-label" style="align-self: flex-start; margin-bottom: 0.5rem; opacity: 0.8;" data-lang="stat_void_label">
-        <i class="fas fa-shield-alt"></i> 안전망 인식
-    </span>
+            <!-- Card 2: Institutional Void (Vertical Icon-Number-Text, Scaled Down) -->
+            <div class="bento-card col-span-1" style="display: flex; flex-direction: column; align-items: center; text-align: center; justify-content: space-between;">
+                
+                <!-- 1. 상단 라벨 -->
+                <span class="stat-label" style="align-self: flex-start; margin-bottom: 0.5rem; opacity: 0.8;" data-lang="stat_void_label">
+                    <i class="fas fa-shield-alt"></i> 안전망 인식
+                </span>
 
-    <!-- 2. 메인 콘텐츠 그룹 (아이콘 -> 숫자 -> 텍스트 순서, 중앙 정렬) -->
-    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%;">
-        
-        <!-- (1) 아이콘: 크기 확대 및 색상 적용 -->
-        <i class="fas fa-question-circle" style="font-size: 4.5rem; color: #A0D6B4; margin-bottom: 1rem;"></i>
-        
-        <!-- (2) 숫자: 색상 적용 -->
-        <div style="font-size: 3.5rem; line-height: 1; font-weight: 800; color: #A0D6B4; margin-bottom: 0.5rem;">
-            66.1<span style="font-size: 2rem;">%</span>
-        </div>
+                <!-- 2. 메인 콘텐츠 그룹 (사이즈 축소 적용: 아이콘 3.5rem, 숫자 2.8rem) -->
+                <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%;">
+                    
+                    <!-- (1) 아이콘: 사이즈 축소 (4.5rem -> 3.5rem) -->
+                    <i class="fas fa-question-circle" style="font-size: 3.5rem; color: #A0D6B4; margin-bottom: 0.5rem;"></i>
+                    
+                    <!-- (2) 숫자: 사이즈 축소 (3.5rem -> 2.8rem) -->
+                    <div style="font-size: 2.8rem; line-height: 1; font-weight: 800; color: #A0D6B4; margin-bottom: 0.3rem;">
+                        66.1<span style="font-size: 1.8rem;">%</span>
+                    </div>
 
-        <!-- (3) 텍스트 설명 -->
-        <div style="font-size: 1.1rem; font-weight: 600;" data-lang="stat_void_main">
-            "신고처를 전혀 몰라요"
-        </div>
+                    <!-- (3) 텍스트 설명 -->
+                    <div style="font-size: 1rem; font-weight: 600;" data-lang="stat_void_main">
+                        "신고처를 전혀 몰라요"
+                    </div>
 
-    </div>
+                </div>
 
-    <!-- 3. 하단 인사이트 설명 -->
-    <p class="stat-insight" style="margin-top: 1rem; opacity: 0.7; font-size: 0.9rem;" data-lang="stat_void_desc">
-        시스템은 있지만, 우리의 일상과는 연결되지 못하고 있어요. 우리 모두 '사각지대'에 놓여있다고 할 수 있죠.
-    </p>
-</div>
-            <!-- Card 3: Witness Experience (Horizontal Bar) -->
-            <div class="bento-card col-span-1" style="align-items: center; text-align: center;">
+                <!-- 3. 하단 인사이트 설명 -->
+                <p class="stat-insight" style="margin-top: 0.5rem; opacity: 0.7;" data-lang="stat_void_desc">
+                    시스템은 있지만, 우리의 일상과는 연결되지 못하고 있어요. 우리 모두 '사각지대'에 놓여있죠.
+                </p>
+            </div>
+
+            <!-- Card 3: Witness Experience (Horizontal Bar - Standard Size) -->
+            <div class="bento-card col-span-1" style="align-items: center; text-align: center; justify-content: space-between;">
                 <span class="stat-label" style="align-self: flex-start;" data-lang="stat_witness_label"><i class="fas fa-eye"></i> 직접 목격 경험</span>
                 <div class="chart-wrapper">
                     <canvas id="witnessChart"></canvas>
                 </div>
-                <p class="stat-insight" style="margin-top: 1rem;" data-lang="stat_witness_desc">가짜뉴스나 딥페이크 등 비윤리적 행위를 직접 목격한 경험도 35.6%나 돼요. 생각보다 우리 가까이에 있답니다.</p>
+                <p class="stat-insight" style="margin-top: 0.5rem;" data-lang="stat_witness_desc">가짜뉴스나 딥페이크 등 비윤리적 행위를 직접 목격한 경험도 35.6%나 돼요. 생각보다 가까이에 있답니다.</p>
             </div>
 
-            <!-- Card 4: Universal Risk (Bar) -->
-            <div class="bento-card col-span-1" style="align-items: center; text-align: center;">
+            <!-- Card 4: Universal Risk (Bar - Standard Size) -->
+            <div class="bento-card col-span-1" style="align-items: center; text-align: center; justify-content: space-between;">
                 <span class="stat-label" style="align-self: flex-start;" data-lang="stat_light_label"><i class="fas fa-user-shield"></i> 라이트 유저 위험도</span>
                 <div class="chart-wrapper">
                     <canvas id="universalRiskChart"></canvas>
                 </div>
-                <p class="stat-insight" style="margin-top: 1rem; color: var(--danger); font-weight: 600;">
+                <p class="stat-insight" style="margin-top: 0.5rem; color: var(--danger); font-weight: 600;">
                     <span data-lang="stat_light_title">⚠️ 안전지대는 없다</span><br>
-                    <span style="font-weight: 400; font-size: 0.95rem; color: #495057;" data-lang="stat_light_desc">하루 2시간도 안 쓰는 '라이트 유저'조차 38%가 유해 콘텐츠를 목격했어요. 잠깐 쓴다고 해서 결코 안전하지 않습니다.</span>
+                    <span style="font-weight: 400; font-size: 0.9rem; color: #495057;" data-lang="stat_light_desc">하루 2시간 미만 쓰는 '라이트 유저'조차 38%가 유해 콘텐츠를 목격했어요. 잠깐 쓴다고 안전하지 않습니다.</span>
                 </p>
             </div>
 
-            <!-- Action Card: Full Report Button (Perfect Center) -->
-            <div style="grid-column: 1 / -1; display: flex; justify-content: center; margin-top: 2rem; width: 100%;">
+            <!-- Action Card: Full Report Button -->
+            <div style="grid-column: 1 / -1; display: flex; justify-content: center; margin-top: 1rem; width: 100%; height: auto;">
                 <button id="openReportBtn" class="btn btn-primary" style="box-shadow: 0 4px 15px rgba(76, 110, 245, 0.3);">
                     <i class="fas fa-chart-pie"></i> <span data-lang="btn_full_report">📊 설문 결과 전체 상세 보기</span>
                 </button>
@@ -650,8 +660,8 @@
                 stat_risk_main: "주 1회 이상 목격",
                 stat_risk_desc: "3명 중 2명은 매주 허위정보를 목격해요. 허위정보로 인한 피해는 더 이상 남의 일이 아니예요.",
                 stat_void_label: "안전망 인식",
-                stat_void_main: "\"신고처를<br>전혀 몰라요\"",
-                stat_void_desc: "시스템은 있지만, 우리의 일상과는 연결되지 못하고 있어요. 우리 모두 '사각지대'에 놓여있다고 할 수 있죠.",
+                stat_void_main: "\"신고처를 전혀 몰라요\"",
+                stat_void_desc: "시스템은 있지만, 우리의 일상과는 연결되지 못하고 있어요. 우리 모두 '사각지대'에 놓여있죠.",
                 stat_witness_label: "직접 목격 경험",
                 stat_witness_desc: "가짜뉴스나 딥페이크 등 비윤리적 행위를 직접 목격한 경험도 35.6%나 돼요. 생각보다 우리 가까이에 있답니다.",
                 stat_light_label: "라이트 유저 위험도",
@@ -784,25 +794,27 @@
                 }
             };
 
+            // Common Options for resizing
+            const commonOptions = {
+                maintainAspectRatio: false, // 중요: 컨테이너 크기에 맞춤
+                plugins: { legend: { display: false }, tooltip: { enabled: false } }
+            };
+
             // 1. Risk Chart (Doughnut)
             createChart('riskChart', 'doughnut', {
                 labels: ['주 1회 이상 목격', '기타'],
                 datasets: [{ data: [66.9, 33.1], backgroundColor: ['#ff6b6b', '#e9ecef'], borderWidth: 0 }]
-            }, { cutout: '70%', plugins: { legend: { display: false }, tooltip: { enabled: false } } });
+            }, { ...commonOptions, cutout: '70%' });
 
-            // 2. Void Chart (New Doughnut)
-            createChart('voidChart', 'doughnut', {
-                labels: ['전혀 모름', '알고 있음'],
-                datasets: [{ data: [66.1, 33.9], backgroundColor: ['#ff6b6b', '#e9ecef'], borderWidth: 0 }]
-            }, { cutout: '70%', plugins: { legend: { display: false }, tooltip: { enabled: false } } });
-
+            // 2. Void Chart (REMOVED - Replaced with Icon/Text in HTML)
+            
             // 3. Witness Chart (Horizontal Bar)
             createChart('witnessChart', 'bar', {
                 labels: ['직접 목격 경험', '없음'],
                 datasets: [{ data: [35.6, 64.4], backgroundColor: ['#fab005', '#e9ecef'], borderRadius: 6 }]
             }, {
+                ...commonOptions,
                 indexAxis: 'y',
-                plugins: { legend: { display: false } },
                 scales: { x: { display: false, max: 100 }, y: { grid: { display: false } } }
             });
 
@@ -815,10 +827,8 @@
                     borderRadius: 6 
                 }]
             }, { 
+                ...commonOptions,
                 indexAxis: 'y', 
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
                 scales: { x: { display: false, max: 100 }, y: { grid: { display: false } } }
             });
         };
