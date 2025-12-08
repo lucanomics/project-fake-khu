@@ -179,8 +179,8 @@
         .bento-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            /* 핵심 수정: 모든 행의 높이를 자동으로 균일하게 맞춤 */
-            grid-auto-rows: minmax(320px, 1fr); 
+            /* 수정: 행 높이를 강제하지 않고, 내용에 따르되 카드의 최소 높이로 조절 */
+            /* grid-auto-rows: minmax(320px, 1fr);  <-- 삭제 */
             gap: 1.5rem;
             max-width: 1000px;
             margin: 0 auto;
@@ -197,8 +197,9 @@
             position: relative;
             overflow: hidden;
             border: 1px solid rgba(0,0,0,0.03);
-            /* 높이를 Grid Row에 맞추기 위해 100% 설정 */
-            height: 100%; 
+            /* 수정: 카드의 최소 높이를 지정하여 통일감 유지 */
+            min-height: 320px; 
+            height: 100%;
         }
         .bento-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
 
@@ -443,9 +444,10 @@
             </div>
 
             <!-- Action Card: Full Report Button -->
+            <!-- 수정: inline style 중복(box-shadow) 제거, 텍스트에서 이모지 삭제 -->
             <div style="grid-column: 1 / -1; display: flex; justify-content: center; margin-top: 1rem; width: 100%; height: auto;">
-                <button id="openReportBtn" class="btn btn-primary" style="box-shadow: 0 4px 15px rgba(76, 110, 245, 0.3);">
-                    <i class="fas fa-chart-pie"></i> <span data-lang="btn_full_report">📊 설문 결과 전체 상세 보기</span>
+                <button id="openReportBtn" class="btn btn-primary">
+                    <i class="fas fa-chart-pie"></i> <span data-lang="btn_full_report">설문 결과 전체 상세 보기</span>
                 </button>
             </div>
         </div>
@@ -693,8 +695,8 @@
                 // Pledge
                 pledge_title: "함께 연대해 주세요",
                 pledge_desc: "\"나는 확인되지 않은 정보를 공유하지 않고,<br>디지털 범죄 피해자와 연대하는 '스마트 액터'가 되겠습니다.\"",
-                pledge_btn_sign: "서명하고 동참하기",
-                pledge_btn_id: "F.A.K.E. ID 발급받기"
+                pledge_btn_sign: "Sign the Pledge",
+                pledge_btn_id: "Get My F.A.K.E. ID"
             },
             en: {
                 // Header & Hero
