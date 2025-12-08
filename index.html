@@ -380,33 +380,37 @@
                 <p class="stat-insight" data-lang="stat_risk_desc">3명 중 2명은 매주 허위정보를 목격해요. 허위정보로 인한 피해는 더 이상 남의 일이 아니예요.</p>
             </div>
 
-            <!-- Card 2: Institutional Void (NEW Doughnut Chart) -->
-            <div class="bento-card col-span-1" style="display: flex; flex-direction: column; align-items: center; text-align: center; justify-content: space-between; padding: 1.5rem;">
+            <!-- Card 2: Institutional Void (Vertical Icon-Number-Text) -->
+<div class="bento-card col-span-1" style="display: flex; flex-direction: column; align-items: center; text-align: center; justify-content: space-between; padding: 1.5rem;">
     
-    <span class="stat-label" style="align-self: flex-start; margin-bottom: 1rem; opacity: 0.8;" data-lang="stat_void_label">
+    <!-- 1. 상단 라벨 (카드의 제목 역할이므로 좌측 상단 유지) -->
+    <span class="stat-label" style="align-self: flex-start; margin-bottom: 0.5rem; opacity: 0.8;" data-lang="stat_void_label">
         <i class="fas fa-shield-alt"></i> 안전망 인식
     </span>
 
-    <div class="stat-title" style="margin: 1rem 0; width: 100%;">
+    <!-- 2. 메인 콘텐츠 그룹 (아이콘 -> 숫자 -> 텍스트 순서, 중앙 정렬) -->
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%;">
         
-        <div style="display: flex; justify-content: center; align-items: center; gap: 15px; color: #A0D6B4; margin-bottom: 0.5rem;">
-            <i class="fas fa-question-circle" style="font-size: 3rem; opacity: 0.9;"></i>
-            
-            <div style="font-size: 3.5rem; line-height: 1; font-weight: 800;">
-                66.1<span style="font-size: 2rem;">%</span>
-            </div>
+        <!-- (1) 아이콘: 크기 확대 및 색상 적용 -->
+        <i class="fas fa-question-circle" style="font-size: 4.5rem; color: #A0D6B4; margin-bottom: 1rem;"></i>
+        
+        <!-- (2) 숫자: 색상 적용 -->
+        <div style="font-size: 3.5rem; line-height: 1; font-weight: 800; color: #A0D6B4; margin-bottom: 0.5rem;">
+            66.1<span style="font-size: 2rem;">%</span>
         </div>
-        
+
+        <!-- (3) 텍스트 설명 -->
         <div style="font-size: 1.1rem; font-weight: 600;" data-lang="stat_void_main">
             "신고처를 전혀 몰라요"
         </div>
+
     </div>
 
-    <p class="stat-insight" style="margin-top: auto; opacity: 0.7; font-size: 0.9rem;" data-lang="stat_void_desc">
+    <!-- 3. 하단 인사이트 설명 -->
+    <p class="stat-insight" style="margin-top: 1rem; opacity: 0.7; font-size: 0.9rem;" data-lang="stat_void_desc">
         시스템은 있지만, 우리의 일상과는 연결되지 못하고 있어요. 우리 모두 '사각지대'에 놓여있다고 할 수 있죠.
     </p>
 </div>
-
             <!-- Card 3: Witness Experience (Horizontal Bar) -->
             <div class="bento-card col-span-1" style="align-items: center; text-align: center;">
                 <span class="stat-label" style="align-self: flex-start;" data-lang="stat_witness_label"><i class="fas fa-eye"></i> 직접 목격 경험</span>
