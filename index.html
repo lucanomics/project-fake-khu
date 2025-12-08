@@ -312,24 +312,30 @@
 </head>
 <body>
 
-    <!-- Header -->
+        <!-- Header -->
     <header>
         <div class="logo">F.A.K.E.</div>
         <nav class="nav-links">
-            <a onclick="openTestModal(event)">진단하기</a>
-            <a href="#toolkit">툴킷</a>
-            <a href="#pledge">연대하기</a>
+            <a onclick="openTestModal(event)" data-lang="menu_test">진단하기</a>
+            <a href="#toolkit" data-lang="menu_toolkit">툴킷</a>
+            <a href="#pledge" data-lang="menu_pledge">연대하기</a>
+            <!-- Language Toggle Button -->
+            <button onclick="toggleLanguage()" class="btn-outline" style="padding: 0.3rem 0.8rem; margin-left: 1rem; font-size: 0.9rem; border-radius: 10px; cursor: pointer;">
+                <i class="fas fa-globe"></i> <span id="langBtnText">EN</span>
+            </button>
         </nav>
     </header>
 
-    <!-- Hero Section -->
+       <!-- Hero Section -->
     <section class="hero">
         <span class="tagline">Falsity Auditors & Knowledge Emancipators</span>
-        <h1>검증된 정보와 안전한 기술,<br>우리가 함께 여는 올바른 AI 시대.</h1>
-        <p>안전한 디지털 캠퍼스를 위한 대학생 AI 리터러시 프로젝트 F.A.K.E., 지금 시작합니다.</p>
+        <h1 data-lang="hero_title">검증된 정보와 안전한 기술,<br>우리가 함께 여는 올바른 AI 시대.</h1>
+        <p data-lang="hero_desc">안전한 디지털 캠퍼스를 위한 대학생 AI 리터러시 프로젝트 F.A.K.E., 지금 시작합니다.</p>
         <div class="hero-btns">
             <!-- Button triggers Test Modal -->
-            <button onclick="openTestModal()" class="btn btn-primary"><i class="fas fa-check-circle"></i> 내 AI 사용 유형 진단해 보기</button>
+            <button onclick="openTestModal()" class="btn btn-primary">
+                <i class="fas fa-check-circle"></i> <span data-lang="hero_btn">내 AI 사용 유형 진단해 보기</span>
+            </button>
         </div>
     </section>
 
@@ -560,6 +566,39 @@
     </div>
 
     <script>
+                // --- Language Translation Logic ---
+        const translations = {
+            ko: {
+                menu_test: "진단하기",
+                menu_toolkit: "툴킷",
+                menu_pledge: "연대하기",
+                hero_title: "검증된 정보와 안전한 기술,<br>우리가 함께 여는 올바른 AI 시대.",
+                hero_desc: "안전한 디지털 캠퍼스를 위한 대학생 AI 리터러시 프로젝트 F.A.K.E., 지금 시작합니다.",
+                hero_btn: "내 AI 사용 유형 진단해 보기"
+            },
+            en: {
+                menu_test: "Self-Check",
+                menu_toolkit: "Toolkit",
+                menu_pledge: "Pledge",
+                hero_title: "Verified Truth & Safe Tech,<br>Together We Open the Right AI Era.",
+                hero_desc: "Project F.A.K.E.: An AI Literacy Initiative for a Safer Digital Campus.",
+                hero_btn: "Start My AI Ethics Self-Check"
+            }
+        };
+
+        let currentLang = 'ko';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'ko' ? 'en' : 'ko';
+            document.getElementById('langBtnText').innerText = currentLang === 'ko' ? 'EN' : 'KO';
+            
+            document.querySelectorAll('[data-lang]').forEach(el => {
+                const key = el.getAttribute('data-lang');
+                if (translations[currentLang][key]) {
+                    el.innerHTML = translations[currentLang][key];
+                }
+            });
+        }
         // --- Modal Logic ---
         const reportModal = document.getElementById('reportModal');
         const testModal = document.getElementById('testModal');
