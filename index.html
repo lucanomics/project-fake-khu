@@ -359,7 +359,7 @@
         </div>
     </section>
 
-            <!-- Stats Section (Dashboard) -->
+                <!-- Stats Section (Dashboard) -->
     <section class="stats-section">
         <div class="section-header">
             <h2 class="section-title" data-lang="stats_title">데이터로 본 현실</h2>
@@ -368,46 +368,43 @@
         
         <div class="bento-grid">
             <!-- Card 1: Risk Exposure (Doughnut) -->
-            <div class="bento-card col-span-1">
+            <div class="bento-card col-span-1" style="align-items: center; text-align: center;">
                 <span class="stat-label" data-lang="stat_risk_label"><i class="fas fa-exclamation-circle"></i> 위험 노출도</span>
                 <div class="chart-wrapper">
                     <canvas id="riskChart"></canvas>
                 </div>
-                <div class="stat-title" style="margin-top: 1rem; text-align: center;">
+                <div class="stat-title" style="margin-top: 1rem;">
                     <span data-lang="stat_risk_main">주 1회 이상 목격</span><br>
                     <span style="color:var(--danger); font-size: 1.8rem;">66.9%</span>
                 </div>
-                <p class="stat-insight" style="text-align: center;" data-lang="stat_risk_desc">3명 중 2명은 매주 허위정보를 목격해요. 허위정보로 인한 피해는 더 이상 남의 일이 아니예요.</p>
+                <p class="stat-insight" data-lang="stat_risk_desc">3명 중 2명은 매주 허위정보를 목격해요. 허위정보로 인한 피해는 더 이상 남의 일이 아니예요.</p>
             </div>
 
-            <!-- Card 2: Institutional Void (Doughnut Chart Replaced!) -->
-            <div class="bento-card col-span-1" style="text-align: center;">
+            <!-- Card 2: Institutional Void (NEW Doughnut Chart) -->
+            <div class="bento-card col-span-1" style="align-items: center; text-align: center;">
                 <span class="stat-label" style="align-self: flex-start;" data-lang="stat_void_label"><i class="fas fa-shield-alt"></i> 안전망 인식</span>
-                
-                <!-- 차트로 변경 -->
                 <div class="chart-wrapper">
                     <canvas id="voidChart"></canvas>
                 </div>
-                
                 <div class="stat-title" style="margin-top: 0.5rem;">
                     <span style="font-size: 1.5rem; color: var(--danger); font-weight: 800;">66.1%</span><br>
                     <span data-lang="stat_void_main">"신고처를 전혀 몰라요"</span>
                 </div>
-                <p class="stat-insight" style="text-align: center;" data-lang="stat_void_desc">시스템은 있지만, 우리의 일상과는 연결되지 못하고 있어요. 우리 모두 '사각지대'에 놓여있다고 할 수 있죠.</p>
+                <p class="stat-insight" data-lang="stat_void_desc">시스템은 있지만, 우리의 일상과는 연결되지 못하고 있어요. 우리 모두 '사각지대'에 놓여있다고 할 수 있죠.</p>
             </div>
 
             <!-- Card 3: Witness Experience (Horizontal Bar) -->
-            <div class="bento-card col-span-1">
-                <span class="stat-label" data-lang="stat_witness_label"><i class="fas fa-eye"></i> 직접 목격 경험</span>
+            <div class="bento-card col-span-1" style="align-items: center; text-align: center;">
+                <span class="stat-label" style="align-self: flex-start;" data-lang="stat_witness_label"><i class="fas fa-eye"></i> 직접 목격 경험</span>
                 <div class="chart-wrapper">
                     <canvas id="witnessChart"></canvas>
                 </div>
                 <p class="stat-insight" style="margin-top: 1rem;" data-lang="stat_witness_desc">가짜뉴스나 딥페이크 등 비윤리적 행위를 직접 목격한 경험도 35.6%나 돼요. 생각보다 우리 가까이에 있답니다.</p>
             </div>
 
-            <!-- Card 4: Universal Risk (Light User Witness Rate) -->
-            <div class="bento-card col-span-1">
-                <span class="stat-label" data-lang="stat_light_label"><i class="fas fa-user-shield"></i> 라이트 유저 위험도</span>
+            <!-- Card 4: Universal Risk (Bar) -->
+            <div class="bento-card col-span-1" style="align-items: center; text-align: center;">
+                <span class="stat-label" style="align-self: flex-start;" data-lang="stat_light_label"><i class="fas fa-user-shield"></i> 라이트 유저 위험도</span>
                 <div class="chart-wrapper">
                     <canvas id="universalRiskChart"></canvas>
                 </div>
@@ -417,7 +414,7 @@
                 </p>
             </div>
 
-            <!-- Action Card: Full Report Button (Centered Fixed) -->
+            <!-- Action Card: Full Report Button (Perfect Center) -->
             <div style="grid-column: 1 / -1; display: flex; justify-content: center; margin-top: 2rem; width: 100%;">
                 <button id="openReportBtn" class="btn btn-primary" style="box-shadow: 0 4px 15px rgba(76, 110, 245, 0.3);">
                     <i class="fas fa-chart-pie"></i> <span data-lang="btn_full_report">📊 설문 결과 전체 상세 보기</span>
@@ -757,117 +754,55 @@
 
         window.onclick = (e) => { if(e.target == reportModal) closeModal(reportModal); if(e.target == testModal) closeModal(testModal); }
 
-                // --- Chart.js: Dashboard Logic (Load Charts on Page Load) ---
+                        // --- Chart.js: Dashboard Logic (Load Charts on Page Load) ---
         window.onload = function() {
-            // 1. Risk Chart (Doughnut)
-            const riskCtx = document.getElementById('riskChart');
-            if (riskCtx) {
-                new Chart(riskCtx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['주 1회 이상 목격', '기타'],
-                        datasets: [{ data: [66.9, 33.1], backgroundColor: ['#ff6b6b', '#e9ecef'], borderWidth: 0 }]
-                    },
-                    options: { cutout: '70%', plugins: { legend: { display: false }, tooltip: { enabled: false } } }
-                });
-            }
+            // Helper function to safely create charts
+            const createChart = (id, type, data, options) => {
+                const ctx = document.getElementById(id);
+                if (ctx) {
+                    new Chart(ctx, { type, data, options });
+                } else {
+                    console.warn(`Canvas with id '${id}' not found. Chart skipped.`);
+                }
+            };
 
-            // 2. Void Chart (NEW! Doughnut for 'Unknown Reporting Channel')
-            const voidCtx = document.getElementById('voidChart');
-            if (voidCtx) {
-                new Chart(voidCtx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['전혀 모름', '알고 있음'],
-                        datasets: [{ data: [66.1, 33.9], backgroundColor: ['#ff6b6b', '#e9ecef'], borderWidth: 0 }]
-                    },
-                    options: { 
-                        cutout: '70%', 
-                        plugins: { legend: { display: false }, tooltip: { enabled: false } } 
-                    }
-                });
-            }
+            // 1. Risk Chart (Doughnut)
+            createChart('riskChart', 'doughnut', {
+                labels: ['주 1회 이상 목격', '기타'],
+                datasets: [{ data: [66.9, 33.1], backgroundColor: ['#ff6b6b', '#e9ecef'], borderWidth: 0 }]
+            }, { cutout: '70%', plugins: { legend: { display: false }, tooltip: { enabled: false } } });
+
+            // 2. Void Chart (New Doughnut)
+            createChart('voidChart', 'doughnut', {
+                labels: ['전혀 모름', '알고 있음'],
+                datasets: [{ data: [66.1, 33.9], backgroundColor: ['#ff6b6b', '#e9ecef'], borderWidth: 0 }]
+            }, { cutout: '70%', plugins: { legend: { display: false }, tooltip: { enabled: false } } });
 
             // 3. Witness Chart (Horizontal Bar)
-            const witnessCtx = document.getElementById('witnessChart');
-            if (witnessCtx) {
-                new Chart(witnessCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['직접 목격 경험', '없음'],
-                        datasets: [{ data: [35.6, 64.4], backgroundColor: ['#fab005', '#e9ecef'], borderRadius: 6 }]
-                    },
-                    options: {
-                        indexAxis: 'y',
-                        plugins: { legend: { display: false } },
-                        scales: { x: { display: false, max: 100 }, y: { grid: { display: false } } }
-                    }
-                });
-            }
+            createChart('witnessChart', 'bar', {
+                labels: ['직접 목격 경험', '없음'],
+                datasets: [{ data: [35.6, 64.4], backgroundColor: ['#fab005', '#e9ecef'], borderRadius: 6 }]
+            }, {
+                indexAxis: 'y',
+                plugins: { legend: { display: false } },
+                scales: { x: { display: false, max: 100 }, y: { grid: { display: false } } }
+            });
 
             // 4. Universal Risk Chart (Bar)
-            const riskUniversalCtx = document.getElementById('universalRiskChart');
-            if (riskUniversalCtx) {
-                new Chart(riskUniversalCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['라이트 유저 목격 (38%)', '미목격'],
-                        datasets: [{ 
-                            data: [38.2, 61.8], 
-                            backgroundColor: ['#ff6b6b', '#e9ecef'], 
-                            borderRadius: 6 
-                        }]
-                    },
-                    options: { 
-                        indexAxis: 'y', 
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { display: false } },
-                        scales: { x: { display: false, max: 100 }, y: { grid: { display: false } } }
-                    }
-                });
-            }
-        };
-
-            // 3. Witness Chart (Horizontal Bar)
-            const witnessCtx = document.getElementById('witnessChart');
-            if (witnessCtx) {
-                new Chart(witnessCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['직접 목격 경험', '없음'],
-                        datasets: [{ data: [35.6, 64.4], backgroundColor: ['#fab005', '#e9ecef'], borderRadius: 6 }]
-                    },
-                    options: {
-                        indexAxis: 'y',
-                        plugins: { legend: { display: false } },
-                        scales: { x: { display: false, max: 100 }, y: { grid: { display: false } } }
-                    }
-                });
-            }
-
-            // 4. Universal Risk Chart (Bar - Replaced)
-            const riskUniversalCtx = document.getElementById('universalRiskChart');
-            if (riskUniversalCtx) {
-                new Chart(riskUniversalCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['라이트 유저 목격 (38%)', '미목격'],
-                        datasets: [{ 
-                            data: [38.2, 61.8], 
-                            backgroundColor: ['#ff6b6b', '#e9ecef'], 
-                            borderRadius: 6 
-                        }]
-                    },
-                    options: { 
-                        indexAxis: 'y', 
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { display: false } },
-                        scales: { x: { display: false, max: 100 }, y: { grid: { display: false } } }
-                    }
-                });
-            }
+            createChart('universalRiskChart', 'bar', {
+                labels: ['라이트 유저 목격 (38%)', '미목격'],
+                datasets: [{ 
+                    data: [38.2, 61.8], 
+                    backgroundColor: ['#ff6b6b', '#e9ecef'], 
+                    borderRadius: 6 
+                }]
+            }, { 
+                indexAxis: 'y', 
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { x: { display: false, max: 100 }, y: { grid: { display: false } } }
+            });
         };
 
         // --- Interactive Chart Logic (Report Modal) ---
