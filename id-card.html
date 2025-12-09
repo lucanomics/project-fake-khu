@@ -76,7 +76,7 @@
     <script type="text/babel">
         const { useState, useRef, useEffect } = React;
 
-        // Icons
+        // --- Icons ---
         const IconWrapper = ({ children, size = 24, className = "" }) => (
             <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>{children}</svg>
         );
@@ -98,6 +98,32 @@
         const Minimize = (props) => (<IconWrapper {...props}><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 11h3a2 2 0 0 1 2 2v3"/></IconWrapper>);
         const RotateCcw = (props) => (<IconWrapper {...props}><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></IconWrapper>);
         const X = (props) => (<IconWrapper {...props}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></IconWrapper>);
+
+        // --- Department Data ---
+        const departmentCodes = {
+            "Hospitality경영학과": "101", "간호학과": "102", "국제건축공학과": "203", "국제건축학과": "204", "건축학과": "204",
+            "경영학과": "105", "경제학과": "106", "골프산업학과": "207", "관광학과": "108", "국어국문학과": "109",
+            "국제통상·금융투자학부": "110", "국제통상학과": "110", "금융투자학과": "110", "국제학과": "211", "글로벌커뮤니케이션학부": "212",
+            "기계공학과": "213", "기악과": "114", "도예학과": "215", "디지털콘텐츠학과": "216", "러시아어학과": "217",
+            "무역학과": "118", "무용학부": "119", "문화엔터테인먼트학과": "120", "물리학과": "121", "미디어학과": "122",
+            "미래정보디스플레이학부": "123", "정보디스플레이학과": "123", "빅데이터응용학과": "124", "사학과": "125",
+            "사회기반시스템공학과": "226", "사회학과": "127", "산업경영공학과": "228", "산업디자인학과": "229", "생물학과": "130",
+            "생체의공학과": "231", "성악과": "132", "소프트웨어융합학과": "233", "수학과": "134", "스마트팜과학과": "235",
+            "스페인어학과": "236", "스포츠의학과": "237", "스포츠지도학과": "238", "시각디자인학과": "239", "식품생명공학과": "240",
+            "식품영양학과": "141", "신소재공학과": "242", "정보전자신소재공학과": "242", "아동가족학과": "143",
+            "아시아학과": "244", "글로벌한국학과": "244", "약학과": "145", "연극영화학과": "246", "영어영문학과": "147",
+            "우주과학과": "248", "원자력공학과": "249", "유전생명공학과": "250",
+            "융합바이오·신소재공학과": "251", "한방생명공학과": "251", "식물·환경신소재공학과": "251",
+            "응용물리학과": "252", "응용수학과": "253", "응용영어통번역학과": "154", "응용화학과": "255", "의류디자인학과": "256",
+            "의상학과": "157", "의예과": "158", "인공지능학과": "259", "일본어학과": "260", "자유전공학부": "261", "자율전공학부": "162",
+            "작곡과": "163", "전자공학과": "264", "정치외교학과": "165",
+            "조리&푸드디자인학과": "166", "조리·서비스경영학과": "166",
+            "조소과": "167", "주거환경학과": "168", "중국어학과": "269", "지리학과": "170", "철학과": "171",
+            "체육학과": "272", "치의예과": "173", "컴퓨터공학과": "274", "태권도학과": "275", "포스트모던음악학과": "276",
+            "프랑스어학과": "277", "한국어학과": "278", "한국화과": "179", "한약학과": "180", "한의예과": "181",
+            "행정학과": "182", "화학공학과": "283", "화학과": "184", "환경조경디자인학과": "285", "환경학및환경공학과": "286",
+            "회계세무학과": "187", "회화과": "188"
+        };
 
         const FlipCard = ({ card, onDelete, onClick }) => {
             const [isFlipped, setIsFlipped] = useState(false);
@@ -233,12 +259,12 @@
             const [authError, setAuthError] = useState('');
             
             const [rawImage, setRawImage] = useState(null);
-            const [frontLogo, setFrontLogo] = useState('./fakhu_logo.png'); // Front Logo
-            const [backLogo, setBackLogo] = useState('./fakhu_logo_horizontal.png'); // Back Logo
+            const [frontLogo, setFrontLogo] = useState('./fakhu_logo.png'); // Front Logo (Small)
+            const [backLogo, setBackLogo] = useState('./fakhu_logo_horizontal.png'); // Back Logo (Horizontal)
 
             const [frontImage, setFrontImage] = useState(null); 
             const [metaData, setMetaData] = useState({ name: '', role: 'Trainee', affiliation: '' });
-            const [serialData, setSerialData] = useState({ classNum: '101', serialNum: '000001' });
+            const [serialData, setSerialData] = useState({ classNum: '101', letterCode: 'A', serialNum: '0001' }); // Updated serialData structure
             const [status, setStatus] = useState('idle'); 
             const [myCards, setMyCards] = useState(() => {
                 const saved = localStorage.getItem('fake_id_cards');
@@ -259,6 +285,35 @@
                 localStorage.setItem('fake_id_cards', JSON.stringify(myCards));
             }, [myCards]);
 
+            // Update serialData based on role and affiliation changes
+            useEffect(() => {
+                let letter = 'A';
+                switch(metaData.role) {
+                    case 'Trainee': letter = 'A'; break;
+                    case 'Junior': letter = 'B'; break;
+                    case 'Senior': letter = 'C'; break;
+                    case 'Ambassador': letter = 'Z'; break;
+                    default: letter = 'A';
+                }
+
+                let deptCode = '000';
+                // Trim and remove extra spaces if necessary
+                const inputDept = metaData.affiliation.trim();
+                if (departmentCodes[inputDept]) {
+                    deptCode = departmentCodes[inputDept];
+                }
+
+                // Random 4 digits
+                const rand4 = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+
+                setSerialData({
+                    classNum: deptCode,
+                    letterCode: letter,
+                    serialNum: rand4
+                });
+
+            }, [metaData.role, metaData.affiliation]);
+
             const checkPassword = () => {
                 if (password.toLowerCase() === 'wise') {
                     setView('create');
@@ -277,12 +332,6 @@
                 });
             };
 
-            const generateRandomSerial = () => {
-                const randomClass = Math.floor(Math.random() * 250) + 101;
-                const randomSerial = Math.floor(Math.random() * 9999) + 1;
-                return { classNum: randomClass.toString(), serialNum: randomSerial.toString().padStart(6, '0') };
-            };
-
             const getThemeColor = (role) => {
                 switch(role) {
                     case 'Trainee': return "#F87171"; // Red
@@ -299,14 +348,14 @@
                 ctx.font = `500 ${fontSize}px 'Montserrat', monospace`;
                 ctx.textAlign = "right";
                 
-                // Create Pattern Canvas
+                // 1. Create Pattern Canvas
                 const patternCanvas = document.createElement('canvas');
                 patternCanvas.width = 6;
                 patternCanvas.height = 6;
                 const pCtx = patternCanvas.getContext('2d');
                 
                 // Draw Hatch Lines
-                pCtx.strokeStyle = "rgba(255, 255, 255, 0.4)"; 
+                pCtx.strokeStyle = "rgba(255, 255, 255, 0.4)"; // Semi-transparent white
                 pCtx.lineWidth = 1;
                 pCtx.beginPath();
                 pCtx.moveTo(0, 6);
@@ -315,14 +364,18 @@
                 
                 const pattern = ctx.createPattern(patternCanvas, 'repeat');
                 
-                // Fill Text with Pattern
+                // 2. Apply Pattern
                 ctx.fillStyle = pattern;
                 ctx.fillText(text, x, y);
                 
-                // Draw Outline
+                // 3. Draw Outline (to make text readable)
                 ctx.strokeStyle = "rgba(255, 255, 255, 0.9)";
-                ctx.lineWidth = 1;
+                ctx.lineWidth = 0.5;
                 ctx.strokeText(text, x, y);
+                
+                // 4. Fill slightly with white to make it visible
+                ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
+                ctx.fillText(text, x, y);
                 
                 ctx.restore();
             };
@@ -358,6 +411,7 @@
                 if (backLogo) {
                     try {
                         const logo = await loadImage(backLogo);
+                        // Increase size for horizontal logo (Big header logo)
                         const logoW = 340; 
                         const logoH = 100; 
                         const aspect = logo.width / logo.height;
@@ -443,8 +497,8 @@
                     ctx.drawImage(qrImg, width - 180, height - 180, 140, 140);
                 } catch (e) {}
 
-                // Serial Number (Striped & Moved Up)
-                // Render striped text at bottom right, avoiding QR
+                // Serial Number (Striped)
+                ctx.textAlign = "right";
                 drawStripedText(ctx, serialCode, width - 40, height - 210, 24);
 
                 return canvas.toDataURL("image/png");
@@ -523,7 +577,7 @@
                 ctx.textBaseline = "middle";
                 
                 const nameText = metaData.name ? metaData.name.toUpperCase() : "NAME";
-                const idText = `${serialData.classNum}Z#${serialData.serialNum}`;
+                const idText = `${serialData.classNum}${serialData.letterCode}#${serialData.serialNum}`;
                 
                 ctx.fillStyle = "#ffffff";
                 ctx.font = "bold 36px 'Montserrat', sans-serif";
@@ -537,8 +591,8 @@
                     try {
                         const logo = await loadImage(frontLogo);
                         // Increase size
-                        const maxW = 100; // Fits inside sidebar width (120)
-                        const maxH = 100;  
+                        const maxW = 140; 
+                        const maxH = 60;  
                         const aspect = logo.width / logo.height;
                         
                         let dw = maxW; 
@@ -547,7 +601,7 @@
 
                         // Center in strip
                         const logoX = width - (sidebarWidth / 2) - (dw / 2);
-                        const logoY = height - dh - 40; 
+                        const logoY = height - dh - 50; 
                         
                         ctx.drawImage(logo, logoX, logoY, dw, dh);
                     } catch(e) {
@@ -569,10 +623,11 @@
             // React Effects
             useEffect(() => {
                 if (rawImage) {
-                    const newSerial = generateRandomSerial();
-                    setSerialData(newSerial);
-                    setScale(1);
-                    setPosition({x: 0, y: 0});
+                    // This generates random serials initially or on image change.
+                    // But we want it to update based on dept/role changes too.
+                    // Actually, let's keep random part stable unless explicitly regenerated or app loaded?
+                    // For now, let's keep it simple: generate once on load if needed or use state.
+                    // But the request says "Code assignment based on dept".
                 }
             }, [rawImage]);
 
@@ -646,7 +701,7 @@
                 await new Promise(r => setTimeout(r, 500));
 
                 const themeColor = getThemeColor(metaData.role);
-                const serialCode = `${serialData.classNum}Z#${serialData.serialNum}`;
+                const serialCode = `${serialData.classNum}${serialData.letterCode}#${serialData.serialNum}`;
                 const backImage = await generateBackSide(serialCode, themeColor);
 
                 const newCard = {
@@ -742,7 +797,7 @@
                                                 <option value="Ambassador">Ambassador (Blue)</option>
                                             </select>
                                             <input type="text" placeholder="Name" className="w-full p-2 bg-transparent text-white border-b border-slate-700" value={metaData.name} onChange={e => setMetaData({...metaData, name: e.target.value})} maxLength={15} />
-                                            <input type="text" placeholder="Affiliation" className="w-full p-2 bg-transparent text-white" value={metaData.affiliation} onChange={e => setMetaData({...metaData, affiliation: e.target.value})} maxLength={25} />
+                                            <input type="text" placeholder="Affiliation (학과명)" className="w-full p-2 bg-transparent text-white" value={metaData.affiliation} onChange={e => setMetaData({...metaData, affiliation: e.target.value})} maxLength={25} />
                                         </div>
 
                                         <button onClick={saveCard} className="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold shadow-lg">
