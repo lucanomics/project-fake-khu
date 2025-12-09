@@ -76,7 +76,7 @@
     <script type="text/babel">
         const { useState, useRef, useEffect } = React;
 
-        // --- Icons ---
+        // Icons
         const IconWrapper = ({ children, size = 24, className = "" }) => (
             <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>{children}</svg>
         );
@@ -115,9 +115,12 @@
                 onDelete(card.id);
             };
 
-            const handleClick = () => {
-                if (onClick) onClick(); 
-                else setIsFlipped(!isFlipped); 
+            const handleClick = (e) => {
+                if (onClick) {
+                    onClick(); // Open Modal
+                } else {
+                    setIsFlipped(!isFlipped); // Just Flip
+                }
             };
 
             return (
@@ -230,8 +233,8 @@
             const [authError, setAuthError] = useState('');
             
             const [rawImage, setRawImage] = useState(null);
-            const [frontLogo, setFrontLogo] = useState('./fakhu_logo.png'); // Front Logo (Small)
-            const [backLogo, setBackLogo] = useState('./fakhu_logo_horizontal.png'); // Back Logo (Horizontal)
+            const [frontLogo, setFrontLogo] = useState('./fakhu_logo.png'); // Front Logo
+            const [backLogo, setBackLogo] = useState('./fakhu_logo_horizontal.png'); // Back Logo
 
             const [frontImage, setFrontImage] = useState(null); 
             const [metaData, setMetaData] = useState({ name: '', role: 'Trainee', affiliation: '' });
@@ -295,34 +298,31 @@
                 ctx.save();
                 ctx.font = `500 ${fontSize}px 'Montserrat', monospace`;
                 ctx.textAlign = "right";
-
-                // 1. Create Pattern Canvas
+                
+                // Create Pattern Canvas
                 const patternCanvas = document.createElement('canvas');
                 patternCanvas.width = 6;
                 patternCanvas.height = 6;
                 const pCtx = patternCanvas.getContext('2d');
                 
                 // Draw Hatch Lines
-                pCtx.strokeStyle = "rgba(255, 255, 255, 0.4)"; // Semi-transparent white
+                pCtx.strokeStyle = "rgba(255, 255, 255, 0.4)"; 
                 pCtx.lineWidth = 1;
                 pCtx.beginPath();
                 pCtx.moveTo(0, 6);
                 pCtx.lineTo(6, 0);
                 pCtx.stroke();
                 
-                // 2. Apply Pattern
                 const pattern = ctx.createPattern(patternCanvas, 'repeat');
+                
+                // Fill Text with Pattern
                 ctx.fillStyle = pattern;
                 ctx.fillText(text, x, y);
                 
-                // 3. Draw Outline (to make text readable)
+                // Draw Outline
                 ctx.strokeStyle = "rgba(255, 255, 255, 0.9)";
-                ctx.lineWidth = 0.5;
+                ctx.lineWidth = 1;
                 ctx.strokeText(text, x, y);
-                
-                // 4. Fill slightly with white to make it visible
-                ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
-                ctx.fillText(text, x, y);
                 
                 ctx.restore();
             };
@@ -358,8 +358,7 @@
                 if (backLogo) {
                     try {
                         const logo = await loadImage(backLogo);
-                        // Increase size for horizontal logo (Big header logo)
-                        const logoW = 320; 
+                        const logoW = 340; 
                         const logoH = 100; 
                         const aspect = logo.width / logo.height;
                         
@@ -370,7 +369,7 @@
                             drawW = logoH * aspect;
                         }
                         // Draw next to F.A.K.E text
-                        ctx.drawImage(logo, 180, 35, drawW, drawH);
+                        ctx.drawImage(logo, 180, 30, drawW, drawH);
                     } catch(e) { console.warn("Back Logo draw failed"); }
                 }
 
@@ -444,8 +443,8 @@
                     ctx.drawImage(qrImg, width - 180, height - 180, 140, 140);
                 } catch (e) {}
 
-                // Serial Number (Striped)
-                ctx.textAlign = "right";
+                // Serial Number (Striped & Moved Up)
+                // Render striped text at bottom right, avoiding QR
                 drawStripedText(ctx, serialCode, width - 40, height - 210, 24);
 
                 return canvas.toDataURL("image/png");
@@ -504,13 +503,20 @@
                 // 4. Sidebar Background
                 ctx.fillStyle = themeColor;
                 ctx.beginPath();
-                ctx.roundRect(width - sidebarWidth, 50, sidebarWidth - 20, height - 100, 40);
-                ctx.fill();
-
+                // Extend to the right edge (width)
+                // x: width - sidebarWidth, y: 0 (top)
+                // height: full height
+                // To look like a strip, fill rect
+                ctx.fillRect(width - sidebarWidth, 0, sidebarWidth, height);
+                
+                // If we want rounded corners on the left side of the strip only, or just fill
+                // Design requested: "extend to right edge".
+                // We keep it simple rectangular strip on the right.
+                
                 // 5. Sidebar Text (Rotated)
                 ctx.save();
                 // Move text UP significantly to avoid logo at bottom
-                ctx.translate(width - (sidebarWidth / 2) - 10, (height / 2) - 80); 
+                ctx.translate(width - (sidebarWidth / 2), (height / 2) - 80); 
                 ctx.rotate(Math.PI / 2); 
                 
                 ctx.textAlign = "center";
@@ -525,44 +531,38 @@
                 ctx.restore();
                 
                 // 6. Sidebar Logo (Front) - Fixed: No Rotation for Logo
-                ctx.save();
-                // Move to bottom right area (inside the sidebar strip)
-                // We want it upright, near the bottom.
-                // Since sidebar is 120px wide, and we have ~150px height space at bottom.
+                // Position: Bottom Right, Centered in Strip
                 
                 if (frontLogo) {
                     try {
                         const logo = await loadImage(frontLogo);
-                        const maxW = 180; // Bigger!
-                        const maxH = 80;  // Bigger!
+                        // Increase size
+                        const maxW = 100; // Fits inside sidebar width (120)
+                        const maxH = 100;  
                         const aspect = logo.width / logo.height;
                         
                         let dw = maxW; 
                         let dh = maxW / aspect;
                         if (dh > maxH) { dh = maxH; dw = maxH * aspect; }
 
-                        // Position: Bottom Right
-                        // x: width - sidebarWidth/2 - dw/2 (Centered in sidebar)
-                        // y: height - 80 (Padding from bottom)
-                        
-                        // BUT sidebar text was rotated 90deg.
-                        // User wants logo NOT rotated.
-                        
-                        // We reset rotation via restore() before this block. So we are in normal coords.
+                        // Center in strip
                         const logoX = width - (sidebarWidth / 2) - (dw / 2);
-                        const logoY = height - dh - 50; 
+                        const logoY = height - dh - 40; 
                         
                         ctx.drawImage(logo, logoX, logoY, dw, dh);
                     } catch(e) {
                          // Fallback
+                         ctx.save();
+                         ctx.translate(width - (sidebarWidth/2), height - 80);
+                         ctx.rotate(Math.PI / 2);
                          ctx.fillStyle = "rgba(255,255,255,0.7)";
                          ctx.font = "bold 16px sans-serif";
                          ctx.textAlign = "center";
-                         ctx.fillText("F.A.K.E.", width - 60, height - 60);
+                         ctx.fillText("F.A.K.E.", 0, 0);
+                         ctx.restore();
                     }
                 }
-                ctx.restore();
-
+                
                 setFrontImage(canvas.toDataURL("image/png"));
             };
 
@@ -596,7 +596,7 @@
                 const file = e.target.files[0];
                 if (file) {
                     const reader = new FileReader();
-                    reader.onloadend = () => setFrontLogo(reader.result); // Updates Front Logo
+                    reader.onloadend = () => setFrontLogo(reader.result);
                     reader.readAsDataURL(file);
                 }
             };
