@@ -5,12 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>F.A.K.E ID - Smart Actor Platform</title>
     
-    <!-- React & ReactDOM -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <!-- Babel for JSX -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
@@ -36,36 +33,42 @@
             height: auto;
         }
 
-        @keyframes shine {
-            0% { transform: translateX(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) rotate(45deg); }
-        }
-        .loading-shimmer {
-            position: relative;
-            overflow: hidden;
-        }
-        .loading-shimmer::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            animation: shine 1.5s infinite;
+        /* 3D Flip Animation Styles */
+        .card-container {
+            perspective: 1000px;
+            cursor: pointer;
         }
         
-        select option {
-            background-color: #1e293b;
-            color: white;
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        
+        .card-container.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 0.75rem; /* rounded-xl */
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .card-back {
+            transform: rotateY(180deg);
+            background-color: #000;
         }
 
-        /* Shake Animation for Wrong Password */
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
-        }
-        .shake {
-            animation: shake 0.5s;
-        }
+        select option { background-color: #1e293b; color: white; }
     </style>
 </head>
 <body>
@@ -74,10 +77,11 @@
     <script type="text/babel">
         const { useState, useRef, useEffect } = React;
 
-        // --- Icons ---
+        // Icons
         const IconWrapper = ({ children, size = 24, className = "" }) => (
             <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>{children}</svg>
         );
+        const Sparkles = (props) => (<IconWrapper {...props}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L12 3Z"/></IconWrapper>);
         const Camera = (props) => (<IconWrapper {...props}><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></IconWrapper>);
         const Wallet = (props) => (<IconWrapper {...props}><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12a2 2 0 0 0 2 2h14v-4"/><path d="M18 12a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v-8Z"/></IconWrapper>);
         const ImageIcon = (props) => (<IconWrapper {...props}><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></IconWrapper>);
@@ -86,21 +90,69 @@
         const Loader2 = (props) => (<IconWrapper {...props}><path d="M21 12a9 9 0 1 1-6.219-8.56"/></IconWrapper>);
         const UserCircle = (props) => (<IconWrapper {...props}><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/></IconWrapper>);
         const Trash2 = (props) => (<IconWrapper {...props}><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></IconWrapper>);
-        const Lock = (props) => (<IconWrapper {...props}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></IconWrapper>);
+        const RefreshCw = (props) => (<IconWrapper {...props}><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></IconWrapper>);
+
+        // 개별 카드 컴포넌트 (플립 기능 내장)
+        const FlipCard = ({ card, onDelete }) => {
+            const [isFlipped, setIsFlipped] = useState(false);
+
+            const handleDownload = (e, side) => {
+                e.stopPropagation(); // 카드 뒤집힘 방지
+                const link = document.createElement('a');
+                link.href = side === 'front' ? card.image : card.backImage;
+                link.download = `fake_id_${side}_${card.id}.png`;
+                link.click();
+            };
+
+            const handleDelete = (e) => {
+                e.stopPropagation();
+                onDelete(card.id);
+            };
+
+            return (
+                <div className="space-y-2">
+                    <div 
+                        className={`card-container aspect-[2/3] w-full ${isFlipped ? 'flipped' : ''}`}
+                        onClick={() => setIsFlipped(!isFlipped)}
+                    >
+                        <div className="card-inner">
+                            {/* Front Side */}
+                            <div className="card-front">
+                                <img src={card.image} className="w-full h-full object-cover" alt="Front" />
+                                <div className="absolute top-2 right-2 bg-black/50 p-1 rounded-full pointer-events-none">
+                                    <RefreshCw size={14} className="text-white opacity-70" />
+                                </div>
+                            </div>
+                            {/* Back Side */}
+                            <div className="card-back flex items-center justify-center bg-zinc-900 border border-zinc-700">
+                                <img src={card.backImage} className="w-full h-full object-cover" alt="Back" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {/* Action Bar */}
+                    <div className="flex justify-between items-center bg-slate-800 p-2 rounded-lg text-xs">
+                        <div className="flex gap-2">
+                            <button onClick={(e) => handleDownload(e, 'front')} className="text-purple-400 hover:text-white flex items-center gap-1 font-bold">
+                                Front <Download size={12}/>
+                            </button>
+                            <span className="text-slate-600">|</span>
+                            <button onClick={(e) => handleDownload(e, 'back')} className="text-purple-400 hover:text-white flex items-center gap-1 font-bold">
+                                Back <Download size={12}/>
+                            </button>
+                        </div>
+                        <button onClick={handleDelete} className="text-red-400 hover:text-red-300">
+                            <Trash2 size={14}/>
+                        </button>
+                    </div>
+                </div>
+            );
+        };
 
         const App = () => {
-            // --- Configuration ---
-            const ACCESS_PASSWORD = "wise"; // 비밀번호를 소문자로 변경
-
-            // --- Authentication State ---
-            const [isAuthenticated, setIsAuthenticated] = useState(false);
-            const [inputPassword, setInputPassword] = useState('');
-            const [loginError, setLoginError] = useState(false);
-
-            // --- App Logic State ---
             const [view, setView] = useState('create'); 
-            const [rawImage, setRawImage] = useState(null);      
-            const [cardImage, setCardImage] = useState(null);   
+            const [rawImage, setRawImage] = useState(null);     
+            const [frontImage, setFrontImage] = useState(null); // Card Image (Front)
             const [metaData, setMetaData] = useState({ name: '', role: 'Smart Actor Trainee' });
             const [serialData, setSerialData] = useState({ classNum: '101', serialNum: '000001' });
             const [status, setStatus] = useState('idle'); 
@@ -109,54 +161,107 @@
                 return saved ? JSON.parse(saved) : [];
             });
             const [statusMsg, setStatusMsg] = useState('');
+            
             const canvasRef = useRef(null);
 
-            // --- Effects ---
             useEffect(() => {
                 localStorage.setItem('fake_id_cards', JSON.stringify(myCards));
             }, [myCards]);
 
-            useEffect(() => {
-                if (rawImage) {
-                    const newSerial = generateRandomSerial();
-                    setSerialData(newSerial);
-                }
-            }, [rawImage]);
-
-            useEffect(() => {
-                if (rawImage && canvasRef.current) {
-                    generateCard();
-                }
-            }, [rawImage, metaData.name, metaData.role, serialData]);
-
-            // --- Functions ---
-            const handleLogin = (e) => {
-                e.preventDefault();
-                // 입력값을 소문자로 변환하여 비교 (대소문자 구분 없이 처리하려면 이 방식이 편리함)
-                if (inputPassword.toLowerCase() === ACCESS_PASSWORD) {
-                    setIsAuthenticated(true);
-                } else {
-                    setLoginError(true);
-                    setTimeout(() => setLoginError(false), 500); // Reset shake animation
-                    setInputPassword('');
-                }
-            };
-
             const generateRandomSerial = () => {
                 const randomClass = Math.floor(Math.random() * 250) + 101;
                 const randomSerial = Math.floor(Math.random() * 9999) + 1;
-                const formattedSerial = randomSerial.toString().padStart(6, '0');
-                
-                return {
-                    classNum: randomClass.toString(),
-                    serialNum: formattedSerial
-                };
+                return { classNum: randomClass.toString(), serialNum: randomSerial.toString().padStart(6, '0') };
             };
 
-            const generateCard = () => {
+            const getThemeColor = (role) => {
+                switch(role) {
+                    case 'Smart Actor Trainee': return "#F87171"; // Red
+                    case 'Junior Smart Actor': return "#FACC15"; // Yellow
+                    case 'Senior Smart Actor': return "#4ADE80"; // Green
+                    case 'Campus Ambassador': return "#60A5FA"; // Blue
+                    default: return "#F87171";
+                }
+            };
+
+            // 뒷면 생성 함수 (QR코드 + 서명 + 정보)
+            const generateBackSide = (serialCode, themeColor) => {
+                const canvas = document.createElement('canvas');
+                const width = 600;
+                const height = 900;
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+
+                // 배경
+                ctx.fillStyle = "#0F0F12";
+                ctx.fillRect(0, 0, width, height);
+
+                // 테두리
+                ctx.lineWidth = 4;
+                ctx.strokeStyle = themeColor;
+                ctx.strokeRect(30, 30, width - 60, height - 60);
+
+                // F.A.K.E 로고 텍스트 (중앙)
+                ctx.save();
+                ctx.translate(width/2, height/2);
+                ctx.rotate(-Math.PI / 4);
+                ctx.font = "bold 120px sans-serif";
+                ctx.fillStyle = "rgba(255, 255, 255, 0.05)";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillText("F.A.K.E", 0, 0);
+                ctx.restore();
+
+                // 가짜 QR 코드 그리기
+                const qrSize = 250;
+                const qrX = (width - qrSize) / 2;
+                const qrY = 200;
+                
+                ctx.fillStyle = "white";
+                ctx.fillRect(qrX - 10, qrY - 10, qrSize + 20, qrSize + 20); // QR 배경
+                
+                ctx.fillStyle = "black";
+                const cellSize = 10;
+                for (let i = 0; i < qrSize/cellSize; i++) {
+                    for (let j = 0; j < qrSize/cellSize; j++) {
+                        if (Math.random() > 0.5) {
+                            ctx.fillRect(qrX + i*cellSize, qrY + j*cellSize, cellSize, cellSize);
+                        }
+                    }
+                }
+                // QR 모서리 패턴 (대충 느낌만)
+                ctx.fillStyle = "black";
+                ctx.fillRect(qrX, qrY, 50, 50); ctx.fillRect(qrX + qrSize - 50, qrY, 50, 50); ctx.fillRect(qrX, qrY + qrSize - 50, 50, 50);
+                ctx.fillStyle = "white";
+                ctx.fillRect(qrX+10, qrY+10, 30, 30); ctx.fillRect(qrX + qrSize - 40, qrY+10, 30, 30); ctx.fillRect(qrX+10, qrY + qrSize - 40, 30, 30);
+
+                // 텍스트 정보
+                ctx.fillStyle = "#ffffff";
+                ctx.textAlign = "center";
+                
+                // 시리얼
+                ctx.font = "monospace 30px";
+                ctx.fillStyle = themeColor;
+                ctx.fillText(serialCode, width / 2, 550);
+
+                // 서명 (이름)
+                ctx.font = "italic 60px serif";
+                ctx.fillStyle = "white";
+                ctx.fillText(metaData.name || "Signature", width / 2, 700);
+                
+                // 하단 텍스트
+                ctx.font = "16px sans-serif";
+                ctx.fillStyle = "#666";
+                ctx.fillText("This is a virtual object.", width / 2, 800);
+                ctx.fillText("Not for official identification.", width / 2, 825);
+
+                return canvas.toDataURL("image/png");
+            };
+
+            const generateFrontCard = () => {
                 const canvas = canvasRef.current;
                 const ctx = canvas.getContext('2d');
-                
                 const width = 600;
                 const height = 900;
                 canvas.width = width;
@@ -166,24 +271,19 @@
                 img.src = rawImage;
 
                 img.onload = () => {
-                    let themeColor = "#F87171"; 
-                    
-                    switch(metaData.role) {
-                        case 'Smart Actor Trainee': themeColor = "#F87171"; break;
-                        case 'Junior Sheriff': themeColor = "#FACC15"; break;
-                        case 'Senior Sheriff': themeColor = "#4ADE80"; break;
-                        case 'Campus Ambassador': themeColor = "#60A5FA"; break;
-                        default: themeColor = "#F87171";
-                    }
+                    const themeColor = getThemeColor(metaData.role);
 
+                    // A. 배경
                     ctx.fillStyle = "#000";
                     ctx.fillRect(0, 0, width, height);
                     
+                    // B. 유저 이미지
                     const scale = Math.max(width / img.width, height / img.height);
                     const x = (width / scale - img.width) / 2;
                     const y = (height / scale - img.height) / 2;
                     ctx.drawImage(img, x * scale, y * scale, img.width * scale, img.height * scale);
 
+                    // C. 그라데이션
                     const gradient = ctx.createLinearGradient(0, height / 2, 0, height);
                     gradient.addColorStop(0, "rgba(0,0,0,0)");
                     gradient.addColorStop(0.6, "rgba(0,0,0,0.3)");
@@ -191,15 +291,15 @@
                     ctx.fillStyle = gradient;
                     ctx.fillRect(0, 0, width, height);
 
+                    // D. 테두리 및 디자인
                     ctx.lineWidth = 12;
                     ctx.strokeStyle = themeColor;
                     ctx.strokeRect(20, 20, width - 40, height - 40);
-                    
                     ctx.fillStyle = themeColor; 
                     ctx.fillRect(20, 20, width - 40, 12);
 
+                    // E. 텍스트 정보
                     ctx.fillStyle = "#ffffff";
-                    
                     ctx.font = "600 24px monospace";
                     ctx.fillStyle = themeColor; 
                     ctx.textAlign = "left";
@@ -216,58 +316,69 @@
                     ctx.fillStyle = "rgba(255,255,255,0.8)";
                     ctx.fillText(objektSerial, width - 40, height - 45);
 
-                    setCardImage(canvas.toDataURL("image/png"));
+                    setFrontImage(canvas.toDataURL("image/png"));
                 };
             };
+
+            // Trigger updates
+            useEffect(() => {
+                if (rawImage) {
+                    const newSerial = generateRandomSerial();
+                    setSerialData(newSerial);
+                }
+            }, [rawImage]);
+
+            useEffect(() => {
+                if (rawImage && canvasRef.current) {
+                    generateFrontCard();
+                }
+            }, [rawImage, metaData.name, metaData.role, serialData]);
 
             const handleImageChange = (e) => {
                 const file = e.target.files[0];
                 if (file) {
                     const reader = new FileReader();
-                    reader.onloadend = () => {
-                        setRawImage(reader.result);
-                    };
+                    reader.onloadend = () => setRawImage(reader.result);
                     reader.readAsDataURL(file);
                 }
             };
 
-            const handleNameChange = (e) => {
-                setMetaData({ ...metaData, name: e.target.value });
-            };
-
-            const handleRoleChange = (e) => {
-                setMetaData({ ...metaData, role: e.target.value });
-            };
-
             const saveCard = async () => {
-                if (!cardImage) {
-                    setStatusMsg("Please upload a photo first!");
+                if (!frontImage) {
+                    setStatusMsg("사진을 먼저 업로드해주세요!");
                     setTimeout(() => setStatusMsg(""), 3000);
                     return;
                 }
 
-                setStatusMsg("Creating ID card...");
+                setStatusMsg("양면 ID 카드를 제작 중입니다...");
                 setStatus('processing');
                 
-                await new Promise(r => setTimeout(r, 2000));
+                await new Promise(r => setTimeout(r, 1500));
+
+                const themeColor = getThemeColor(metaData.role);
+                const serialCode = `${serialData.classNum}Z#${serialData.serialNum}`;
+                
+                // 뒷면 생성 (메모리 상에서 처리)
+                const backImage = generateBackSide(serialCode, themeColor);
 
                 const newCard = {
                     id: Date.now(),
-                    image: cardImage,
+                    image: frontImage,
+                    backImage: backImage, // 뒷면 데이터 저장
                     name: metaData.name || "NO NAME",
                     role: metaData.role, 
-                    serial: `${serialData.classNum}Z#${serialData.serialNum}`,
+                    serial: serialCode,
                     date: new Date().toLocaleDateString()
                 };
 
                 setMyCards([newCard, ...myCards]);
                 setStatus('success');
-                setStatusMsg("Issued!");
+                setStatusMsg("발급 완료!");
 
                 setTimeout(() => {
                     setStatus('idle');
                     setRawImage(null);
-                    setCardImage(null);
+                    setFrontImage(null);
                     setMetaData({ name: '', role: 'Smart Actor Trainee' }); 
                     setStatusMsg("");
                     setView('gallery');
@@ -275,60 +386,20 @@
             };
 
             const deleteCard = (id) => {
-                if (confirm('Are you sure you want to delete this ID card?')) {
-                    const updatedCards = myCards.filter(card => card.id !== id);
-                    setMyCards(updatedCards);
+                if (confirm('정말 이 ID 카드를 삭제하시겠습니까?')) {
+                    setMyCards(myCards.filter(card => card.id !== id));
                 }
             };
 
-            // --- Render Logic ---
-            
-            // 1. Not Authenticated: Show Password Screen (Bilingual)
-            if (!isAuthenticated) {
-                return (
-                    <div className="min-h-screen flex flex-col items-center justify-center p-4">
-                        <div className="glass-panel p-8 rounded-2xl max-w-sm w-full text-center space-y-6 shadow-2xl border border-slate-600">
-                            <div className="flex justify-center">
-                                <div className="p-4 bg-slate-800 rounded-full border border-slate-700">
-                                    <Lock size={32} className="text-purple-400" />
-                                </div>
-                            </div>
-                            <div>
-                                <h2 className="text-2xl font-bold mb-2">WARNING!</h2>
-                                <p className="text-slate-400 text-sm">
-                                    To access the F.A.K.E ID system,<br/>please enter the access code.<br/>
-                                    <span className="text-xs opacity-70 block mt-2">시스템에 접속하려면 접근 코드를 입력하세요.</span>
-                                </p>
-                            </div>
-                            <form onSubmit={handleLogin} className="space-y-4">
-                                <input 
-                                    type="password" 
-                                    value={inputPassword}
-                                    onChange={(e) => setInputPassword(e.target.value)}
-                                    placeholder="Access Code / 접근 코드" 
-                                    className={`w-full px-4 py-3 bg-slate-900 border rounded-xl focus:outline-none focus:border-purple-500 transition-colors text-center font-mono ${loginError ? 'border-red-500 text-red-400 shake' : 'border-slate-700 text-white'}`}
-                                />
-                                <button 
-                                    type="submit" 
-                                    className="w-full py-3 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-xl transition-all shadow-lg shadow-purple-900/50"
-                                >
-                                    Access System / 시스템 접속
-                                </button>
-                            </form>
-                            {loginError && <p className="text-red-400 text-sm font-bold">Invalid Code / 코드가 올바르지 않습니다.</p>}
-                        </div>
-                    </div>
-                );
-            }
-
-            // 2. Authenticated: Show Main App (English)
             return (
                 <div className="min-h-screen pb-20">
-                    <canvas ref={canvasRef} id="cardCanvas" style={{display: 'none'}}></canvas>
+                    <canvas ref={canvasRef} id="cardCanvas"></canvas>
 
                     <header className="glass-panel sticky top-0 z-50 px-5 py-4 flex justify-between items-center">
                         <div className="flex items-center gap-2">
-                            <img src="fake_id_logo_revised.png" alt="Logo" className="w-10 h-10 object-contain drop-shadow-lg" />
+                            <div className="w-8 h-8 bg-gradient-to-tr from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                                <Sparkles className="text-white w-5 h-5" />
+                            </div>
                             <span className="font-bold text-lg tracking-tight">F.A.K.E ID</span>
                         </div>
                     </header>
@@ -337,33 +408,29 @@
                         <div className="flex bg-slate-800 p-1 rounded-2xl mb-8">
                             <button 
                                 onClick={() => setView('create')}
-                                className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${
-                                    view === 'create' ? 'bg-slate-600 text-white shadow-lg' : 'text-slate-500 hover:text-slate-300'
-                                }`}
+                                className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${view === 'create' ? 'bg-slate-600 text-white shadow-lg' : 'text-slate-500 hover:text-slate-300'}`}
                             >
-                                Create ID
+                                ID 제작하기
                             </button>
                             <button 
                                 onClick={() => setView('gallery')}
-                                className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${
-                                    view === 'gallery' ? 'bg-slate-600 text-white shadow-lg' : 'text-slate-500 hover:text-slate-300'
-                                }`}
+                                className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${view === 'gallery' ? 'bg-slate-600 text-white shadow-lg' : 'text-slate-500 hover:text-slate-300'}`}
                             >
-                                ID Gallery ({myCards.length})
+                                ID 보관함 ({myCards.length})
                             </button>
                         </div>
 
                         {view === 'create' ? (
                             <div className="animate-fade-in space-y-6">
                                 <div className="relative aspect-[2/3] bg-slate-800 rounded-2xl overflow-hidden shadow-2xl border border-slate-700/50">
-                                    {cardImage ? (
-                                        <img src={cardImage} className="w-full h-full object-cover" alt="Card Preview" />
+                                    {frontImage ? (
+                                        <img src={frontImage} className="w-full h-full object-cover" alt="Card Preview" />
                                     ) : (
                                         <div className="flex flex-col items-center justify-center h-full text-slate-500">
                                             <div className="w-16 h-16 rounded-full bg-slate-700 flex items-center justify-center mb-4">
                                                 <Camera size={32} className="opacity-50" />
                                             </div>
-                                            <p className="text-sm">Upload Profile Photo</p>
+                                            <p className="text-sm">프로필 사진 업로드</p>
                                         </div>
                                     )}
 
@@ -372,12 +439,12 @@
                                             {status === 'processing' ? (
                                                 <div className="text-center">
                                                     <Loader2 size={48} className="text-purple-500 animate-spin mx-auto mb-4" />
-                                                    <p className="text-purple-200 font-bold">Printing ID Card...</p>
+                                                    <p className="text-purple-200 font-bold">양면 카드 인쇄 중...</p>
                                                 </div>
                                             ) : (
                                                 <div className="text-center animate-bounce">
                                                     <CheckCircle2 size={56} className="text-green-500 mx-auto mb-4" />
-                                                    <p className="text-green-400 font-bold text-lg">Issued!</p>
+                                                    <p className="text-green-400 font-bold text-lg">발급 완료!</p>
                                                 </div>
                                             )}
                                         </div>
@@ -389,7 +456,7 @@
                                         <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
                                         <div className="flex items-center justify-center gap-2">
                                             <ImageIcon size={20} /> 
-                                            {rawImage ? 'Change Photo' : 'Upload Photo'}
+                                            {rawImage ? '사진 변경하기' : '사진 업로드'}
                                         </div>
                                     </label>
 
@@ -399,12 +466,12 @@
                                         </div>
                                         <select 
                                             value={metaData.role}
-                                            onChange={handleRoleChange}
+                                            onChange={(e) => setMetaData({...metaData, role: e.target.value})}
                                             className="w-full pl-12 pr-4 py-3 bg-transparent text-white font-bold focus:outline-none cursor-pointer appearance-none"
                                         >
                                             <option value="Smart Actor Trainee">1. Smart Actor Trainee (Red)</option>
-                                            <option value="Junior Sheriff">2. Junior Sheriff (Yellow)</option>
-                                            <option value="Senior Sheriff">3. Senior Sheriff (Green)</option>
+                                            <option value="Junior Smart Actor">2. Junior Smart Actor (Yellow)</option>
+                                            <option value="Senior Smart Actor">3. Senior Smart Actor (Green)</option>
                                             <option value="Campus Ambassador">4. Campus Ambassador (Blue)</option>
                                         </select>
                                     </div>
@@ -412,34 +479,24 @@
                                     <div className="bg-slate-800 rounded-2xl p-1">
                                         <input 
                                             type="text" 
-                                            placeholder="Name (e.g. JADEN)" 
+                                            placeholder="이름 (예: JADEN)" 
                                             className="w-full px-4 py-3 bg-transparent text-white font-bold text-center focus:outline-none placeholder-slate-600 tracking-wider"
                                             value={metaData.name}
-                                            onChange={handleNameChange}
+                                            onChange={(e) => setMetaData({...metaData, name: e.target.value})}
                                             maxLength={15}
                                         />
                                     </div>
 
-                                    <div className="grid grid-cols-5 gap-3 pt-2">
-                                        <a 
-                                            href={cardImage} 
-                                            download="my_fake_id.png"
-                                            className={`col-span-1 flex items-center justify-center bg-slate-700 rounded-2xl transition-all ${!cardImage ? 'opacity-50 pointer-events-none' : 'hover:bg-slate-600'}`}
-                                        >
-                                            <Download size={24} className="text-white" />
-                                        </a>
-
-                                        <button 
-                                            onClick={saveCard}
-                                            className={`col-span-4 py-4 rounded-2xl font-bold text-lg shadow-lg transition-all transform active:scale-95 ${
-                                                status !== 'idle'
-                                                ? 'bg-slate-800 text-slate-500 cursor-not-allowed' 
-                                                : (!cardImage ? 'bg-slate-700 text-slate-300 hover:bg-slate-600' : 'bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:shadow-purple-500/40 loading-shimmer')
-                                            }`}
-                                        >
-                                            {status === 'idle' ? 'Generate your F.A.K.E ID' : 'Processing...'}
-                                        </button>
-                                    </div>
+                                    <button 
+                                        onClick={saveCard}
+                                        className={`w-full py-4 rounded-2xl font-bold text-lg shadow-lg transition-all transform active:scale-95 ${
+                                            status !== 'idle'
+                                            ? 'bg-slate-800 text-slate-500 cursor-not-allowed' 
+                                            : (!frontImage ? 'bg-slate-700 text-slate-300 hover:bg-slate-600' : 'bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:shadow-purple-500/40 loading-shimmer')
+                                        }`}
+                                    >
+                                        {status === 'idle' ? 'ID 카드 발급받기' : '처리 중...'}
+                                    </button>
                                     
                                     <div className="text-center h-6">
                                         {statusMsg && <p className="text-sm text-pink-400 font-medium animate-pulse">{statusMsg}</p>}
@@ -453,35 +510,15 @@
                                         <div className="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
                                             <Wallet className="text-slate-600" />
                                         </div>
-                                        <p className="text-slate-500">No IDs issued yet</p>
+                                        <p className="text-slate-500">발급된 ID가 없습니다</p>
                                         <button onClick={() => setView('create')} className="mt-4 text-purple-400 font-bold text-sm hover:underline">
-                                            Create First F.A.K.E ID
+                                            첫 F.A.K.E ID 만들기
                                         </button>
                                     </div>
                                 ) : (
                                     <div className="grid grid-cols-2 gap-4 pb-10">
-                                        {myCards.map((obj) => (
-                                            <div key={obj.id} className="space-y-2">
-                                                <div className="relative aspect-[2/3] rounded-xl overflow-hidden shadow-lg group">
-                                                    <img src={obj.image} className="w-full h-full object-cover" />
-                                                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
-                                                        <a href={obj.image} download={`fake_id_${obj.id}.png`} className="p-2 bg-white rounded-full text-black hover:bg-purple-100 transition shadow-lg">
-                                                            <Download size={18} />
-                                                        </a>
-                                                        <button 
-                                                            onClick={() => deleteCard(obj.id)}
-                                                            className="p-2 bg-red-500 rounded-full text-white hover:bg-red-600 transition shadow-lg"
-                                                        >
-                                                            <Trash2 size={18} />
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <div className="px-1">
-                                                    <h3 className="font-bold text-sm truncate">{obj.name}</h3>
-                                                    <p className="text-[10px] text-purple-400 font-mono truncate">{obj.serial}</p>
-                                                    <p className="text-xs text-slate-500">{obj.date}</p>
-                                                </div>
-                                            </div>
+                                        {myCards.map((card) => (
+                                            <FlipCard key={card.id} card={card} onDelete={deleteCard} />
                                         ))}
                                     </div>
                                 )}
