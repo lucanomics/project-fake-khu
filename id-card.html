@@ -54,27 +54,14 @@
         .card-back { transform: rotateY(180deg); background-color: #fff; }
         select option { background-color: #1e293b; color: white; }
 
-        input[type=range] {
-            -webkit-appearance: none;
-            width: 100%;
-            background: transparent;
-        }
+        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
         input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            height: 16px;
-            width: 16px;
-            border-radius: 50%;
-            background: #ffffff;
-            cursor: pointer;
-            margin-top: -6px;
+            -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%;
+            background: #ffffff; cursor: pointer; margin-top: -6px;
             box-shadow: 0 0 2px rgba(0,0,0,0.5);
         }
         input[type=range]::-webkit-slider-runnable-track {
-            width: 100%;
-            height: 4px;
-            cursor: pointer;
-            background: #475569;
-            border-radius: 2px;
+            width: 100%; height: 4px; cursor: pointer; background: #475569; border-radius: 2px;
         }
     </style>
 </head>
@@ -84,6 +71,7 @@
     <script type="text/babel">
         const { useState, useRef, useEffect } = React;
 
+        // Icons
         const IconWrapper = ({ children, size = 24, className = "" }) => (
             <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>{children}</svg>
         );
@@ -100,6 +88,7 @@
         const CheckCircle2 = (props) => (<IconWrapper {...props}><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></IconWrapper>);
         const Move = (props) => (<IconWrapper {...props}><polyline points="5 9 2 12 5 15"/><polyline points="9 5 12 2 15 5"/><polyline points="15 19 12 22 9 19"/><polyline points="19 9 22 12 19 15"/><line x1="2" x2="22" y1="12" y2="12"/><line x1="12" x2="12" y1="2" y2="22"/></IconWrapper>);
         const ZoomIn = (props) => (<IconWrapper {...props}><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="11" x2="11" y1="8" y2="14"/><line x1="8" x2="14" y1="11" y2="11"/></IconWrapper>);
+        const UploadCloud = (props) => (<IconWrapper {...props}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></IconWrapper>);
         const Maximize = (props) => (<IconWrapper {...props}><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></IconWrapper>);
         const Minimize = (props) => (<IconWrapper {...props}><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 11h3a2 2 0 0 1 2 2v3"/></IconWrapper>);
         const RotateCcw = (props) => (<IconWrapper {...props}><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></IconWrapper>);
@@ -162,7 +151,8 @@
             const [password, setPassword] = useState('');
             const [authError, setAuthError] = useState('');
             
-            const [rawImage, setRawImage] = useState(null);     
+            const [rawImage, setRawImage] = useState(null);
+            const [logoImage, setLogoImage] = useState(null); // 로고 업로드 추가    
             const [frontImage, setFrontImage] = useState(null); 
             const [metaData, setMetaData] = useState({ name: '', role: 'Trainee', affiliation: '' });
             const [serialData, setSerialData] = useState({ classNum: '101', serialNum: '000001' });
@@ -173,6 +163,7 @@
             });
             const [statusMsg, setStatusMsg] = useState('');
             
+            // Image Editing State (Wide range for crop/expand)
             const [scale, setScale] = useState(1);
             const [position, setPosition] = useState({ x: 0, y: 0 });
             const [isDragging, setIsDragging] = useState(false);
@@ -197,10 +188,7 @@
                 return new Promise((resolve, reject) => {
                     const img = new Image();
                     img.onload = () => resolve(img);
-                    img.onerror = (e) => {
-                        console.error("Image load failed", e);
-                        reject(new Error(`Failed to load image: ${src}`));
-                    };
+                    img.onerror = (e) => reject(e);
                     img.src = src;
                 });
             };
@@ -211,28 +199,17 @@
                 return { classNum: randomClass.toString(), serialNum: randomSerial.toString().padStart(6, '0') };
             };
 
-            const getTemplateFilenames = (role) => {
-                const key = role.toLowerCase(); 
-                const suffix = key.includes('ambassador') ? 'ambassador' : 
-                               key.includes('senior') ? 'senior' :
-                               key.includes('junior') ? 'junior' : 'trainee';
-                               
-                return {
-                    front: `./front_${suffix}.png`,
-                    back: `./back_${suffix}.png`
-                };
-            };
-
             const getThemeColor = (role) => {
                 switch(role) {
-                    case 'Trainee': return "#F87171";
-                    case 'Junior': return "#FACC15";
-                    case 'Senior': return "#4ADE80";
-                    case 'Ambassador': return "#60A5FA";
+                    case 'Trainee': return "#F87171"; // Red
+                    case 'Junior': return "#FACC15"; // Yellow
+                    case 'Senior': return "#4ADE80"; // Green
+                    case 'Ambassador': return "#60A5FA"; // Blue
                     default: return "#F87171";
                 }
             };
 
+            // [Back Side Generation] Pure Code
             const generateBackSide = async (serialCode, themeColor) => {
                 const canvas = document.createElement('canvas');
                 const width = 600;
@@ -241,103 +218,135 @@
                 canvas.height = height;
                 const ctx = canvas.getContext('2d');
 
-                try {
-                    ctx.fillStyle = "#FFFFFF";
-                    ctx.fillRect(0, 0, width, height);
+                // 1. Background
+                ctx.fillStyle = themeColor;
+                ctx.fillRect(0, 0, width, height);
+
+                // 2. White Inner Box (Round Rect)
+                ctx.fillStyle = "#ffffff";
+                const margin = 25;
+                ctx.beginPath();
+                ctx.roundRect(margin, 140, width - (margin*2), height - 140 - margin, 30);
+                ctx.fill();
+
+                // 3. Header Logos (Using Code or Uploaded Logo)
+                ctx.fillStyle = "#ffffff";
+                ctx.font = "800 36px 'Montserrat', sans-serif";
+                ctx.textAlign = "left";
+                ctx.fillText("F.A.K.E", 40, 80);
+
+                if (logoImage) {
+                    try {
+                        const logo = await loadImage(logoImage);
+                        // Fit logo into area (e.g., 200x80)
+                        const logoW = 200;
+                        const logoH = 80;
+                        const aspect = logo.width / logo.height;
+                        let drawW = logoW;
+                        let drawH = logoW / aspect;
+                        if (drawH > logoH) {
+                            drawH = logoH;
+                            drawW = logoH * aspect;
+                        }
+                        ctx.drawImage(logo, 160, 40, drawW, drawH);
+                    } catch(e) { console.warn("Logo draw failed"); }
+                } else {
+                    // Placeholder Text if no logo
+                    ctx.font = "bold 20px serif";
+                    ctx.fillStyle = "rgba(255,255,255,0.9)";
+                    ctx.fillText("UNIVERSITY", 180, 70);
+                }
+
+                // 4. Content Text
+                const startX = 60;
+                let currentY = 250; 
+                ctx.textAlign = "left";
+
+                const drawField = (label, value, isAffiliation = false) => {
+                    // Label with underline
+                    ctx.fillStyle = themeColor;
+                    ctx.font = "bold 18px 'Montserrat', sans-serif";
+                    ctx.fillText(label, startX, currentY);
                     
-                    ctx.strokeStyle = themeColor;
-                    ctx.lineWidth = 12;
                     ctx.beginPath();
-                    ctx.roundRect(10, 10, width - 20, height - 20, 30);
+                    ctx.strokeStyle = themeColor;
+                    ctx.lineWidth = 2;
+                    ctx.moveTo(startX, currentY + 10);
+                    ctx.lineTo(width - 60, currentY + 10);
                     ctx.stroke();
 
-                    const cardPadding = 40;
-                    const cardWidth = width - cardPadding * 2;
-                    const cardHeight = height - cardPadding * 2;
+                    // Value
+                    currentY += 60;
+                    ctx.fillStyle = "#333333";
                     
-                    ctx.fillStyle = themeColor;
-                    ctx.beginPath();
-                    ctx.roundRect(cardPadding, cardPadding, cardWidth, cardHeight, 20);
-                    ctx.fill();
-
-                    try {
-                        const templates = getTemplateFilenames(metaData.role);
-                        const backTemplate = await loadImage(templates.back);
-                        ctx.save();
-                        ctx.beginPath();
-                        ctx.roundRect(cardPadding, cardPadding, cardWidth, cardHeight, 20);
-                        ctx.clip();
-                        ctx.drawImage(backTemplate, cardPadding, cardPadding, cardWidth, cardHeight);
-                        ctx.restore();
-                    } catch (err) {
-                        console.warn("Back template load failed", err);
-                    }
-
-                    const startX = 70;
-                    ctx.fillStyle = "#ffffff"; 
+                    // Font Sizing Logic
+                    let fontSize = 56;
+                    ctx.font = `bold ${fontSize}px 'Montserrat', sans-serif`;
+                    const maxWidth = width - 100;
                     
-                    ctx.font = "bold 60px 'Montserrat', sans-serif";
-                    ctx.textAlign = "left";
-                    ctx.fillText(metaData.name || "NO NAME", startX, 340);
-
-                    ctx.font = "500 64px 'Montserrat', sans-serif"; 
-                    ctx.fillText(metaData.role, startX, 520);
-
-                    const affiliation = metaData.affiliation || "F.A.K.E Univ";
-                    const maxWidth = cardWidth - 100;
-                    let fontSize = 52;
-                    ctx.font = `600 ${fontSize}px 'Montserrat', sans-serif`;
-                    
-                    while (ctx.measureText(affiliation).width > maxWidth && fontSize > 24) {
-                        fontSize -= 2;
-                        ctx.font = `600 ${fontSize}px 'Montserrat', sans-serif`;
-                    }
-                    
-                    if (ctx.measureText(affiliation).width > maxWidth) {
-                        const words = affiliation.split(' ');
+                    if (isAffiliation) {
+                        // Word wrap for long affiliation
+                        let words = value.split(' ');
                         let line = '';
-                        let y = 700;
-                        const lineHeight = fontSize + 10;
+                        let testY = currentY;
                         
-                        for (let word of words) {
-                            const testLine = line + word + ' ';
-                            if (ctx.measureText(testLine).width > maxWidth && line !== '') {
-                                ctx.fillText(line.trim(), startX, y);
-                                line = word + ' ';
-                                y += lineHeight;
-                            } else {
-                                line = testLine;
-                            }
+                        // Shrink font if single word is too long
+                        while (ctx.measureText(value).width > maxWidth && fontSize > 30) {
+                             fontSize -= 2;
+                             ctx.font = `bold ${fontSize}px 'Montserrat', sans-serif`;
                         }
-                        ctx.fillText(line.trim(), startX, y);
+
+                        for(let n = 0; n < words.length; n++) {
+                          let testLine = line + words[n] + ' ';
+                          let metrics = ctx.measureText(testLine);
+                          let testWidth = metrics.width;
+                          if (testWidth > maxWidth && n > 0) {
+                            ctx.fillText(line, startX, testY);
+                            line = words[n] + ' ';
+                            testY += fontSize + 10;
+                          }
+                          else {
+                            line = testLine;
+                          }
+                        }
+                        ctx.fillText(line, startX, testY);
+                        currentY = testY + 20; // Update Y for next element if needed
                     } else {
-                        ctx.fillText(affiliation, startX, 710);
+                        // Shrink font for Name/Role
+                         while (ctx.measureText(value).width > maxWidth && fontSize > 20) {
+                             fontSize -= 4;
+                             ctx.font = `bold ${fontSize}px 'Montserrat', sans-serif`;
+                         }
+                        ctx.fillText(value, startX, currentY);
                     }
+                    
+                    currentY += 120; // Spacing for next field
+                };
 
-                    const verificationUrl = `https://lucanomics.github.io/project-fake-khu/?verify=${serialCode}`;
-                    try {
-                        const qrDataUrl = await QRCode.toDataURL(verificationUrl, {
-                            width: 150, margin: 0,
-                            color: { dark: '#000000', light: '#ffffff' } 
-                        });
-                        const qrImg = await loadImage(qrDataUrl);
-                        ctx.drawImage(qrImg, width - 190, height - 190, 150, 150);
-                    } catch (e) {
-                        console.warn("QR Generation failed", e);
-                    }
+                drawField("NAME", metaData.name || "NO NAME");
+                drawField("CLASS", metaData.role);
+                drawField("AFFILIATION", metaData.affiliation || "University", true);
 
-                    ctx.textAlign = "right";
-                    ctx.font = "500 24px 'Montserrat', monospace";
-                    ctx.fillStyle = "rgba(255,255,255,0.9)";
-                    ctx.fillText(serialCode, width - 40, height - 210);
+                // 5. QR Code & Serial
+                const verificationUrl = `https://lucanomics.github.io/project-fake-khu/?verify=${serialCode}`;
+                try {
+                    const qrDataUrl = await QRCode.toDataURL(verificationUrl, {
+                        width: 140, margin: 0,
+                        color: { dark: themeColor, light: '#ffffff' } 
+                    });
+                    const qrImg = await loadImage(qrDataUrl);
+                    ctx.drawImage(qrImg, width - 180, height - 180, 140, 140);
+                } catch (e) {}
 
-                } catch (e) {
-                    console.error("Back generation error", e);
-                }
+                ctx.textAlign = "right";
+                ctx.font = "500 20px 'Montserrat', monospace";
+                ctx.fillStyle = "#999";
+                ctx.fillText(serialCode, width - 40, height - 200);
 
                 return canvas.toDataURL("image/png");
             };
 
+            // [Front Side Generation] Pure Code
             const generateFrontCard = async () => {
                 const canvas = canvasRef.current;
                 const ctx = canvas.getContext('2d');
@@ -346,78 +355,134 @@
                 canvas.width = width;
                 canvas.height = height;
 
-                try {
-                    const themeColor = getThemeColor(metaData.role);
+                const themeColor = getThemeColor(metaData.role);
+
+                // 1. Clear & Background
+                ctx.fillStyle = themeColor; 
+                ctx.fillRect(0, 0, width, height);
+                
+                // 2. Photo Area (White rounded rect as mask)
+                const photoMargin = 20;
+                const photoWidth = width - (photoMargin * 2);
+                const photoHeight = height - (photoMargin * 2);
+
+                // Draw White Container Layer (The visible card border)
+                ctx.fillStyle = "white";
+                ctx.beginPath();
+                ctx.roundRect(10, 10, width - 20, height - 20, 30);
+                ctx.fill();
+
+                // 3. User Photo (Clipped)
+                ctx.save();
+                ctx.beginPath();
+                // Define the photo area (leaving space for right sidebar)
+                const sidebarWidth = 120;
+                const viewWidth = width - sidebarWidth - 20; // space for sidebar
+                
+                // Rounded clip for photo
+                ctx.roundRect(20, 20, viewWidth, height - 40, 25);
+                ctx.clip();
+                
+                // Draw Black Background for photo area
+                ctx.fillStyle = "#000";
+                ctx.fillRect(0, 0, width, height);
+
+                if (rawImage) {
+                    const userImg = await loadImage(rawImage);
+                    const baseScale = Math.max(viewWidth / userImg.width, height / userImg.height);
+                    const centerX = viewWidth / 2 + 20; // +20 for left margin
+                    const centerY = height / 2;
                     
-                    ctx.fillStyle = "#FFFFFF";
+                    ctx.translate(centerX + position.x, centerY + position.y);
+                    ctx.scale(baseScale * scale, baseScale * scale);
+                    ctx.drawImage(userImg, -userImg.width / 2, -userImg.height / 2);
+                } else {
+                    // Placeholder
+                    ctx.fillStyle = "#1e293b";
                     ctx.fillRect(0, 0, width, height);
-                    
-                    ctx.strokeStyle = themeColor;
-                    ctx.lineWidth = 12;
-                    ctx.beginPath();
-                    ctx.roundRect(10, 10, width - 20, height - 20, 30);
-                    ctx.stroke();
+                }
+                ctx.restore();
 
-                    const photoWidth = width - 130;
-                    const photoHeight = height;
-                    
-                    if (rawImage) {
-                        const userImg = await loadImage(rawImage);
-                        
-                        ctx.save();
-                        ctx.beginPath();
-                        ctx.rect(15, 15, photoWidth - 30, photoHeight - 30);
-                        ctx.clip();
-                        
-                        const baseScale = Math.max(photoWidth / userImg.width, photoHeight / userImg.height);
-                        
-                        const centerX = photoWidth / 2;
-                        const centerY = height / 2;
-                        
-                        ctx.translate(centerX + position.x, centerY + position.y);
-                        ctx.scale(baseScale * scale, baseScale * scale);
-                        ctx.drawImage(userImg, -userImg.width / 2, -userImg.height / 2);
-                        ctx.restore();
-                    } else {
-                        ctx.fillStyle = "#1e293b";
-                        ctx.fillRect(15, 15, photoWidth - 30, photoHeight - 30);
-                    }
+                // 4. Sidebar (Right Strip) - Drawn purely by code
+                ctx.fillStyle = themeColor;
+                ctx.beginPath();
+                // Right strip shape
+                ctx.roundRect(width - sidebarWidth, 50, sidebarWidth - 20, height - 100, 40);
+                ctx.fill();
 
-                    ctx.fillStyle = themeColor;
-                    ctx.beginPath();
-                    ctx.roundRect(width - 130, 15, 115, height - 30, [0, 25, 25, 0]); 
-                    ctx.fill();
-
+                // 5. Sidebar Text (Rotated)
+                ctx.save();
+                // Center of the sidebar
+                ctx.translate(width - (sidebarWidth / 2) - 10, height / 2); 
+                ctx.rotate(Math.PI / 2); 
+                
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                
+                const nameText = metaData.name ? metaData.name.toUpperCase() : "NAME";
+                const idText = `${serialData.classNum}Z#${serialData.serialNum}`;
+                
+                ctx.fillStyle = "#ffffff";
+                ctx.font = "bold 36px 'Montserrat', sans-serif";
+                
+                // Draw text
+                ctx.fillText(`${nameText}    |    ${idText}`, 0, 0);
+                ctx.restore();
+                
+                // 6. F.A.K.E Logo (Small text on sidebar bottom)
+                ctx.save();
+                ctx.translate(width - (sidebarWidth/2) - 10, height - 80);
+                ctx.rotate(Math.PI / 2);
+                
+                if (logoImage) {
                     try {
-                        const templates = getTemplateFilenames(metaData.role);
-                        const frontTemplate = await loadImage(templates.front);
-                        ctx.drawImage(frontTemplate, 0, 0, width, height);
-                    } catch (e) {
-                        console.warn("Front template load failed", e);
+                        const logo = await loadImage(logoImage);
+                        // Render uploaded logo rotated
+                        // Need to handle aspect ratio for small space
+                        const maxLogoW = 60;
+                        const maxLogoH = 20; // in rotated space
+                        // Actually we draw normally then rotate
+                        // In rotated context: X is vertical on card, Y is horizontal left
+                        // Draw at 0,0 (which is translated point)
+                        // Let's just draw text "F.A.K.E" or simple logo
+                        // If logo uploaded, draw it small
+                        // Simplified: Text for now to avoid complexity in rotated context with unknown logo size
+                        ctx.fillStyle = "rgba(255,255,255,0.7)";
+                        ctx.font = "bold 14px sans-serif";
+                        ctx.fillText("F.A.K.E.", 0, 0);
+                    } catch(e) {
+                         ctx.fillStyle = "rgba(255,255,255,0.7)";
+                         ctx.font = "bold 14px sans-serif";
+                         ctx.fillText("F.A.K.E.", 0, 0);
                     }
-
-                    ctx.save();
-                    ctx.translate(width - 58, height / 2); 
-                    ctx.rotate(Math.PI / 2); 
-                    
-                    ctx.textAlign = "center";
-                    ctx.textBaseline = "middle";
-                    
-                    const nameText = metaData.name ? metaData.name.toUpperCase() : "NAME";
-                    const idText = `${serialData.classNum}Z#${serialData.serialNum}`;
-                    
-                    ctx.fillStyle = "#ffffff";
-                    ctx.font = "700 36px 'Montserrat', sans-serif";
-                    ctx.fillText(`${nameText}   |   ${idText}`, 0, 0);
-                    ctx.restore();
-
-                } catch (e) {
-                    console.error("Front generation error", e);
+                } else {
+                    ctx.fillStyle = "rgba(255,255,255,0.7)";
+                    ctx.font = "bold 14px sans-serif";
+                    ctx.fillText("F.A.K.E.", 0, 0);
+                }
+                ctx.restore();
+                
+                // Draw uploaded logo on Front (Bottom Right corner area) if desired
+                if (logoImage) {
+                    try {
+                       const logo = await loadImage(logoImage);
+                       // Draw on bottom right of photo area
+                       const lw = 100;
+                       const lh = 40; 
+                       // Aspect fit
+                       const laspect = logo.width / logo.height;
+                       let dlw = lw;
+                       let dlh = lw / laspect;
+                       if (dlh > lh) { dlh = lh; dlw = lh * laspect; }
+                       
+                       ctx.drawImage(logo, width - sidebarWidth - dlw - 30, height - dlh - 30, dlw, dlh);
+                    } catch(e){}
                 }
 
                 setFrontImage(canvas.toDataURL("image/png"));
             };
 
+            // React Effects
             useEffect(() => {
                 if (rawImage) {
                     const newSerial = generateRandomSerial();
@@ -429,9 +494,11 @@
 
             useEffect(() => {
                 if (canvasRef.current) {
-                    generateFrontCard();
+                    // Debounce slightly to prevent lag during drag
+                    const timer = setTimeout(() => generateFrontCard(), 5);
+                    return () => clearTimeout(timer);
                 }
-            }, [rawImage, metaData, serialData, scale, position]); 
+            }, [rawImage, metaData, serialData, scale, position, logoImage]); // Add logoImage to dependency
 
             const handleImageChange = (e) => {
                 const file = e.target.files[0];
@@ -441,7 +508,17 @@
                     reader.readAsDataURL(file);
                 }
             };
+            
+            const handleLogoChange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onloadend = () => setLogoImage(reader.result);
+                    reader.readAsDataURL(file);
+                }
+            };
 
+            // Touch/Mouse Logic (Same as before)
             const handleMouseDown = (e) => {
                 if (!rawImage) return;
                 setIsDragging(true);
@@ -456,17 +533,14 @@
                 setDragStart({ x: e.clientX, y: e.clientY });
             };
 
-            const handleMouseUp = () => {
-                setIsDragging(false);
-            };
+            const handleMouseUp = () => setIsDragging(false);
             
             const handleTouchStart = (e) => {
                 if (!rawImage) return;
                 setIsDragging(true);
                 setDragStart({ x: e.touches[0].clientX, y: e.touches[0].clientY });
             };
-
-            const handleTouchMove = (e) => {
+             const handleTouchMove = (e) => {
                 if (!isDragging) return;
                 e.preventDefault();
                 const dx = e.touches[0].clientX - dragStart.x;
@@ -493,54 +567,38 @@
             const saveCard = async () => {
                 if (!frontImage) {
                     setStatusMsg("Please upload a photo first!");
-                    setTimeout(() => setStatusMsg(""), 3000);
                     return;
                 }
-
-                setStatusMsg("Generating ID Card...");
+                setStatusMsg("Generating...");
                 setStatus('processing');
+                await new Promise(r => setTimeout(r, 500));
+
+                const themeColor = getThemeColor(metaData.role);
+                const serialCode = `${serialData.classNum}Z#${serialData.serialNum}`;
+                const backImage = await generateBackSide(serialCode, themeColor);
+
+                const newCard = {
+                    id: Date.now(),
+                    image: frontImage,
+                    backImage: backImage,
+                    name: metaData.name,
+                    role: metaData.role,
+                    date: new Date().toLocaleDateString()
+                };
+
+                setMyCards([newCard, ...myCards]);
+                setStatus('success');
+                setStatusMsg("Done!");
                 
-                await new Promise(r => setTimeout(r, 1000));
-
-                try {
-                    const themeColor = getThemeColor(metaData.role);
-                    const serialCode = `${serialData.classNum}Z#${serialData.serialNum}`;
-                    const backImage = await generateBackSide(serialCode, themeColor);
-
-                    const newCard = {
-                        id: Date.now(),
-                        image: frontImage,
-                        backImage: backImage,
-                        name: metaData.name || "NO NAME",
-                        role: metaData.role, 
-                        affiliation: metaData.affiliation,
-                        serial: serialCode,
-                        date: new Date().toLocaleDateString()
-                    };
-
-                    setMyCards([newCard, ...myCards]);
-                    setStatus('success');
-                    setStatusMsg("Card Created!");
-
-                    setTimeout(() => {
-                        setStatus('idle');
-                        setRawImage(null);
-                        setFrontImage(null);
-                        setMetaData({ name: '', role: 'Trainee', affiliation: '' }); 
-                        setStatusMsg("");
-                        setView('gallery');
-                    }, 1500);
-                } catch (err) {
-                    console.error("Save failed", err);
+                setTimeout(() => {
                     setStatus('idle');
-                    setStatusMsg("Failed to generate card.");
-                }
+                    setMetaData({ name: '', role: 'Trainee', affiliation: '' }); 
+                    setView('gallery');
+                }, 1000);
             };
 
             const deleteCard = (id) => {
-                if (confirm('Delete this ID card?')) {
-                    setMyCards(myCards.filter(card => card.id !== id));
-                }
+                if(confirm("Delete?")) setMyCards(myCards.filter(c => c.id !== id));
             };
 
             return (
@@ -549,9 +607,7 @@
 
                     <header className="glass-panel sticky top-0 z-50 px-5 py-4 flex justify-between items-center mb-6">
                         <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 bg-gradient-to-tr from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-                                <Sparkles className="text-white w-5 h-5" />
-                            </div>
+                            <Sparkles className="text-white w-5 h-5" />
                             <span className="font-bold text-lg tracking-tight">F.A.K.E ID</span>
                         </div>
                     </header>
@@ -559,183 +615,79 @@
                     <main className="max-w-md mx-auto px-4">
                         {view === 'auth' && (
                             <div className="flex flex-col items-center justify-center pt-20 animate-fade-in">
-                                <div className="w-20 h-20 bg-slate-700 rounded-full flex items-center justify-center mb-6 shadow-xl">
-                                    <Lock size={40} className="text-slate-300" />
+                                <h2 className="text-2xl font-bold mb-2">Access Required</h2>
+                                <input type="password" placeholder="Enter Password" className="w-full max-w-xs px-4 py-3 bg-slate-800 rounded-xl text-white text-center mb-4" 
+                                    value={password} onChange={e => setPassword(e.target.value)} onKeyPress={e => e.key === 'Enter' && checkPassword()} />
+                                <button onClick={checkPassword} className="w-full max-w-xs py-3 bg-purple-600 rounded-xl font-bold">Unlock</button>
+                                {authError && <p className="text-red-400 mt-2">{authError}</p>}
+                            </div>
+                        )}
+
+                        {(view === 'create' || view === 'gallery') && (
+                            <>
+                                <div className="flex bg-slate-800 p-1 rounded-2xl mb-8">
+                                    <button onClick={() => setView('create')} className={`flex-1 py-3 rounded-xl font-bold ${view === 'create' ? 'bg-slate-600' : 'text-slate-500'}`}>Create</button>
+                                    <button onClick={() => setView('gallery')} className={`flex-1 py-3 rounded-xl font-bold ${view === 'gallery' ? 'bg-slate-600' : 'text-slate-500'}`}>Gallery</button>
                                 </div>
-                                <h2 className="text-2xl font-bold mb-2">Restricted Access</h2> <p className="text-sm text-slate-400 mb-8">Enter the password to access the ID Generator</p>
 
-<div className="w-full max-w-xs space-y-4">
-                                <input 
-                                    type="password" 
-                                    placeholder="Password" 
-                                    className="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-xl text-white text-center focus:outline-none focus:border-purple-500 transition-all placeholder-slate-500"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    onKeyPress={(e) => e.key === 'Enter' && checkPassword()}
-                                />
-                                {authError && <p className="text-red-400 text-sm text-center font-medium animate-pulse">{authError}</p>}
-                                
-                                <button 
-                                    onClick={checkPassword}
-                                    className="w-full py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 rounded-xl font-bold shadow-lg transition-all transform active:scale-95"
-                                >
-                                    Unlock System
-                                </button>
-                            </div>
-                        </div>
-                    )}
-
-                    {(view === 'create' || view === 'gallery') && (
-                        <>
-                            <div className="flex bg-slate-800 p-1 rounded-2xl mb-8">
-                                <button onClick={() => setView('create')} className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${view === 'create' ? 'bg-slate-600 text-white shadow-lg' : 'text-slate-500 hover:text-slate-300'}`}>
-                                    Create ID
-                                </button>
-                                <button onClick={() => setView('gallery')} className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${view === 'gallery' ? 'bg-slate-600 text-white shadow-lg' : 'text-slate-500 hover:text-slate-300'}`}>
-                                    My Cards ({myCards.length})
-                                </button>
-                            </div>
-
-                            {view === 'create' ? (
-                                <div className="animate-fade-in space-y-6">
-                                    <div 
-                                        className="relative aspect-[2/3] bg-slate-800 rounded-2xl overflow-hidden shadow-2xl border border-slate-700/50 cursor-move"
-                                        onMouseDown={handleMouseDown}
-                                        onMouseMove={handleMouseMove}
-                                        onTouchStart={handleTouchStart}
-                                        onTouchMove={handleTouchMove}
-                                    >
-                                        {frontImage ? (
-                                            <>
-                                                <img src={frontImage} className="w-full h-full object-cover pointer-events-none" alt="Card Preview" />
-                                                <div className="absolute top-2 left-2 bg-black/50 px-2 py-1 rounded text-xs pointer-events-none flex items-center gap-1">
-                                                   <Move size={10} /> Drag to Move
-                                                </div>
-                                            </>
-                                        ) : (
-                                            <div className="flex flex-col items-center justify-center h-full text-slate-500 pointer-events-none">
-                                                <div className="w-16 h-16 rounded-full bg-slate-700 flex items-center justify-center mb-4">
-                                                    <Camera size={32} className="opacity-50" />
-                                                </div>
-                                                <p className="text-sm font-medium">Upload Profile Photo</p>
-                                            </div>
-                                        )}
-                                        {status !== 'idle' && (
-                                            <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center backdrop-blur-sm z-20">
-                                                <div className="text-center animate-bounce">
-                                                    <CheckCircle2 size={56} className="text-green-500 mx-auto mb-4" />
-                                                    <p className="text-green-400 font-bold text-lg">Created!</p>
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-                                    
-                                    {rawImage && (
-                                        <>
-                                            <div className="bg-slate-800 p-3 rounded-xl flex items-center gap-3">
-                                                <span className="text-xs text-slate-400 font-bold uppercase tracking-wider flex items-center gap-1">
-                                                    <ZoomIn size={14}/> Zoom
-                                                </span>
-                                                <input 
-                                                    type="range" 
-                                                    min="0.5" 
-                                                    max="3" 
-                                                    step="0.05" 
-                                                    value={scale} 
-                                                    onChange={(e) => setScale(parseFloat(e.target.value))}
-                                                    className="flex-1 accent-purple-500 h-2 bg-slate-600 rounded-lg appearance-none cursor-pointer"
-                                                />
-                                                <span className="text-xs text-white w-8 text-right">{(scale * 100).toFixed(0)}%</span>
-                                            </div>
-                                            
-                                            <div className="grid grid-cols-3 gap-2">
-                                                <button 
-                                                    onClick={fitToFrame}
-                                                    className="py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-xs font-bold text-slate-200 transition-all flex items-center justify-center gap-1"
-                                                >
-                                                    <Minimize size={14}/> Fit
-                                                </button>
-                                                <button 
-                                                    onClick={fillFrame}
-                                                    className="py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-xs font-bold text-slate-200 transition-all flex items-center justify-center gap-1"
-                                                >
-                                                    <Maximize size={14}/> Fill
-                                                </button>
-                                                <button 
-                                                    onClick={resetTransform}
-                                                    className="py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-xs font-bold text-slate-200 transition-all flex items-center justify-center gap-1"
-                                                >
-                                                    <RotateCcw size={14}/> Reset
-                                                </button>
-                                            </div>
-                                        </>
-                                    )}
-
+                                {view === 'create' ? (
                                     <div className="space-y-4">
-                                        <label className="block w-full py-4 bg-slate-800 border-2 border-dashed border-slate-600 hover:border-purple-500 hover:text-purple-400 text-slate-400 font-bold rounded-2xl text-center cursor-pointer transition-all">
-                                            <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
-                                            <div className="flex items-center justify-center gap-2">
-                                                <ImageIcon size={20} /> 
-                                                {rawImage ? 'Change Photo' : 'Upload Photo'}
+                                        <div className="relative aspect-[2/3] bg-slate-800 rounded-2xl overflow-hidden shadow-2xl border border-slate-700/50 cursor-move"
+                                             onMouseDown={handleMouseDown} onMouseMove={handleMouseMove}
+                                             onTouchStart={handleTouchStart} onTouchMove={handleTouchMove}>
+                                            {frontImage ? <img src={frontImage} className="w-full h-full object-cover pointer-events-none" /> : 
+                                            <div className="flex items-center justify-center h-full text-slate-500">Upload Photo</div>}
+                                        </div>
+
+                                        {rawImage && (
+                                            <div className="bg-slate-800 p-3 rounded-xl">
+                                                <div className="flex justify-between text-xs text-slate-400 mb-1"><span>Crop / Expand</span><span>Move: Drag Image</span></div>
+                                                <input type="range" min="0.1" max="3" step="0.1" value={scale} onChange={e => setScale(parseFloat(e.target.value))} className="w-full accent-purple-500"/>
                                             </div>
-                                        </label>
+                                        )}
 
-                                        <div className="bg-slate-800 rounded-2xl p-1 relative">
-                                            <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400"><UserCircle size={20} /></div>
-                                            <select 
-                                                value={metaData.role}
-                                                onChange={(e) => setMetaData({...metaData, role: e.target.value})}
-                                                className="w-full pl-12 pr-4 py-3 bg-transparent text-white font-bold focus:outline-none cursor-pointer appearance-none"
-                                            >
-                                                <option value="Trainee">1. Trainee (Red)</option>
-                                                <option value="Junior">2. Junior (Yellow)</option>
-                                                <option value="Senior">3. Senior (Green)</option>
-                                                <option value="Ambassador">4. Ambassador (Blue)</option>
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <label className="block w-full py-3 bg-slate-800 rounded-xl text-center cursor-pointer hover:bg-slate-700">
+                                                <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
+                                                <span className="text-sm font-bold flex items-center justify-center gap-2"><ImageIcon size={16}/> {rawImage ? 'Change Photo' : 'Upload Photo'}</span>
+                                            </label>
+                                            <label className="block w-full py-3 bg-slate-800 rounded-xl text-center cursor-pointer hover:bg-slate-700">
+                                                <input type="file" accept="image/*" onChange={handleLogoChange} className="hidden" />
+                                                <span className="text-sm font-bold flex items-center justify-center gap-2"><UploadCloud size={16}/> {logoImage ? 'Change Logo' : 'Upload Logo'}</span>
+                                            </label>
+                                        </div>
+
+                                        <div className="bg-slate-800 rounded-xl p-2 space-y-2">
+                                            <select value={metaData.role} onChange={e => setMetaData({...metaData, role: e.target.value})} className="w-full p-2 bg-transparent text-white font-bold border-b border-slate-700">
+                                                <option value="Trainee">Trainee (Red)</option>
+                                                <option value="Junior">Junior (Yellow)</option>
+                                                <option value="Senior">Senior (Green)</option>
+                                                <option value="Ambassador">Ambassador (Blue)</option>
                                             </select>
+                                            <input type="text" placeholder="Name" className="w-full p-2 bg-transparent text-white border-b border-slate-700" value={metaData.name} onChange={e => setMetaData({...metaData, name: e.target.value})} maxLength={15} />
+                                            <input type="text" placeholder="Affiliation" className="w-full p-2 bg-transparent text-white" value={metaData.affiliation} onChange={e => setMetaData({...metaData, affiliation: e.target.value})} maxLength={25} />
                                         </div>
 
-                                        <div className="bg-slate-800 rounded-2xl p-1">
-                                            <input type="text" placeholder="Name (e.g. JADEN)" className="w-full px-4 py-3 bg-transparent text-white font-bold text-center focus:outline-none placeholder-slate-600 tracking-wider" value={metaData.name} onChange={(e) => setMetaData({...metaData, name: e.target.value})} maxLength={15} />
-                                        </div>
-
-                                        <div className="bg-slate-800 rounded-2xl p-1 relative">
-                                            <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400"><Building size={20} /></div>
-                                            <input type="text" placeholder="Affiliation (e.g. Kyung Hee Univ)" className="w-full px-12 py-3 bg-transparent text-white font-bold text-center focus:outline-none placeholder-slate-600 tracking-wider" value={metaData.affiliation} onChange={(e) => setMetaData({...metaData, affiliation: e.target.value})} maxLength={25} />
-                                        </div>
-
-                                        <button onClick={saveCard} className={`w-full py-4 rounded-2xl font-bold text-lg shadow-lg transition-all transform active:scale-95 ${status !== 'idle' ? 'bg-slate-800 text-slate-500 cursor-not-allowed' : (!frontImage ? 'bg-slate-700 text-slate-300 hover:bg-slate-600' : 'bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:shadow-purple-500/40')}`}>
-                                            {status === 'idle' ? 'Create ID Card' : 'Processing...'}
+                                        <button onClick={saveCard} className="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold shadow-lg">
+                                            {status === 'idle' ? 'Generate ID Card' : 'Processing...'}
                                         </button>
-                                        
-                                        <div className="text-center h-6">
-                                            {statusMsg && <p className="text-sm text-pink-400 font-medium animate-pulse">{statusMsg}</p>}
-                                        </div>
+                                        <p className="text-center text-xs text-slate-500">{statusMsg}</p>
                                     </div>
-                                </div>
-                            ) : (
-                                <div className="animate-fade-in">
-                                    {myCards.length === 0 ? (
-                                        <div className="text-center py-20 bg-slate-800/50 rounded-3xl border border-dashed border-slate-700">
-                                            <div className="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4"><Wallet className="text-slate-600" /></div>
-                                            <p className="text-slate-500">No cards found</p>
-                                            <button onClick={() => setView('create')} className="mt-4 text-purple-400 font-bold text-sm hover:underline">Create First ID</button>
-                                        </div>
-                                    ) : (
-                                        <div className="grid grid-cols-2 gap-4 pb-10">
-                                            {myCards.map((card) => (<FlipCard key={card.id} card={card} onDelete={deleteCard} />))}
-                                        </div>
-                                    )}
-                                </div>
-                            )}
-                        </>
-                    )}
-                </main>
-            </div>
-        );
-    };
+                                ) : (
+                                    <div className="grid grid-cols-2 gap-4 pb-10">
+                                        {myCards.length === 0 ? <p className="text-slate-500 col-span-2 text-center py-10">No cards yet.</p> :
+                                        myCards.map(card => <FlipCard key={card.id} card={card} onDelete={deleteCard} />)}
+                                    </div>
+                                )}
+                            </>
+                        )}
+                    </main>
+                </div>
+            );
+        };
 
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<App />);
-</script>
-</body> 
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
 </html>
