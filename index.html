@@ -16,7 +16,6 @@
     <style>
         /* --- Reset & Base Variables --- */
         :root {
-            /* Brand Colors */
             --primary: #4c6ef5;       /* Smart Blue */
             --secondary: #20c997;     /* Mint Green */
             --accent: #fab005;        /* Warning Yellow */
@@ -319,20 +318,18 @@
 </head>
 <body>
 
-            <!-- Header -->
+    <!-- Header -->
     <header>
         <div class="logo">
-    <img src="fake_logo_revised.png" alt="F.A.K.E. Logo" style="height: 40px; vertical-align: middle;">
-</div>
+            <img src="fake_logo_revised.png" alt="F.A.K.E. Logo" style="height: 40px; vertical-align: middle;">
+        </div>
         
-        <!-- 내비게이션 메뉴 -->
         <nav class="nav-links">
             <a onclick="openTestModal(event)" data-lang="menu_test">진단하기</a>
             <a href="#toolkit" data-lang="menu_toolkit">툴킷</a>
             <a href="#pledge" data-lang="menu_pledge">연대하기</a>
         </nav>
 
-        <!-- 언어 전환 버튼 -->
         <button onclick="toggleLanguage()" style="
             margin-left: auto; 
             padding: 0.4rem 0.8rem; 
@@ -353,7 +350,7 @@
         </button>
     </header>
 
-       <!-- Hero Section -->
+    <!-- Hero Section -->
     <section class="hero">
         <span class="tagline">Falsity Auditors & Knowledge Emancipators</span>
         <h1 data-lang="hero_title">검증된 정보와 안전한 기술,<br>우리가 함께 여는 올바른 AI 시대.</h1>
@@ -366,7 +363,7 @@
         </div>
     </section>
 
-                <!-- Stats Section (Dashboard) -->
+    <!-- Stats Section (Dashboard) -->
     <section class="stats-section">
         <div class="section-header">
             <h2 class="section-title" data-lang="stats_title">데이터로 본 현실</h2>
@@ -450,17 +447,17 @@
         </div>
     </section>
 
-       <!-- Toolkit Section -->
+    <!-- Toolkit Section -->
     <section id="toolkit" class="toolkit-section">
         <h2 class="section-title" data-lang="toolkit_title">F.A.K.E. 툴킷 창고</h2>
-        <p class="section-subtitle" style="..." data-lang="toolkit_subtitle">레벨에 맞는 장비를 챙겨서 디지털 세상을 안전하게 항해해 보세요!</p>
+        <p class="section-subtitle" data-lang="toolkit_subtitle">레벨에 맞는 장비를 챙겨서 디지털 세상을 안전하게 항해해 보세요!</p>
         
         <div class="toolkit-grid">
             <!-- Toolkit 1 -->
             <div class="toolkit-card" id="toolkit-1">
                 <div class="toolkit-icon">🎒</div>
                 <h3 class="toolkit-title" data-lang="tk1_title">Lv.1 서바이벌 툴킷</h3>
-                <p class="toolkit-desc" data-lang="tk1_desc">AI가 뭔지 모르는 친구들을 위한 최소한의 생존 가이드예요.</p>
+                <p class="toolkit-desc" data-lang="tk1_desc">위험한 AI 정글에서 살아남기 위한 필수 생존 키트예요.</p>
                 <ul class="toolkit-list">
                     <li data-lang="tk1_item1">쉬운 말로 풀어쓴 AI 용어 사전</li>
                     <li data-lang="tk1_item2">긴급 상황 시 연락할 비상 연락망</li>
@@ -517,12 +514,12 @@
         </div>
     </section>
 
-        <!-- Pledge Section -->
+    <!-- Pledge Section -->
     <section id="pledge" class="pledge-section">
         <div class="pledge-box">
             <h2 style="font-size: 2.8rem; margin-bottom: 1.5rem;" data-lang="pledge_title">함께 연대해 주세요</h2>
             <p style="font-size: 1.3rem; margin-bottom: 2.5rem; opacity: 0.9;" data-lang="pledge_desc">
-                "나는 확인되지 않은 정보를 공유하지 않고,<br>디지털 범죄 피해자와 연대하는 '스마트 액터'가 되겠습니다."
+                "나는 AI를 안전하게 사용하고, 캠퍼스와 공동체를 가꾸며,<br>디지털 범죄 피해자와 연대하는 행동하는 디지털 시민입니다!"
             </p>
             
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
@@ -555,8 +552,9 @@
             <div class="modal-body">
                 <p style="margin-bottom: 1.5rem; color: #666; text-align: center;">궁금한 주제를 선택해 보세요.</p>
                 
-                <!-- Dropdown (Expanded to 6 Options) -->
+                <!-- Dropdown (확장됨) -->
                 <select id="chartSelector" class="chart-select">
+                    <option value="tools">🛠️ AI 도구 사용 비율 (NEW)</option>
                     <option value="purpose">🤖 AI 사용 목적</option>
                     <option value="unethical">🚫 윤리적 위반 인식</option>
                     <option value="responsibility">⚖️ 책임 소재 인식</option>
@@ -643,11 +641,10 @@
         </div>
     </div>
 
-        <script>
-                // --- Language Translation Logic ---
+    <script>
+        // --- Language Translation Logic ---
         const translations = {
             ko: {
-                // Header & Hero
                 menu_test: "진단하기",
                 menu_toolkit: "툴킷",
                 menu_pledge: "연대하기",
@@ -655,7 +652,6 @@
                 hero_desc: "안전한 디지털 캠퍼스를 위한 대학생 AI 리터러시 프로젝트 F.A.K.E., 지금 시작합니다.",
                 hero_btn: "내 AI 사용 유형 진단해 보기",
                 
-                // Stats Section
                 stats_title: "데이터로 본 현실",
                 stats_subtitle: "2025년 11월, 대학생 118명의 목소리를 조사하였습니다. (조사기간: 11.01~11.14)",
                 stat_risk_label: "위험 노출도",
@@ -671,7 +667,6 @@
                 stat_light_desc: "하루 2시간도 안 쓰는 '라이트 유저'조차 38%가 유해 콘텐츠를 목격했어요. 잠깐 쓴다고 해서 결코 안전하지 않습니다.",
                 btn_full_report: "📊 설문 결과 전체 상세 보기",
 
-                // Toolkit Section
                 toolkit_title: "F.A.K.E. 툴킷 창고",
                 toolkit_subtitle: "레벨에 맞는 장비를 챙겨서 디지털 세상을 안전하게 항해해 보세요!",
                 tk1_title: "Lv.1 서바이벌 툴킷",
@@ -682,24 +677,24 @@
                 tk2_desc: "나와 지인의 정보를 안전하게 보호하는 방어구 세트예요.",
                 tk2_item1: "SNS 비공개 설정 가이드",
                 tk2_item2: "워터마크 생성기 링크",
+                tk2_item3: "AI 대화 기록 완전 삭제법",
                 tk3_title: "Lv.3 보안관 심화 툴킷",
                 tk3_desc: "거짓 정보를 꿰뚫어보고 검증하는 전문가 장비예요.",
                 tk3_item1: "딥페이크 탐지 AI 모음",
                 tk3_item2: "팩트체크 체크리스트",
+                tk3_item3: "진위 판별 가이드",
                 tk4_title: "Lv.4 캠퍼스 앰버서더 툴킷",
                 tk4_desc: "캠퍼스의 문화를 바꾸는 리더를 위한 활동 패키지예요.",
                 tk4_item1: "친구들을 위한 10분 교육 PPT",
                 tk4_item2: "공식 앰배서더 인증 배지",
                 btn_download: "다운로드",
 
-                // Pledge
                 pledge_title: "함께 연대해 주세요",
-                pledge_desc: "\"나는 확인되지 않은 정보를 공유하지 않고,<br>디지털 범죄 피해자와 연대하는 '스마트 액터'가 되겠습니다.\"",
-                pledge_btn_sign: "Sign the Pledge",
-                pledge_btn_id: "Get My F.A.K.E. ID"
+                pledge_desc: "\"나는 AI를 안전하게 사용하고, 캠퍼스와 공동체를 가꾸며,<br>디지털 범죄 피해자와 연대하는 행동하는 디지털 시민입니다!\"",
+                pledge_btn_sign: "서명하고 동참하기",
+                pledge_btn_id: "F.A.K.E. ID 발급받기"
             },
             en: {
-                // Header & Hero
                 menu_test: "Self-Check",
                 menu_toolkit: "Toolkit",
                 menu_pledge: "Pledge",
@@ -707,7 +702,6 @@
                 hero_desc: "Project F.A.K.E.: An AI Literacy Initiative for a Safer Digital Campus.",
                 hero_btn: "Start My AI Ethics Self-Check",
 
-                // Stats Section
                 stats_title: "Reality in Data",
                 stats_subtitle: "Survey of 118 university students in Nov 2025. (Period: 11.01~11.14)",
                 stat_risk_label: "Risk Exposure",
@@ -723,7 +717,6 @@
                 stat_light_desc: "Even 'Light Users' (<2hrs/day) aren't safe—38% witnessed harmful content. Brief usage doesn't guarantee safety.",
                 btn_full_report: "📊 View Full Survey Report",
 
-                // Toolkit Section
                 toolkit_title: "F.A.K.E. Toolkit Armory",
                 toolkit_subtitle: "Equip yourself with the right gear to navigate the digital world safely!",
                 tk1_title: "Lv.1 Survival Toolkit",
@@ -744,9 +737,8 @@
                 tk4_item2: "Official Ambassador Badge",
                 btn_download: "Download",
 
-                // Pledge
                 pledge_title: "Stand With Us",
-                pledge_desc: "\"I will not share unverified information,<br>and I pledge to stand in solidarity with digital crime victims as a 'Smart Actor'.\"",
+                pledge_desc: "\"I am a digital citizen who takes action:<br>using AI responsibly, building stronger communities, and standing with victims of digital crime.\"",
                 pledge_btn_sign: "Sign the Pledge",
                 pledge_btn_id: "Get My F.A.K.E. ID"
             }
@@ -784,9 +776,8 @@
 
         window.onclick = (e) => { if(e.target == reportModal) closeModal(reportModal); if(e.target == testModal) closeModal(testModal); }
 
-                        // --- Chart.js: Dashboard Logic (Load Charts on Page Load) ---
+        // --- Chart.js: Dashboard Logic (Load Charts on Page Load) ---
         window.onload = function() {
-            // Helper function to safely create charts
             const createChart = (id, type, data, options) => {
                 const ctx = document.getElementById(id);
                 if (ctx) {
@@ -796,21 +787,18 @@
                 }
             };
 
-            // Common Options for resizing
             const commonOptions = {
-                maintainAspectRatio: false, // 중요: 컨테이너 크기에 맞춤
+                maintainAspectRatio: false,
                 plugins: { legend: { display: false }, tooltip: { enabled: false } }
             };
 
-            // 1. Risk Chart (Doughnut)
+            // 1. Risk Chart
             createChart('riskChart', 'doughnut', {
                 labels: ['주 1회 이상 목격', '기타'],
                 datasets: [{ data: [66.9, 33.1], backgroundColor: ['#ff6b6b', '#e9ecef'], borderWidth: 0 }]
             }, { ...commonOptions, cutout: '70%' });
 
-            // 2. Void Chart (REMOVED - Replaced with Icon/Text in HTML)
-            
-            // 3. Witness Chart (Horizontal Bar)
+            // 3. Witness Chart
             createChart('witnessChart', 'bar', {
                 labels: ['직접 목격 경험', '없음'],
                 datasets: [{ data: [35.6, 64.4], backgroundColor: ['#fab005', '#e9ecef'], borderRadius: 6 }]
@@ -820,7 +808,7 @@
                 scales: { x: { display: false, max: 100 }, y: { grid: { display: false } } }
             });
 
-            // 4. Universal Risk Chart (Bar)
+            // 4. Universal Risk Chart
             createChart('universalRiskChart', 'bar', {
                 labels: ['라이트 유저 목격 (38%)', '미목격'],
                 datasets: [{ 
@@ -835,62 +823,71 @@
             });
         };
 
-        // --- Interactive Chart Logic (Report Modal) ---
+        // --- Interactive Chart Logic (Report Modal - UPDATED) ---
         let dynamicChart = null;
         const chartData = {
-            'purpose': {
+            'tools': { // [NEW] 1. AI Tool Usage
                 type: 'bar',
-                labels: ['자료 검색', '텍스트 생성/요약', '아이디어 생성', '번역', '코딩'],
-                data: [11.8, 11.4, 10.2, 6.1, 1.8],
+                labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn', 'Copilot', 'Claude', 'Deepseek', '기타'],
+                data: [96.6, 44.9, 12.7, 8.5, 6.8, 5.1, 3.4, 8.0],
+                label: '사용 비율 (%)',
+                color: ['#10a37f', '#4c6ef5', '#20c997', '#fab005', '#e9ecef', '#e9ecef', '#e9ecef', '#e9ecef'], // ChatGPT 강조
+                indexAxis: 'x',
+                desc: "💡 분석 인사이트:<br><strong>ChatGPT(96.6%)</strong>가 압도적인 1위입니다. 대학생들의 AI 활용이 특정 도구에 극심하게 편중되어 있음을 보여줍니다. 특정 AI 모델의 편향성이 학생들의 사고에 그대로 반영될 우려가 있습니다."
+            },
+            'purpose': { // 2. Purpose
+                type: 'bar',
+                labels: ['자료 검색', '과제/리포트 작성', '아이디어 생성', '사진/비디오 편집', '외국어 번역', '코딩'],
+                data: [27.9, 23.3, 20.9, 12.4, 9.3, 3.9],
                 label: '응답 비율 (%)',
                 color: '#4c6ef5',
                 indexAxis: 'y',
-                desc: "💡 분석 인사이트:<br>학생들은 AI를 주로 '자료 검색'과 '과제 작성'의 보조 도구로 쓰고 있어요. 단순 흥미보다는 학업 효율성을 높이기 위한 실용적 목적으로 자리 잡았네요."
+                desc: "💡 분석 인사이트:<br>단순한 흥미가 아닌 <strong>'자료 수집'과 '과제 작성'</strong> 등 학업의 핵심 도구로 자리 잡았습니다. 이제 AI 윤리 교육은 선택이 아닌 학업 성취를 위한 필수 요건입니다."
             },
-            'unethical': {
+            'unethical': { // 3. Unethical Perception
                 type: 'bar',
                 labels: ['딥페이크 장난 소비', '허위사실 유포', '표절', '딥페이크 제작', '과제 통생성'],
                 data: [20.0, 16.3, 14.3, 13.7, 7.8],
                 label: '비윤리적 행위 인식 (%)',
                 color: '#ff6b6b',
                 indexAxis: 'y',
-                desc: "💡 분석 인사이트:<br>'딥페이크를 장난으로 소비하는 행위'를 가장 심각한 문제로 꼽았어요. 직접 만드는 것뿐만 아니라, 보고 즐기는 것도 공범이라는 인식이 확산되고 있습니다."
+                desc: "💡 분석 인사이트:<br>학생들은 <strong>'딥페이크를 장난으로 소비하는 행위'</strong>를 가장 심각한 문제로 꼽았습니다. 직접 만드는 것뿐만 아니라, 보고 즐기는 것도 명백한 가해라는 인식이 자리 잡고 있습니다."
             },
-            'responsibility': {
+            'responsibility': { // 4. Responsibility
                 type: 'doughnut',
                 labels: ['최초 생성자', '무비판적 공유자', '플랫폼/개발사', '대학본부'],
                 data: [46.1, 29.1, 7.8, 3.0],
                 label: '책임 인식 (%)',
                 color: ['#ff6b6b', '#fab005', '#20c997', '#adb5bd'],
                 indexAxis: 'x',
-                desc: "💡 분석 인사이트:<br>압도적으로 '최초 생성자'에게 책임을 묻고 있지만, '무비판적으로 공유한 이용자'의 책임도 30% 가까이 됩니다. 나르기만 해도 책임이 있다는 사실, 잊지 마세요!"
+                desc: "💡 분석 인사이트:<br>최초 생성자(46.1%)뿐만 아니라 <strong>'무비판적 공유자(29.1%)'</strong>에게도 큰 책임을 묻고 있습니다. \"나르기만 했다\"는 변명은 더 이상 통하지 않습니다."
             },
-            'deepfake': {
+            'deepfake': { // 5. Deepfake Punishment
                 type: 'pie',
                 labels: ['처벌 찬성', '보통/중립', '반대'],
                 data: [83.0, 11.9, 5.1],
                 label: '비율 (%)',
                 color: ['#4c6ef5', '#e9ecef', '#ff6b6b'],
                 indexAxis: 'x',
-                desc: "💡 분석 인사이트:<br>10명 중 8명 이상이 '장난이라도 처벌해야 한다'고 답했어요. 우리 대학생들의 윤리적 눈높이는 이미 법보다 엄격합니다."
+                desc: "💡 분석 인사이트:<br>10명 중 8명 이상이 <strong>'장난이라도 딥페이크 제작은 처벌해야 한다'</strong>고 답했습니다. 대학생들의 윤리적 기준은 이미 법적 기준보다 훨씬 엄격합니다."
             },
-            'frequency': {
+            'frequency': { // 6. Witness Frequency
                 type: 'bar',
                 labels: ['주 3회 이상', '주 1-2회', '거의 매일', '잘 모름'],
                 data: [28.0, 21.2, 17.8, 14.4],
                 label: '목격 빈도 (%)',
                 color: '#fab005',
                 indexAxis: 'x',
-                desc: "💡 분석 인사이트:<br>절반 가까운 학생들이 '일주일에 한 번 이상' 허위정보를 마주치고 있어요. 특히 '거의 매일' 본다는 응답도 17.8%나 되어, 디지털 공해가 심각한 수준이에요."
+                desc: "💡 분석 인사이트:<br>절반 가까운 학생들이 '일주일에 한 번 이상' 허위정보를 마주치고 있으며, 특히 <strong>'거의 매일' 본다는 응답도 17.8%</strong>에 달합니다. 디지털 환경이 이미 오염되어 있음을 시사합니다."
             },
-            'reporting': {
+            'reporting': { // 7. Reporting Channel
                 type: 'doughnut',
-                labels: ['전혀 모름', '존재만 앎', '구체적으로 앎'],
+                labels: ['전혀 모름', '들어는 봤음', '정확히 앎'],
                 data: [66.1, 27.1, 6.8],
                 label: '인지도 (%)',
                 color: ['#ff6b6b', '#fab005', '#20c997'],
                 indexAxis: 'x',
-                desc: "💡 분석 인사이트:<br>안타깝게도 66% 이상이 신고 채널을 전혀 모른다고 답했어요. 피해를 입어도 어디에 도움을 청해야 할지 막막한 상황입니다. F.A.K.E. 툴킷이 필요한 이유죠!"
+                desc: "💡 분석 인사이트:<br><strong>66% 이상이 신고 채널을 전혀 모릅니다.</strong> 피해를 입어도 어디에 도움을 청해야 할지 막막한 '제도적 공백' 상태입니다. F.A.K.E. 프로젝트가 시급한 이유입니다."
             }
         };
 
