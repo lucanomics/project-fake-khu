@@ -13,7 +13,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <style>
         body { 
@@ -225,8 +225,8 @@
             const [authError, setAuthError] = useState('');
             
             const [rawImage, setRawImage] = useState(null);
-            const [frontLogo, setFrontLogo] = useState('./fakhu_logo.png'); // Front Logo (Small)
-            const [backLogo, setBackLogo] = useState('./fakhu_logo_horizontal.png'); // Back Logo (Horizontal)
+            const [frontLogo, setFrontLogo] = useState('./fakhu_logo.png'); 
+            const [backLogo, setBackLogo] = useState('./fakhu_logo_horizontal.png'); 
 
             const [frontImage, setFrontImage] = useState(null); 
             const [metaData, setMetaData] = useState({ name: '', role: 'Trainee', affiliation: '' });
@@ -289,12 +289,13 @@
                 ctx.save();
                 ctx.font = `500 ${fontSize}px 'Montserrat', monospace`;
                 
+                // Create Stripe Pattern
                 const patternCanvas = document.createElement('canvas');
                 patternCanvas.width = 10;
                 patternCanvas.height = 10;
                 const pCtx = patternCanvas.getContext('2d');
-                pCtx.strokeStyle = "rgba(255,255,255,0.9)";
-                pCtx.lineWidth = 2;
+                pCtx.strokeStyle = "rgba(255,255,255,0.7)";
+                pCtx.lineWidth = 1;
                 pCtx.beginPath();
                 pCtx.moveTo(0, 10);
                 pCtx.lineTo(10, 0);
@@ -304,7 +305,8 @@
                 ctx.fillStyle = pattern;
                 ctx.fillText(text, x, y);
                 
-                ctx.strokeStyle = "rgba(255,255,255,0.5)";
+                // Outline
+                ctx.strokeStyle = "rgba(255,255,255,0.9)";
                 ctx.lineWidth = 1;
                 ctx.strokeText(text, x, y);
                 
@@ -342,9 +344,9 @@
                 if (backLogo) {
                     try {
                         const logo = await loadImage(backLogo);
-                        // Increase size for horizontal logo
+                        // Increase size for horizontal logo (Big header logo)
                         const logoW = 320; 
-                        const logoH = 100; 
+                        const logoH = 90; 
                         const aspect = logo.width / logo.height;
                         
                         let drawW = logoW;
@@ -354,7 +356,7 @@
                             drawW = logoH * aspect;
                         }
                         // Draw next to F.A.K.E text
-                        ctx.drawImage(logo, 170, 30, drawW, drawH);
+                        ctx.drawImage(logo, 180, 35, drawW, drawH);
                     } catch(e) { console.warn("Back Logo draw failed"); }
                 }
 
@@ -428,9 +430,10 @@
                     ctx.drawImage(qrImg, width - 180, height - 180, 140, 140);
                 } catch (e) {}
 
-                // Serial Number (Striped)
+                // Serial Number (Striped & Moved Up)
                 ctx.textAlign = "right";
-                drawStripedText(ctx, serialCode, width - 40, height - 210, 24);
+                // Render striped text at bottom right, avoiding QR
+                drawStripedText(ctx, serialCode, width - 40, height - 210, 28);
 
                 return canvas.toDataURL("image/png");
             };
@@ -493,8 +496,8 @@
 
                 // 5. Sidebar Text (Rotated)
                 ctx.save();
-                // Move text UP to make room for logo
-                ctx.translate(width - (sidebarWidth / 2) - 10, (height / 2) - 70); 
+                // Move text UP significantly to avoid logo at bottom
+                ctx.translate(width - (sidebarWidth / 2) - 10, (height / 2) - 100); 
                 ctx.rotate(Math.PI / 2); 
                 
                 ctx.textAlign = "center";
@@ -510,16 +513,16 @@
                 
                 // 6. Sidebar Logo (Front) - Rotated & Enlarged
                 ctx.save();
-                // Position near bottom of sidebar
-                ctx.translate(width - (sidebarWidth/2) - 10, height - 110);
+                // Position near bottom of sidebar, inside the strip
+                ctx.translate(width - (sidebarWidth/2) - 10, height - 120);
                 ctx.rotate(Math.PI / 2);
                 
                 if (frontLogo) {
                     try {
                         const logo = await loadImage(frontLogo);
-                        // Increase size
-                        const maxW = 180; 
-                        const maxH = 70;  
+                        // Increase size to match text width visual
+                        const maxW = 200; 
+                        const maxH = 80;  
                         const aspect = logo.width / logo.height;
                         
                         let dw = maxW; 
