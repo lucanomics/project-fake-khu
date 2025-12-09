@@ -76,7 +76,109 @@
     <script type="text/babel">
         const { useState, useRef, useEffect } = React;
 
-        // --- Icons ---
+        // --- Department Data (Complete List) ---
+        const departmentData = {
+            "Hospitality경영학과": { code: "101", eng: "Dept. of Hospitality Management" },
+            "간호학과": { code: "102", eng: "Dept. of Nursing" },
+            "국제건축공학과": { code: "203", eng: "Dept. of Architectural Engineering" },
+            "건축공학과": { code: "203", eng: "Dept. of Architectural Engineering" },
+            "국제건축학과": { code: "204", eng: "Dept. of Architecture (5-year)" },
+            "건축학과": { code: "204", eng: "Dept. of Architecture (5-year)" },
+            "경영학과": { code: "105", eng: "Dept. of Business Administration" },
+            "경제학과": { code: "106", eng: "Dept. of Economics" },
+            "골프산업학과": { code: "207", eng: "Dept. of Golf Industry" },
+            "관광학과": { code: "108", eng: "Dept. of Tourism Studies" },
+            "국어국문학과": { code: "109", eng: "Dept. of Korean Language & Literature" },
+            "국제통상·금융투자학부": { code: "110", eng: "Div. of Int'l Trade & Financial Inv." },
+            "국제통상학과": { code: "110", eng: "Div. of Int'l Trade & Financial Inv." },
+            "금융투자학과": { code: "110", eng: "Div. of Int'l Trade & Financial Inv." },
+            "국제학과": { code: "211", eng: "Dept. of International Studies" },
+            "글로벌커뮤니케이션학부": { code: "212", eng: "Div. of Global Communication" },
+            "기계공학과": { code: "213", eng: "Dept. of Mechanical Engineering" },
+            "기악과": { code: "114", eng: "Dept. of Instrumental Music" },
+            "도예학과": { code: "215", eng: "Dept. of Ceramic Arts" },
+            "디지털콘텐츠학과": { code: "216", eng: "Dept. of Digital Contents" },
+            "러시아어학과": { code: "217", eng: "Dept. of Russian Language" },
+            "무역학과": { code: "118", eng: "Dept. of International Trade" },
+            "무용학부": { code: "119", eng: "Dept. of Dance" },
+            "문화엔터테인먼트학과": { code: "120", eng: "Dept. of Culture & Entertainment" },
+            "물리학과": { code: "121", eng: "Dept. of Physics" },
+            "미디어학과": { code: "122", eng: "Dept. of Media Studies" },
+            "미래정보디스플레이학부": { code: "123", eng: "Div. of Future Information Display" },
+            "정보디스플레이학과": { code: "123", eng: "Div. of Future Information Display" },
+            "빅데이터응용학과": { code: "124", eng: "Dept. of Applied Big Data" },
+            "사학과": { code: "125", eng: "Dept. of History" },
+            "사회기반시스템공학과": { code: "226", eng: "Dept. of Social Infrastructure Systems" },
+            "사회학과": { code: "127", eng: "Dept. of Sociology" },
+            "산업경영공학과": { code: "228", eng: "Dept. of Industrial & Management Eng." },
+            "산업디자인학과": { code: "229", eng: "Dept. of Industrial Design" },
+            "생물학과": { code: "130", eng: "Dept. of Biology" },
+            "생체의공학과": { code: "231", eng: "Dept. of Biomedical Engineering" },
+            "성악과": { code: "132", eng: "Dept. of Vocal Music" },
+            "소프트웨어융합학과": { code: "233", eng: "Dept. of Software Convergence" },
+            "수학과": { code: "134", eng: "Dept. of Mathematics" },
+            "스마트팜과학과": { code: "235", eng: "Dept. of Smart Farm Science" },
+            "스페인어학과": { code: "236", eng: "Dept. of Spanish Language" },
+            "스포츠의학과": { code: "237", eng: "Dept. of Sports Medicine" },
+            "스포츠지도학과": { code: "238", eng: "Dept. of Sports Coaching" },
+            "시각디자인학과": { code: "239", eng: "Dept. of Visual Design" },
+            "식품생명공학과": { code: "240", eng: "Dept. of Food Science & Biotechnology" },
+            "식품영양학과": { code: "141", eng: "Dept. of Food and Nutrition" },
+            "신소재공학과": { code: "242", eng: "Dept. of Materials Science & Eng." },
+            "정보전자신소재공학과": { code: "242", eng: "Dept. of Materials Science & Eng." },
+            "아동가족학과": { code: "143", eng: "Dept. of Child & Family Studies" },
+            "아시아학과": { code: "244", eng: "Dept. of Asian Studies" },
+            "글로벌한국학과": { code: "244", eng: "Dept. of Asian Studies" },
+            "약학과": { code: "145", eng: "Dept. of Pharmacy" },
+            "연극영화학과": { code: "246", eng: "Dept. of Theatre and Film" },
+            "영어영문학과": { code: "147", eng: "Dept. of English Language & Literature" },
+            "우주과학과": { code: "248", eng: "Dept. of Space Science" },
+            "원자력공학과": { code: "249", eng: "Dept. of Nuclear Engineering" },
+            "유전생명공학과": { code: "250", eng: "Dept. of Genetic Engineering" },
+            "융합바이오·신소재공학과": { code: "251", eng: "Dept. of Convergence Bio & Advanced Materials" },
+            "한방생명공학과": { code: "251", eng: "Dept. of Convergence Bio & Advanced Materials" },
+            "식물·환경신소재공학과": { code: "251", eng: "Dept. of Convergence Bio & Advanced Materials" },
+            "응용물리학과": { code: "252", eng: "Dept. of Applied Physics" },
+            "응용수학과": { code: "253", eng: "Dept. of Applied Mathematics" },
+            "응용영어통번역학과": { code: "154", eng: "Dept. of Applied English Interpretation" },
+            "응용화학과": { code: "255", eng: "Dept. of Applied Chemistry" },
+            "의류디자인학과": { code: "256", eng: "Dept. of Fashion Design" },
+            "의상학과": { code: "157", eng: "Dept. of Clothing and Textiles" },
+            "의예과": { code: "158", eng: "Premedical Course (Medicine)" },
+            "인공지능학과": { code: "259", eng: "Dept. of Artificial Intelligence" },
+            "일본어학과": { code: "260", eng: "Dept. of Japanese Language" },
+            "자유전공학부": { code: "261", eng: "Div. of Free Major Studies" },
+            "자율전공학부": { code: "162", eng: "Div. of Interdisciplinary Studies" },
+            "작곡과": { code: "163", eng: "Dept. of Composition" },
+            "전자공학과": { code: "264", eng: "Dept. of Electronic Engineering" },
+            "정치외교학과": { code: "165", eng: "Dept. of Political Science & IR" },
+            "조리&푸드디자인학과": { code: "166", eng: "Dept. of Culinary & Food Design" },
+            "조리·서비스경영학과": { code: "166", eng: "Dept. of Culinary & Food Design" },
+            "조소과": { code: "167", eng: "Dept. of Sculpture" },
+            "주거환경학과": { code: "168", eng: "Dept. of Housing & Env. Design" },
+            "중국어학과": { code: "269", eng: "Dept. of Chinese Language" },
+            "지리학과": { code: "170", eng: "Dept. of Geography" },
+            "철학과": { code: "171", eng: "Dept. of Philosophy" },
+            "체육학과": { code: "272", eng: "Dept. of Physical Education" },
+            "치의예과": { code: "173", eng: "Predental Course (Dentistry)" },
+            "컴퓨터공학과": { code: "274", eng: "Dept. of Computer Engineering" },
+            "태권도학과": { code: "275", eng: "Dept. of Taekwondo" },
+            "포스트모던음악학과": { code: "276", eng: "Dept. of Postmodern Music" },
+            "프랑스어학과": { code: "277", eng: "Dept. of French Language" },
+            "한국어학과": { code: "278", eng: "Dept. of Korean Language" },
+            "한국화과": { code: "179", eng: "Dept. of Korean Painting" },
+            "한약학과": { code: "180", eng: "Dept. of Herbal Pharmacology" },
+            "한의예과": { code: "181", eng: "Pre-Korean Medicine Course" },
+            "행정학과": { code: "182", eng: "Dept. of Public Administration" },
+            "화학공학과": { code: "283", eng: "Dept. of Chemical Engineering" },
+            "화학과": { code: "184", eng: "Dept. of Chemistry" },
+            "환경조경디자인학과": { code: "285", eng: "Dept. of Env. Landscape Design" },
+            "환경학및환경공학과": { code: "286", eng: "Dept. of Env. Science & Eng." },
+            "회계세무학과": { code: "187", eng: "Dept. of Accounting and Taxation" },
+            "회화과": { code: "188", eng: "Dept. of Painting" }
+        };
+
+        // Icons
         const IconWrapper = ({ children, size = 24, className = "" }) => (
             <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>{children}</svg>
         );
@@ -99,32 +201,6 @@
         const RotateCcw = (props) => (<IconWrapper {...props}><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></IconWrapper>);
         const X = (props) => (<IconWrapper {...props}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></IconWrapper>);
 
-        // --- Department Data ---
-        const departmentCodes = {
-            "Hospitality경영학과": "101", "간호학과": "102", "국제건축공학과": "203", "국제건축학과": "204", "건축학과": "204",
-            "경영학과": "105", "경제학과": "106", "골프산업학과": "207", "관광학과": "108", "국어국문학과": "109",
-            "국제통상·금융투자학부": "110", "국제통상학과": "110", "금융투자학과": "110", "국제학과": "211", "글로벌커뮤니케이션학부": "212",
-            "기계공학과": "213", "기악과": "114", "도예학과": "215", "디지털콘텐츠학과": "216", "러시아어학과": "217",
-            "무역학과": "118", "무용학부": "119", "문화엔터테인먼트학과": "120", "물리학과": "121", "미디어학과": "122",
-            "미래정보디스플레이학부": "123", "정보디스플레이학과": "123", "빅데이터응용학과": "124", "사학과": "125",
-            "사회기반시스템공학과": "226", "사회학과": "127", "산업경영공학과": "228", "산업디자인학과": "229", "생물학과": "130",
-            "생체의공학과": "231", "성악과": "132", "소프트웨어융합학과": "233", "수학과": "134", "스마트팜과학과": "235",
-            "스페인어학과": "236", "스포츠의학과": "237", "스포츠지도학과": "238", "시각디자인학과": "239", "식품생명공학과": "240",
-            "식품영양학과": "141", "신소재공학과": "242", "정보전자신소재공학과": "242", "아동가족학과": "143",
-            "아시아학과": "244", "글로벌한국학과": "244", "약학과": "145", "연극영화학과": "246", "영어영문학과": "147",
-            "우주과학과": "248", "원자력공학과": "249", "유전생명공학과": "250",
-            "융합바이오·신소재공학과": "251", "한방생명공학과": "251", "식물·환경신소재공학과": "251",
-            "응용물리학과": "252", "응용수학과": "253", "응용영어통번역학과": "154", "응용화학과": "255", "의류디자인학과": "256",
-            "의상학과": "157", "의예과": "158", "인공지능학과": "259", "일본어학과": "260", "자유전공학부": "261", "자율전공학부": "162",
-            "작곡과": "163", "전자공학과": "264", "정치외교학과": "165",
-            "조리&푸드디자인학과": "166", "조리·서비스경영학과": "166",
-            "조소과": "167", "주거환경학과": "168", "중국어학과": "269", "지리학과": "170", "철학과": "171",
-            "체육학과": "272", "치의예과": "173", "컴퓨터공학과": "274", "태권도학과": "275", "포스트모던음악학과": "276",
-            "프랑스어학과": "277", "한국어학과": "278", "한국화과": "179", "한약학과": "180", "한의예과": "181",
-            "행정학과": "182", "화학공학과": "283", "화학과": "184", "환경조경디자인학과": "285", "환경학및환경공학과": "286",
-            "회계세무학과": "187", "회화과": "188"
-        };
-
         const FlipCard = ({ card, onDelete, onClick }) => {
             const [isFlipped, setIsFlipped] = useState(false);
 
@@ -141,12 +217,9 @@
                 onDelete(card.id);
             };
 
-            const handleClick = (e) => {
-                if (onClick) {
-                    onClick(); // Open Modal
-                } else {
-                    setIsFlipped(!isFlipped); // Just Flip
-                }
+            const handleClick = () => {
+                if (onClick) onClick(); 
+                else setIsFlipped(!isFlipped); 
             };
 
             return (
@@ -259,12 +332,12 @@
             const [authError, setAuthError] = useState('');
             
             const [rawImage, setRawImage] = useState(null);
-            const [frontLogo, setFrontLogo] = useState('./fakhu_logo.png'); // Front Logo (Small)
-            const [backLogo, setBackLogo] = useState('./fakhu_logo_horizontal.png'); // Back Logo (Horizontal)
+            const [logoImage, setLogoImage] = useState('./fakhu_logo.png'); 
+            const [backLogo, setBackLogo] = useState('./fakhu_logo_horizontal.png'); 
 
             const [frontImage, setFrontImage] = useState(null); 
             const [metaData, setMetaData] = useState({ name: '', role: 'Trainee', affiliation: '' });
-            const [serialData, setSerialData] = useState({ classNum: '101', letterCode: 'A', serialNum: '0001' }); // Updated serialData structure
+            const [serialData, setSerialData] = useState({ classNum: '101', serialNum: '000001', letterCode: 'A' });
             const [status, setStatus] = useState('idle'); 
             const [myCards, setMyCards] = useState(() => {
                 const saved = localStorage.getItem('fake_id_cards');
@@ -285,22 +358,20 @@
                 localStorage.setItem('fake_id_cards', JSON.stringify(myCards));
             }, [myCards]);
 
-            // Update serialData based on role and affiliation changes
+            // [NEW] Logic to update serialData based on Department
             useEffect(() => {
                 let letter = 'A';
-                switch(metaData.role) {
-                    case 'Trainee': letter = 'A'; break;
-                    case 'Junior': letter = 'B'; break;
-                    case 'Senior': letter = 'C'; break;
-                    case 'Ambassador': letter = 'Z'; break;
-                    default: letter = 'A';
-                }
+                if(metaData.role.includes('Trainee')) letter = 'A';
+                else if(metaData.role.includes('Junior')) letter = 'B';
+                else if(metaData.role.includes('Senior')) letter = 'C';
+                else if(metaData.role.includes('Ambassador')) letter = 'Z';
 
-                let deptCode = '000';
-                // Trim and remove extra spaces if necessary
-                const inputDept = metaData.affiliation.trim();
-                if (departmentCodes[inputDept]) {
-                    deptCode = departmentCodes[inputDept];
+                const deptInput = metaData.affiliation.trim();
+                let deptCode = '000'; // Default Code
+
+                // Check DB
+                if (departmentData[deptInput]) {
+                    deptCode = departmentData[deptInput].code;
                 }
 
                 // Random 4 digits
@@ -342,20 +413,18 @@
                 }
             };
             
-            // Helper for striped text (Hatch Pattern)
+            // Helper for striped text
             const drawStripedText = (ctx, text, x, y, fontSize) => {
                 ctx.save();
                 ctx.font = `500 ${fontSize}px 'Montserrat', monospace`;
                 ctx.textAlign = "right";
                 
-                // 1. Create Pattern Canvas
                 const patternCanvas = document.createElement('canvas');
                 patternCanvas.width = 6;
                 patternCanvas.height = 6;
                 const pCtx = patternCanvas.getContext('2d');
                 
-                // Draw Hatch Lines
-                pCtx.strokeStyle = "rgba(255, 255, 255, 0.4)"; // Semi-transparent white
+                pCtx.strokeStyle = "rgba(255, 255, 255, 0.4)"; 
                 pCtx.lineWidth = 1;
                 pCtx.beginPath();
                 pCtx.moveTo(0, 6);
@@ -363,19 +432,12 @@
                 pCtx.stroke();
                 
                 const pattern = ctx.createPattern(patternCanvas, 'repeat');
-                
-                // 2. Apply Pattern
                 ctx.fillStyle = pattern;
                 ctx.fillText(text, x, y);
                 
-                // 3. Draw Outline (to make text readable)
                 ctx.strokeStyle = "rgba(255, 255, 255, 0.9)";
                 ctx.lineWidth = 0.5;
                 ctx.strokeText(text, x, y);
-                
-                // 4. Fill slightly with white to make it visible
-                ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
-                ctx.fillText(text, x, y);
                 
                 ctx.restore();
             };
@@ -407,22 +469,19 @@
                 ctx.textAlign = "left";
                 ctx.fillText("F.A.K.E", 40, 80);
 
-                // 3-1. Back Logo (Horizontal - Bigger)
+                // 3-1. Back Logo
                 if (backLogo) {
                     try {
                         const logo = await loadImage(backLogo);
-                        // Increase size for horizontal logo (Big header logo)
                         const logoW = 340; 
                         const logoH = 100; 
                         const aspect = logo.width / logo.height;
-                        
                         let drawW = logoW;
                         let drawH = logoW / aspect;
                         if (drawH > logoH) {
                             drawH = logoH;
                             drawW = logoH * aspect;
                         }
-                        // Draw next to F.A.K.E text
                         ctx.drawImage(logo, 180, 30, drawW, drawH);
                     } catch(e) { console.warn("Back Logo draw failed"); }
                 }
@@ -449,9 +508,7 @@
                     
                     let fontSize = 56;
                     ctx.font = `bold ${fontSize}px 'Montserrat', sans-serif`;
-                    // Limit width to avoid QR area
-                    const isNearBottom = currentY > 600;
-                    const maxWidth = isNearBottom ? width - 220 : width - 100;
+                    const maxWidth = width - 100;
                     
                     if (isAffiliation) {
                         let words = value.split(' ');
@@ -485,7 +542,14 @@
 
                 drawField("NAME", metaData.name || "NO NAME");
                 drawField("CLASS", metaData.role);
-                drawField("AFFILIATION", metaData.affiliation || "University", true);
+                
+                // [NEW] Affiliation Logic: Use English Name if in DB
+                let displayAff = metaData.affiliation || "University";
+                const trimAff = metaData.affiliation.trim();
+                if (departmentData[trimAff]) {
+                    displayAff = departmentData[trimAff].eng; // Use English Name
+                }
+                drawField("AFFILIATION", displayAff, true);
 
                 // 5. QR Code
                 const verificationUrl = `https://lucanomics.github.io/project-fake-khu/?verify=${serialCode}`;
@@ -497,14 +561,13 @@
                     ctx.drawImage(qrImg, width - 180, height - 180, 140, 140);
                 } catch (e) {}
 
-                // Serial Number (Striped)
                 ctx.textAlign = "right";
                 drawStripedText(ctx, serialCode, width - 40, height - 210, 24);
 
                 return canvas.toDataURL("image/png");
             };
 
-            // [Front Side] - Updated Layout & Logo
+            // [Front Side]
             const generateFrontCard = async () => {
                 const canvas = canvasRef.current;
                 const ctx = canvas.getContext('2d');
@@ -557,20 +620,12 @@
                 // 4. Sidebar Background
                 ctx.fillStyle = themeColor;
                 ctx.beginPath();
-                // Extend to the right edge (width)
-                // x: width - sidebarWidth, y: 0 (top)
-                // height: full height
-                // To look like a strip, fill rect
-                ctx.fillRect(width - sidebarWidth, 0, sidebarWidth, height);
-                
-                // If we want rounded corners on the left side of the strip only, or just fill
-                // Design requested: "extend to right edge".
-                // We keep it simple rectangular strip on the right.
-                
-                // 5. Sidebar Text (Rotated)
+                ctx.roundRect(width - sidebarWidth, 50, sidebarWidth - 20, height - 100, 40);
+                ctx.fill();
+
+                // 5. Sidebar Text
                 ctx.save();
-                // Move text UP significantly to avoid logo at bottom
-                ctx.translate(width - (sidebarWidth / 2), (height / 2) - 80); 
+                ctx.translate(width - (sidebarWidth / 2) - 10, (height / 2) - 70); 
                 ctx.rotate(Math.PI / 2); 
                 
                 ctx.textAlign = "center";
@@ -584,13 +639,10 @@
                 ctx.fillText(`${nameText}    |    ${idText}`, 0, 0);
                 ctx.restore();
                 
-                // 6. Sidebar Logo (Front) - Fixed: No Rotation for Logo
-                // Position: Bottom Right, Centered in Strip
-                
+                // 6. Sidebar Logo
                 if (frontLogo) {
                     try {
                         const logo = await loadImage(frontLogo);
-                        // Increase size
                         const maxW = 140; 
                         const maxH = 60;  
                         const aspect = logo.width / logo.height;
@@ -599,13 +651,11 @@
                         let dh = maxW / aspect;
                         if (dh > maxH) { dh = maxH; dw = maxH * aspect; }
 
-                        // Center in strip
                         const logoX = width - (sidebarWidth / 2) - (dw / 2);
                         const logoY = height - dh - 50; 
                         
                         ctx.drawImage(logo, logoX, logoY, dw, dh);
                     } catch(e) {
-                         // Fallback
                          ctx.save();
                          ctx.translate(width - (sidebarWidth/2), height - 80);
                          ctx.rotate(Math.PI / 2);
@@ -621,16 +671,6 @@
             };
 
             // React Effects
-            useEffect(() => {
-                if (rawImage) {
-                    // This generates random serials initially or on image change.
-                    // But we want it to update based on dept/role changes too.
-                    // Actually, let's keep random part stable unless explicitly regenerated or app loaded?
-                    // For now, let's keep it simple: generate once on load if needed or use state.
-                    // But the request says "Code assignment based on dept".
-                }
-            }, [rawImage]);
-
             useEffect(() => {
                 if (canvasRef.current) {
                     const timer = setTimeout(() => generateFrontCard(), 5);
@@ -656,7 +696,6 @@
                 }
             };
 
-            // Touch/Mouse Logic
             const handleMouseDown = (e) => {
                 if (!rawImage) return;
                 setIsDragging(true);
@@ -797,7 +836,24 @@
                                                 <option value="Ambassador">Ambassador (Blue)</option>
                                             </select>
                                             <input type="text" placeholder="Name" className="w-full p-2 bg-transparent text-white border-b border-slate-700" value={metaData.name} onChange={e => setMetaData({...metaData, name: e.target.value})} maxLength={15} />
-                                            <input type="text" placeholder="Affiliation (학과명)" className="w-full p-2 bg-transparent text-white" value={metaData.affiliation} onChange={e => setMetaData({...metaData, affiliation: e.target.value})} maxLength={25} />
+                                            
+                                            {/* Department Auto-Complete Input */}
+                                            <div className="relative">
+                                                <input 
+                                                    list="dept-list" 
+                                                    type="text" 
+                                                    placeholder="Affiliation (e.g. 경영학과)" 
+                                                    className="w-full p-2 bg-transparent text-white" 
+                                                    value={metaData.affiliation} 
+                                                    onChange={e => setMetaData({...metaData, affiliation: e.target.value})} 
+                                                    maxLength={40} 
+                                                />
+                                                <datalist id="dept-list">
+                                                    {Object.keys(departmentData).map(dept => (
+                                                        <option key={dept} value={dept} />
+                                                    ))}
+                                                </datalist>
+                                            </div>
                                         </div>
 
                                         <button onClick={saveCard} className="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold shadow-lg">
