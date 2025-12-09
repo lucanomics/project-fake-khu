@@ -332,7 +332,7 @@
             const [authError, setAuthError] = useState('');
             
             const [rawImage, setRawImage] = useState(null);
-            const [logoImage, setLogoImage] = useState('./fakhu_logo.png'); 
+            const [frontLogo, setFrontLogo] = useState('./fakhu_logo.png'); 
             const [backLogo, setBackLogo] = useState('./fakhu_logo_horizontal.png'); 
 
             const [frontImage, setFrontImage] = useState(null); 
@@ -625,7 +625,7 @@
 
                 // 5. Sidebar Text
                 ctx.save();
-                ctx.translate(width - (sidebarWidth / 2) - 10, (height / 2) - 70); 
+                ctx.translate(width - (sidebarWidth / 2) - 10, (height / 2) - 200); 
                 ctx.rotate(Math.PI / 2); 
                 
                 ctx.textAlign = "center";
@@ -636,15 +636,15 @@
                 
                 ctx.fillStyle = "#ffffff";
                 ctx.font = "bold 36px 'Montserrat', sans-serif";
-                ctx.fillText(`${nameText}    |    ${idText}`, 0, 0);
+                ctx.fillText(`${nameText} | ${idText}`, 0, 0);
                 ctx.restore();
                 
                 // 6. Sidebar Logo
                 if (frontLogo) {
                     try {
                         const logo = await loadImage(frontLogo);
-                        const maxW = 140; 
-                        const maxH = 60;  
+                        const maxW = 330; 
+                        const maxH = 330;  
                         const aspect = logo.width / logo.height;
                         
                         let dw = maxW; 
@@ -652,7 +652,7 @@
                         if (dh > maxH) { dh = maxH; dw = maxH * aspect; }
 
                         const logoX = width - (sidebarWidth / 2) - (dw / 2);
-                        const logoY = height - dh - 50; 
+                        const logoY = height - dh - 90; 
                         
                         ctx.drawImage(logo, logoX, logoY, dw, dh);
                     } catch(e) {
