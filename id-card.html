@@ -71,6 +71,7 @@
     <script type="text/babel">
         const { useState, useRef, useEffect } = React;
 
+        // Icons
         const IconWrapper = ({ children, size = 24, className = "" }) => (
             <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>{children}</svg>
         );
@@ -91,8 +92,9 @@
         const Maximize = (props) => (<IconWrapper {...props}><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></IconWrapper>);
         const Minimize = (props) => (<IconWrapper {...props}><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 11h3a2 2 0 0 1 2 2v3"/></IconWrapper>);
         const RotateCcw = (props) => (<IconWrapper {...props}><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></IconWrapper>);
+        const X = (props) => (<IconWrapper {...props}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></IconWrapper>);
 
-        const FlipCard = ({ card, onDelete }) => {
+        const FlipCard = ({ card, onDelete, onClick }) => {
             const [isFlipped, setIsFlipped] = useState(false);
 
             const handleDownload = (e, side) => {
@@ -108,11 +110,16 @@
                 onDelete(card.id);
             };
 
+            const handleClick = () => {
+                if (onClick) onClick(); 
+                else setIsFlipped(!isFlipped); 
+            };
+
             return (
                 <div className="space-y-2">
                     <div 
                         className={`card-container aspect-[2/3] w-full ${isFlipped ? 'flipped' : ''}`}
-                        onClick={() => setIsFlipped(!isFlipped)}
+                        onClick={handleClick}
                     >
                         <div className="card-inner">
                             <div className="card-front">
@@ -145,16 +152,82 @@
             );
         };
 
+        const CardModal = ({ card, onClose, onDelete }) => {
+            const [isFlipped, setIsFlipped] = useState(false);
+
+            useEffect(() => {
+                const handleEsc = (e) => { if (e.key === 'Escape') onClose(); };
+                window.addEventListener('keydown', handleEsc);
+                return () => window.removeEventListener('keydown', handleEsc);
+            }, [onClose]);
+
+            if (!card) return null;
+
+            const handleDownload = (e, side) => {
+                e.stopPropagation(); 
+                const link = document.createElement('a');
+                link.href = side === 'front' ? card.image : card.backImage;
+                link.download = `fake_id_${side}_${card.id}.png`;
+                link.click();
+            };
+
+            return (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in" onClick={onClose}>
+                    <div className="relative w-full max-w-sm" onClick={e => e.stopPropagation()}>
+                        <button onClick={onClose} className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors">
+                            <X size={32} />
+                        </button>
+
+                        <div 
+                            className={`card-container aspect-[2/3] w-full mb-6 ${isFlipped ? 'flipped' : ''}`}
+                            onClick={() => setIsFlipped(!isFlipped)}
+                        >
+                            <div className="card-inner">
+                                <div className="card-front">
+                                    <img src={card.image} className="w-full h-full object-cover rounded-2xl shadow-2xl" alt="Front" />
+                                </div>
+                                <div className="card-back">
+                                    <img src={card.backImage} className="w-full h-full object-cover rounded-2xl shadow-2xl" alt="Back" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex justify-between items-center bg-slate-800 p-4 rounded-2xl shadow-xl">
+                             <div className="flex gap-4">
+                                <button onClick={(e) => handleDownload(e, 'front')} className="flex items-center gap-2 text-white font-bold bg-slate-700 px-4 py-2 rounded-lg hover:bg-slate-600 transition">
+                                    Front <Download size={16}/>
+                                </button>
+                                <button onClick={(e) => handleDownload(e, 'back')} className="flex items-center gap-2 text-white font-bold bg-slate-700 px-4 py-2 rounded-lg hover:bg-slate-600 transition">
+                                    Back <Download size={16}/>
+                                </button>
+                            </div>
+                            <button 
+                                onClick={() => { 
+                                    if(confirm('Delete this card?')) { 
+                                        onDelete(card.id); 
+                                        onClose(); 
+                                    } 
+                                }} 
+                                className="p-2 bg-red-500 rounded-lg text-white hover:bg-red-600 transition"
+                            >
+                                <Trash2 size={20}/>
+                            </button>
+                        </div>
+                         <p className="text-center text-slate-400 mt-4 text-sm">Tap card to flip</p>
+                    </div>
+                </div>
+            );
+        };
+
         const App = () => {
             const [view, setView] = useState('auth'); 
             const [password, setPassword] = useState('');
             const [authError, setAuthError] = useState('');
             
             const [rawImage, setRawImage] = useState(null);
-            // Default Logos
-            const [frontLogo, setFrontLogo] = useState('./fakhu_logo.png');
-            const [backLogo, setBackLogo] = useState('./fakhu_logo_horizontal.png');
-            
+            const [frontLogo, setFrontLogo] = useState('./fakhu_logo.png'); // Front Logo (Small)
+            const [backLogo, setBackLogo] = useState('./fakhu_logo_horizontal.png'); // Back Logo (Horizontal)
+
             const [frontImage, setFrontImage] = useState(null); 
             const [metaData, setMetaData] = useState({ name: '', role: 'Trainee', affiliation: '' });
             const [serialData, setSerialData] = useState({ classNum: '101', serialNum: '000001' });
@@ -164,8 +237,8 @@
                 return saved ? JSON.parse(saved) : [];
             });
             const [statusMsg, setStatusMsg] = useState('');
+            const [selectedCard, setSelectedCard] = useState(null); 
             
-            // Image Editing State
             const [scale, setScale] = useState(1);
             const [position, setPosition] = useState({ x: 0, y: 0 });
             const [isDragging, setIsDragging] = useState(false);
@@ -210,8 +283,36 @@
                     default: return "#F87171";
                 }
             };
+            
+            // Helper for striped text
+            const drawStripedText = (ctx, text, x, y, fontSize) => {
+                ctx.save();
+                ctx.font = `500 ${fontSize}px 'Montserrat', monospace`;
+                
+                const patternCanvas = document.createElement('canvas');
+                patternCanvas.width = 10;
+                patternCanvas.height = 10;
+                const pCtx = patternCanvas.getContext('2d');
+                pCtx.strokeStyle = "rgba(255,255,255,0.9)";
+                pCtx.lineWidth = 2;
+                pCtx.beginPath();
+                pCtx.moveTo(0, 10);
+                pCtx.lineTo(10, 0);
+                pCtx.stroke();
+                
+                const pattern = ctx.createPattern(patternCanvas, 'repeat');
+                ctx.fillStyle = pattern;
+                ctx.fillText(text, x, y);
+                
+                ctx.strokeStyle = "rgba(255,255,255,0.5)";
+                ctx.lineWidth = 1;
+                ctx.strokeText(text, x, y);
+                
+                ctx.restore();
+            };
 
-            // Back Side Generation
+
+            // [Back Side] - Updated for Horizontal Logo
             const generateBackSide = async (serialCode, themeColor) => {
                 const canvas = document.createElement('canvas');
                 const width = 600;
@@ -237,12 +338,13 @@
                 ctx.textAlign = "left";
                 ctx.fillText("F.A.K.E", 40, 80);
 
-                // 3-1. Back Logo (Horizontal)
+                // 3-1. Back Logo (Horizontal - Bigger)
                 if (backLogo) {
                     try {
                         const logo = await loadImage(backLogo);
-                        const logoW = 280; // Width constraint for back logo
-                        const logoH = 80; // Height constraint
+                        // Increase size for horizontal logo
+                        const logoW = 320; 
+                        const logoH = 100; 
                         const aspect = logo.width / logo.height;
                         
                         let drawW = logoW;
@@ -252,7 +354,7 @@
                             drawW = logoH * aspect;
                         }
                         // Draw next to F.A.K.E text
-                        ctx.drawImage(logo, 180, 40, drawW, drawH);
+                        ctx.drawImage(logo, 170, 30, drawW, drawH);
                     } catch(e) { console.warn("Back Logo draw failed"); }
                 }
 
@@ -278,8 +380,9 @@
                     
                     let fontSize = 56;
                     ctx.font = `bold ${fontSize}px 'Montserrat', sans-serif`;
+                    // Limit width to avoid QR area
                     const isNearBottom = currentY > 600;
-                    const maxWidth = isNearBottom ? width - 200 : width - 100;
+                    const maxWidth = isNearBottom ? width - 220 : width - 100;
                     
                     if (isAffiliation) {
                         let words = value.split(' ');
@@ -325,16 +428,14 @@
                     ctx.drawImage(qrImg, width - 180, height - 180, 140, 140);
                 } catch (e) {}
 
-                // Serial Number
+                // Serial Number (Striped)
                 ctx.textAlign = "right";
-                ctx.font = "500 20px 'Montserrat', monospace";
-                ctx.fillStyle = "#999";
-                ctx.fillText(serialCode, width - 40, height - 200);
+                drawStripedText(ctx, serialCode, width - 40, height - 210, 24);
 
                 return canvas.toDataURL("image/png");
             };
 
-            // Front Side Generation
+            // [Front Side] - Updated Layout & Logo
             const generateFrontCard = async () => {
                 const canvas = canvasRef.current;
                 const ctx = canvas.getContext('2d');
@@ -390,9 +491,10 @@
                 ctx.roundRect(width - sidebarWidth, 50, sidebarWidth - 20, height - 100, 40);
                 ctx.fill();
 
-                // 5. Sidebar Text
+                // 5. Sidebar Text (Rotated)
                 ctx.save();
-                ctx.translate(width - (sidebarWidth / 2) - 10, (height / 2) - 50); 
+                // Move text UP to make room for logo
+                ctx.translate(width - (sidebarWidth / 2) - 10, (height / 2) - 70); 
                 ctx.rotate(Math.PI / 2); 
                 
                 ctx.textAlign = "center";
@@ -406,16 +508,18 @@
                 ctx.fillText(`${nameText}    |    ${idText}`, 0, 0);
                 ctx.restore();
                 
-                // 6. Sidebar Logo (Front - Rotated) - BIGGER SIZE
+                // 6. Sidebar Logo (Front) - Rotated & Enlarged
                 ctx.save();
-                ctx.translate(width - (sidebarWidth/2) - 10, height - 100); // Moved up a bit
+                // Position near bottom of sidebar
+                ctx.translate(width - (sidebarWidth/2) - 10, height - 110);
                 ctx.rotate(Math.PI / 2);
                 
                 if (frontLogo) {
                     try {
                         const logo = await loadImage(frontLogo);
-                        const maxW = 160; // Increased width (visually height)
-                        const maxH = 60;  // Increased height (visually width)
+                        // Increase size
+                        const maxW = 180; 
+                        const maxH = 70;  
                         const aspect = logo.width / logo.height;
                         
                         let dw = maxW; 
@@ -424,12 +528,17 @@
 
                         ctx.drawImage(logo, -dw/2, -dh/2, dw, dh);
                     } catch(e) {
-                         // Fallback
+                         // Fallback Text
                          ctx.fillStyle = "rgba(255,255,255,0.7)";
-                         ctx.font = "bold 20px sans-serif";
+                         ctx.font = "bold 24px sans-serif";
                          ctx.textAlign = "center";
                          ctx.fillText("F.A.K.E.", 0, 0);
                     }
+                } else {
+                    ctx.fillStyle = "rgba(255,255,255,0.7)";
+                    ctx.font = "bold 24px sans-serif";
+                    ctx.textAlign = "center";
+                    ctx.fillText("F.A.K.E.", 0, 0);
                 }
                 ctx.restore();
 
@@ -462,12 +571,11 @@
                 }
             };
             
-            // Allow user to upload custom front logo (optional)
             const handleLogoChange = (e) => {
                 const file = e.target.files[0];
                 if (file) {
                     const reader = new FileReader();
-                    reader.onloadend = () => setFrontLogo(reader.result);
+                    reader.onloadend = () => setFrontLogo(reader.result); // Updates Front Logo
                     reader.readAsDataURL(file);
                 }
             };
@@ -601,7 +709,7 @@
                                             </label>
                                             <label className="block w-full py-3 bg-slate-800 rounded-xl text-center cursor-pointer hover:bg-slate-700">
                                                 <input type="file" accept="image/*" onChange={handleLogoChange} className="hidden" />
-                                                <span className="text-sm font-bold flex items-center justify-center gap-2"><UploadCloud size={16}/> {frontLogo ? 'Change Logo' : 'Upload Logo'}</span>
+                                                <span className="text-sm font-bold flex items-center justify-center gap-2"><UploadCloud size={16}/> {frontLogo !== './fakhu_logo.png' ? 'Change Logo' : 'Upload Logo'}</span>
                                             </label>
                                         </div>
 
@@ -628,6 +736,15 @@
                                     </div>
                                 )}
                             </>
+                        )}
+                        
+                        {/* Detail Modal */}
+                        {selectedCard && (
+                            <CardModal 
+                                card={selectedCard} 
+                                onClose={() => setSelectedCard(null)} 
+                                onDelete={deleteCard} 
+                            />
                         )}
                     </main>
                 </div>
