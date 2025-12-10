@@ -432,6 +432,23 @@
                 }
             };
             
+            // Compatibility Helper for Rounded Rectangles (Fixes crash on some browsers)
+            const drawRoundRect = (ctx, x, y, w, h, r) => {
+                if (ctx.roundRect) {
+                    ctx.roundRect(x, y, w, h, r);
+                } else {
+                    if (w < 2 * r) r = w / 2;
+                    if (h < 2 * r) r = h / 2;
+                    ctx.beginPath();
+                    ctx.moveTo(x + r, y);
+                    ctx.arcTo(x + w, y, x + w, y + h, r);
+                    ctx.arcTo(x + w, y + h, x, y + h, r);
+                    ctx.arcTo(x, y + h, x, y, r);
+                    ctx.arcTo(x, y, x + w, y, r);
+                    ctx.closePath();
+                }
+            };
+            
             // Helper for striped text
             const drawStripedText = (ctx, text, x, y, fontSize) => {
                 ctx.save();
@@ -479,7 +496,8 @@
                 ctx.fillStyle = "#ffffff";
                 const margin = 25;
                 ctx.beginPath();
-                ctx.roundRect(margin, 140, width - (margin*2), height - 140 - margin, 30);
+                // [FIX] Use safe drawRoundRect
+                drawRoundRect(ctx, margin, 140, width - (margin*2), height - 140 - margin, 30);
                 ctx.fill();
 
                 // 3. Header: F.A.K.E Text REMOVED and REPLACED with FRONT LOGO logic
@@ -641,7 +659,8 @@
                 // 2. White Container
                 ctx.fillStyle = "white";
                 ctx.beginPath();
-                ctx.roundRect(10, 10, width - 20, height - 20, 30);
+                // [FIX] Use safe drawRoundRect
+                drawRoundRect(ctx, 10, 10, width - 20, height - 20, 30);
                 ctx.fill();
 
                 // 3. User Photo Area
@@ -650,7 +669,8 @@
                 
                 ctx.save();
                 ctx.beginPath();
-                ctx.roundRect(20, 20, viewWidth, height - 40, 25);
+                // [FIX] Use safe drawRoundRect
+                drawRoundRect(ctx, 20, 20, viewWidth, height - 40, 25);
                 ctx.clip();
                 
                 ctx.fillStyle = "#000";
@@ -676,7 +696,8 @@
                 // 4. Sidebar Background
                 ctx.fillStyle = themeColor;
                 ctx.beginPath();
-                ctx.roundRect(width - sidebarWidth, 50, sidebarWidth - 20, height - 100, 40);
+                // [FIX] Use safe drawRoundRect
+                drawRoundRect(ctx, width - sidebarWidth, 50, sidebarWidth - 20, height - 100, 40);
                 ctx.fill();
 
                 // 5. Sidebar Text
@@ -744,7 +765,8 @@
             // React Effects
             useEffect(() => {
                 if (canvasRef.current) {
-                    const timer = setTimeout(() => generateFrontCard(), 5);
+                    // [OPTIMIZATION] Increased debounce time from 5ms to 300ms to prevent lag
+                    const timer = setTimeout(() => generateFrontCard(), 300);
                     return () => clearTimeout(timer);
                 }
             }, [rawImage, metaData, serialData, scale, position, frontLogo]);
@@ -806,32 +828,40 @@
                     setStatusMsg("Please upload a photo first!");
                     return;
                 }
-                setStatusMsg("Generating...");
-                setStatus('processing');
-                await new Promise(r => setTimeout(r, 500));
-
-                const themeColor = getThemeColor(metaData.role);
-                const serialCode = `${serialData.classNum}${serialData.letterCode}#${serialData.serialNum}`;
-                const backImage = await generateBackSide(serialCode, themeColor);
-
-                const newCard = {
-                    id: Date.now(),
-                    image: frontImage,
-                    backImage: backImage,
-                    name: metaData.name,
-                    role: metaData.role,
-                    date: new Date().toLocaleDateString()
-                };
-
-                setMyCards([newCard, ...myCards]);
-                setStatus('success');
-                setStatusMsg("Done!");
                 
-                setTimeout(() => {
+                try {
+                    setStatusMsg("Generating...");
+                    setStatus('processing');
+                    await new Promise(r => setTimeout(r, 500));
+
+                    const themeColor = getThemeColor(metaData.role);
+                    const serialCode = `${serialData.classNum}${serialData.letterCode}#${serialData.serialNum}`;
+                    const backImage = await generateBackSide(serialCode, themeColor);
+
+                    const newCard = {
+                        id: Date.now(),
+                        image: frontImage,
+                        backImage: backImage,
+                        name: metaData.name,
+                        role: metaData.role,
+                        date: new Date().toLocaleDateString()
+                    };
+
+                    setMyCards([newCard, ...myCards]);
+                    setStatus('success');
+                    setStatusMsg("Done!");
+                    
+                    setTimeout(() => {
+                        setStatus('idle');
+                        setMetaData({ name: '', role: 'Trainee', affiliation: '' }); 
+                        setView('gallery');
+                    }, 1000);
+                } catch (error) {
+                    console.error("Card generation failed:", error);
+                    alert("Card generation failed: " + error.message);
                     setStatus('idle');
-                    setMetaData({ name: '', role: 'Trainee', affiliation: '' }); 
-                    setView('gallery');
-                }, 1000);
+                    setStatusMsg("Error occurred");
+                }
             };
 
             const deleteCard = (id) => {
