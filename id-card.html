@@ -462,7 +462,7 @@
             };
 
 
-            // [Back Side] - Updated for Horizontal Logo
+            // [Back Side] - Updated for Horizontal Logo & Name Font Auto-sizing
             const generateBackSide = async (serialCode, themeColor) => {
                 const canvas = document.createElement('canvas');
                 const width = 600;
@@ -482,17 +482,40 @@
                 ctx.roundRect(margin, 140, width - (margin*2), height - 140 - margin, 30);
                 ctx.fill();
 
-                // 3. Header: F.A.K.E Text
-                ctx.fillStyle = "#ffffff";
-                ctx.font = "900 36px 'Montserrat', sans-serif";
-                ctx.textAlign = "left";
-                ctx.fillText("F.A.K.E", 40, 80);
+                // 3. Header: Remove F.A.K.E Text, Draw Front Logo Horizontally
+                // ctx.fillStyle = "#ffffff";
+                // ctx.font = "900 36px 'Montserrat', sans-serif";
+                // ctx.textAlign = "left";
+                // ctx.fillText("F.A.K.E", 40, 80);
 
-                // 3-1. Back Logo
+                if (frontLogo) {
+                    try {
+                        const logo = await loadImage(frontLogo);
+                        const logoMaxH = 90; // Limit height for header
+                        const logoMaxW = 220; // Limit width for header
+                        const aspect = logo.width / logo.height;
+                        
+                        let drawW = logoMaxW; 
+                        let drawH = logoMaxW / aspect;
+                        
+                        // Height Constraint
+                        if (drawH > logoMaxH) {
+                            drawH = logoMaxH;
+                            drawW = logoMaxH * aspect;
+                        }
+
+                        // Draw logo at top left (replacing "F.A.K.E" text)
+                        // Centered vertically in the header area (approx y=30 to 120)
+                        const startY = 30 + (90 - drawH) / 2;
+                        ctx.drawImage(logo, 40, startY, drawW, drawH);
+                    } catch(e) { console.warn("Front Logo draw on back failed"); }
+                }
+
+                // 3-1. Back Logo (Existing Right Side Logo)
                 if (backLogo) {
                     try {
                         const logo = await loadImage(backLogo);
-                        const logoW = 340; 
+                        const logoW = 300; 
                         const logoH = 100; 
                         const aspect = logo.width / logo.height;
                         let drawW = logoW;
@@ -501,7 +524,8 @@
                             drawH = logoH;
                             drawW = logoH * aspect;
                         }
-                        ctx.drawImage(logo, 180, 30, drawW, drawH);
+                        // Adjust position to prevent overlapping if front logo is wide
+                        ctx.drawImage(logo, width - drawW - 40, 30, drawW, drawH);
                     } catch(e) { console.warn("Back Logo draw failed"); }
                 }
 
@@ -551,8 +575,9 @@
                         ctx.fillText(line, startX, testY);
                         currentY = testY + 20; 
                     } else {
+                         // [NEW] Enhanced Auto-scaling for Name
                          while (ctx.measureText(value).width > maxWidth && fontSize > 20) {
-                             fontSize -= 4;
+                             fontSize -= 2; // Decrease step
                              ctx.font = `bold ${fontSize}px 'Montserrat', sans-serif`;
                          }
                         ctx.fillText(value, startX, currentY);
@@ -560,7 +585,7 @@
                     currentY += 120;
                 };
 
-                // Reduced Max Font Size for NAME (56 -> 40)
+                // Reduced Max Font Size for NAME (56 -> 40) but with auto-scale enabled
                 drawField("NAME", metaData.name || "NO NAME", false, 40);
                 drawField("CLASS", metaData.role);
                 
