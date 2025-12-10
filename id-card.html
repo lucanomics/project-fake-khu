@@ -80,9 +80,7 @@
         const departmentData = {
             "Hospitality경영학과": { code: "101", eng: "Dept. of Hospitality Management" },
             "간호학과": { code: "102", eng: "Dept. of Nursing" },
-            "국제건축공학과": { code: "203", eng: "Dept. of Architectural Engineering" },
             "건축공학과": { code: "203", eng: "Dept. of Architectural Engineering" },
-            "국제건축학과": { code: "204", eng: "Dept. of Architecture (5-year)" },
             "건축학과": { code: "204", eng: "Dept. of Architecture (5-year)" },
             "경영학과": { code: "105", eng: "Dept. of Business Administration" },
             "경제학과": { code: "106", eng: "Dept. of Economics" },
@@ -175,7 +173,8 @@
             "환경조경디자인학과": { code: "285", eng: "Dept. of Env. Landscape Design" },
             "환경학및환경공학과": { code: "286", eng: "Dept. of Env. Science & Eng." },
             "회계세무학과": { code: "187", eng: "Dept. of Accounting and Taxation" },
-            "회화과": { code: "188", eng: "Dept. of Painting" }
+            "회화과": { code: "188", eng: "Dept. of Painting" },
+            "Florida State University": { code: "850", eng: "Florida State University" }
         };
 
         // Icons
@@ -320,7 +319,7 @@
                                 <Trash2 size={20}/>
                             </button>
                         </div>
-                         <p className="text-center text-slate-400 mt-6 text-sm font-medium animate-pulse">Tap card to flip • Tap background to close</p>
+                          <p className="text-center text-slate-400 mt-6 text-sm font-medium animate-pulse">Tap card to flip • Tap background to close</p>
                     </div>
                 </div>
             );
@@ -358,7 +357,7 @@
                 localStorage.setItem('fake_id_cards', JSON.stringify(myCards));
             }, [myCards]);
 
-            // [NEW] Logic to update serialData based on Department
+            // [NEW] Logic to update serialData based on Department (Updated for English Support & FSU Exception)
             useEffect(() => {
                 let letter = 'A';
                 if(metaData.role.includes('Trainee')) letter = 'A';
@@ -369,9 +368,29 @@
                 const deptInput = metaData.affiliation.trim();
                 let deptCode = '000'; // Default Code
 
-                // Check DB
-                if (departmentData[deptInput]) {
-                    deptCode = departmentData[deptInput].code;
+                // Helper to find department info by Korean or English name
+                const findDeptInfo = (input) => {
+                    // Regex: Remove "Dept.", "Department", "Div.", "Division" and optional "of" from start
+                    const normalize = (str) => str.toLowerCase().replace(/^(dept\.?|department|div\.?|division)\s+(of\s+)?/i, "").replace(/[^a-z0-9]/g, "");
+                    const target = normalize(input);
+                    
+                    // [NEW] FSU Exception
+                    if (target === 'fsu') return { code: '850', eng: 'Florida State University' };
+
+                    // 1. Direct Korean Key Match
+                    if (departmentData[input]) return departmentData[input];
+                    
+                    // 2. English Value Match
+                    for (const key in departmentData) {
+                        const info = departmentData[key];
+                        if (normalize(info.eng) === target) return info;
+                    }
+                    return null;
+                };
+
+                const matchedDept = findDeptInfo(deptInput);
+                if (matchedDept) {
+                    deptCode = matchedDept.code;
                 }
 
                 // Random 4 digits
@@ -491,7 +510,8 @@
                 let currentY = 220; 
                 ctx.textAlign = "left";
 
-                const drawField = (label, value, isAffiliation = false) => {
+                // Updated drawField to accept maxFontSize
+                const drawField = (label, value, isAffiliation = false, maxFontSize = 56) => {
                     ctx.fillStyle = themeColor;
                     ctx.font = "bold 18px 'Montserrat', sans-serif";
                     ctx.fillText(label, startX, currentY);
@@ -506,7 +526,7 @@
                     currentY += 60;
                     ctx.fillStyle = "#333333";
                     
-                    let fontSize = 56;
+                    let fontSize = maxFontSize;
                     ctx.font = `bold ${fontSize}px 'Montserrat', sans-serif`;
                     const maxWidth = width - 100;
                     
@@ -540,14 +560,36 @@
                     currentY += 120;
                 };
 
-                drawField("NAME", metaData.name || "NO NAME");
+                // Reduced Max Font Size for NAME (56 -> 40)
+                drawField("NAME", metaData.name || "NO NAME", false, 40);
                 drawField("CLASS", metaData.role);
                 
-                // [NEW] Affiliation Logic: Use English Name if in DB
+                // [NEW] Affiliation Logic: Use English Name if in DB (Updated for English Input)
                 let displayAff = metaData.affiliation || "University";
-                const trimAff = metaData.affiliation.trim();
-                if (departmentData[trimAff]) {
-                    displayAff = departmentData[trimAff].eng; // Use English Name
+                const deptInput = metaData.affiliation.trim();
+                
+                // Reuse the finding logic logic (simplified inline or move helper outside)
+                const normalize = (str) => str.toLowerCase().replace(/^(dept\.?|department|div\.?|division)\s+(of\s+)?/i, "").replace(/[^a-z0-9]/g, "");
+                const target = normalize(deptInput);
+                
+                let matchedInfo = departmentData[deptInput]; // Try Korean first
+
+                // [NEW] FSU Exception
+                if (target === 'fsu') {
+                    matchedInfo = { code: '850', eng: 'Florida State University' };
+                }
+
+                if (!matchedInfo) {
+                     for (const key in departmentData) {
+                        if (normalize(departmentData[key].eng) === target) {
+                            matchedInfo = departmentData[key];
+                            break;
+                        }
+                    }
+                }
+
+                if (matchedInfo) {
+                    displayAff = matchedInfo.eng; // Use Official English Name
                 }
                 drawField("AFFILIATION", displayAff, true);
 
@@ -562,7 +604,8 @@
                 } catch (e) {}
 
                 ctx.textAlign = "right";
-                drawStripedText(ctx, serialCode, width - 40, height - 210, 24);
+                // Reduced Font Size for Serial Number (24 -> 18)
+                drawStripedText(ctx, serialCode, width - 40, height - 210, 18);
 
                 return canvas.toDataURL("image/png");
             };
@@ -635,8 +678,23 @@
                 const idText = `${serialData.classNum}${serialData.letterCode}#${serialData.serialNum}`;
                 
                 ctx.fillStyle = "#ffffff";
-                ctx.font = "bold 36px 'Montserrat', sans-serif";
-                ctx.fillText(`${nameText} | ${idText}`, 0, 0);
+                
+                // Reduce base font size for sidebar and add auto-scale logic
+                let sideFontSize = 26; // Reduced from 36
+                ctx.font = `bold ${sideFontSize}px 'Montserrat', sans-serif`;
+                
+                const fullText = `${nameText} | ${idText}`;
+                
+                // Check if text fits in the vertical space (which is effectively height logic here due to rotation)
+                // The available height for text is roughly height - 250 (accounting for logo and padding)
+                const maxSideWidth = height - 250;
+                
+                while (ctx.measureText(fullText).width > maxSideWidth && sideFontSize > 14) {
+                    sideFontSize -= 1;
+                    ctx.font = `bold ${sideFontSize}px 'Montserrat', sans-serif`;
+                }
+
+                ctx.fillText(fullText, 0, 0);
                 ctx.restore();
                 
                 // 6. Sidebar Logo
