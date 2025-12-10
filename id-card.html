@@ -482,51 +482,29 @@
                 ctx.roundRect(margin, 140, width - (margin*2), height - 140 - margin, 30);
                 ctx.fill();
 
-                // 3. Header: Remove F.A.K.E Text, Draw Front Logo Horizontally
-                // ctx.fillStyle = "#ffffff";
-                // ctx.font = "900 36px 'Montserrat', sans-serif";
-                // ctx.textAlign = "left";
-                // ctx.fillText("F.A.K.E", 40, 80);
-
+                // 3. Header: F.A.K.E Text REMOVED and REPLACED with FRONT LOGO logic
+                
+                // Front Logo (Upper Right logic based on request)
                 if (frontLogo) {
                     try {
                         const logo = await loadImage(frontLogo);
-                        const logoMaxH = 90; // Limit height for header
-                        const logoMaxW = 220; // Limit width for header
+                        // Using user requested logic for sizing
+                        const maxW = 330; 
+                        const maxH = 330;  
                         const aspect = logo.width / logo.height;
                         
-                        let drawW = logoMaxW; 
-                        let drawH = logoMaxW / aspect;
-                        
-                        // Height Constraint
-                        if (drawH > logoMaxH) {
-                            drawH = logoMaxH;
-                            drawW = logoMaxH * aspect;
-                        }
+                        let dw = maxW; 
+                        let dh = maxW / aspect;
+                        if (dh > maxH) { dh = maxH; dw = maxH * aspect; }
 
-                        // Draw logo at top left (replacing "F.A.K.E" text)
-                        // Centered vertically in the header area (approx y=30 to 120)
-                        const startY = 30 + (90 - drawH) / 2;
-                        ctx.drawImage(logo, 40, startY, drawW, drawH);
+                        // Positioning at top right for Back Side
+                        // Calculate X to align to right with padding
+                        // We use a safe padding of 40 from right edge
+                        const logoX = width - dw - 40; 
+                        const logoY = 30; // Top padding
+                        
+                        ctx.drawImage(logo, logoX, logoY, dw, dh);
                     } catch(e) { console.warn("Front Logo draw on back failed"); }
-                }
-
-                // 3-1. Back Logo (Existing Right Side Logo)
-                if (backLogo) {
-                    try {
-                        const logo = await loadImage(backLogo);
-                        const logoW = 300; 
-                        const logoH = 100; 
-                        const aspect = logo.width / logo.height;
-                        let drawW = logoW;
-                        let drawH = logoW / aspect;
-                        if (drawH > logoH) {
-                            drawH = logoH;
-                            drawW = logoH * aspect;
-                        }
-                        // Adjust position to prevent overlapping if front logo is wide
-                        ctx.drawImage(logo, width - drawW - 40, 30, drawW, drawH);
-                    } catch(e) { console.warn("Back Logo draw failed"); }
                 }
 
                 // 4. Content Text
@@ -551,6 +529,15 @@
                     ctx.fillStyle = "#333333";
                     
                     let fontSize = maxFontSize;
+
+                    // [NEW] Enhanced Dynamic Font Sizing for NAME
+                    // If label is NAME, determine starting font size based on length
+                    if (label === 'NAME') {
+                         if (value.length <= 3) fontSize = 80;
+                         else if (value.length <= 5) fontSize = 70;
+                         else fontSize = 56;
+                    }
+
                     ctx.font = `bold ${fontSize}px 'Montserrat', sans-serif`;
                     const maxWidth = width - 100;
                     
@@ -575,9 +562,10 @@
                         ctx.fillText(line, startX, testY);
                         currentY = testY + 20; 
                     } else {
-                         // [NEW] Enhanced Auto-scaling for Name
+                         // [NEW] Enhanced Auto-scaling for generic fields (including Name)
+                         // This ensures even if we started large, we scale down if it doesn't fit width
                          while (ctx.measureText(value).width > maxWidth && fontSize > 20) {
-                             fontSize -= 2; // Decrease step
+                             fontSize -= 2; 
                              ctx.font = `bold ${fontSize}px 'Montserrat', sans-serif`;
                          }
                         ctx.fillText(value, startX, currentY);
@@ -585,8 +573,8 @@
                     currentY += 120;
                 };
 
-                // Reduced Max Font Size for NAME (56 -> 40) but with auto-scale enabled
-                drawField("NAME", metaData.name || "NO NAME", false, 40);
+                // Draw fields
+                drawField("NAME", metaData.name || "NO NAME", false, 56); // Base is 56, but logic inside overrides it
                 drawField("CLASS", metaData.role);
                 
                 // [NEW] Affiliation Logic: Use English Name if in DB (Updated for English Input)
