@@ -449,17 +449,17 @@
         </div>
         
         <div class="bento-grid">
-            <!-- Card 1: Risk Exposure -->
+            <!-- Card 1: Risk Exposure (Heavy Users) -->
             <div class="bento-card col-span-1" style="align-items: center; text-align: center; justify-content: space-between;">
-                <span class="stat-label" style="align-self: flex-start;" data-lang="stat_risk_label"><i class="fas fa-exclamation-circle"></i> 위험 노출도</span>
+                <span class="stat-label" style="align-self: flex-start;" data-lang="stat_risk_label"><i class="fas fa-exclamation-circle"></i> 위험 노출도 (Heavy Users)</span>
                 <div class="chart-wrapper">
                     <canvas id="riskChart"></canvas>
                 </div>
                 <div class="stat-title" style="margin-top: 0.5rem; margin-bottom: 0;">
-                    <span data-lang="stat_risk_main">주 1회 이상 목격</span><br>
-                    <span style="color:var(--danger); font-size: 1.8rem;">66.9%</span>
+                    <span data-lang="stat_risk_main">헤비 유저 목격 경험</span><br>
+                    <span style="color:var(--danger); font-size: 1.8rem;">66.7%</span>
                 </div>
-                <p class="stat-insight" data-lang="stat_risk_desc">3명 중 2명은 매주 허위정보를 목격해요. 허위정보 피해는 더 이상 남의 일이 아닙니다.</p>
+                <p class="stat-insight" data-lang="stat_risk_desc">사용 시간이 길수록 위험 노출이 급증합니다. 헤비 유저 3명 중 2명은 오용을 목격했습니다.</p>
             </div>
 
             <!-- Card 2: Institutional Void -->
@@ -480,28 +480,28 @@
                 </div>
 
                 <p class="stat-insight" style="margin-top: 0.5rem; opacity: 0.7;" data-lang="stat_void_desc">
-                    시스템은 있지만, 우리의 일상과는 연결되지 못하고 있어요. 우리 모두 '사각지대'에 놓여있죠.
+                    96.6%가 처벌에 동의하지만, 정작 신고 채널 인지율은 6.8%로 참담한 수준입니다.
                 </p>
             </div>
 
-            <!-- Card 3: Witness Experience -->
+            <!-- Card 3: Witness Experience (Total) -->
             <div class="bento-card col-span-1" style="align-items: center; text-align: center; justify-content: space-between;">
-                <span class="stat-label" style="align-self: flex-start;" data-lang="stat_witness_label"><i class="fas fa-eye"></i> 직접 목격 경험</span>
+                <span class="stat-label" style="align-self: flex-start;" data-lang="stat_witness_label"><i class="fas fa-eye"></i> 직접 목격 경험 (전체)</span>
                 <div class="chart-wrapper">
                     <canvas id="witnessChart"></canvas>
                 </div>
-                <p class="stat-insight" style="margin-top: 0.5rem;" data-lang="stat_witness_desc">가짜뉴스나 딥페이크 등 비윤리적 행위를 직접 목격한 경험도 35.6%나 돼요. 생각보다 가까이에 있답니다.</p>
+                <p class="stat-insight" style="margin-top: 0.5rem;" data-lang="stat_witness_desc">전체 응답자의 22.9%가 AI 비윤리적 행위를 직접 경험하거나 목격했습니다.</p>
             </div>
 
-            <!-- Card 4: Universal Risk -->
+            <!-- Card 4: Light User Risk (Replaced Title based on new insight flow, keeping structure) -->
             <div class="bento-card col-span-1" style="align-items: center; text-align: center; justify-content: space-between;">
-                <span class="stat-label" style="align-self: flex-start;" data-lang="stat_light_label"><i class="fas fa-user-shield"></i> 라이트 유저 위험도</span>
+                <span class="stat-label" style="align-self: flex-start;" data-lang="stat_light_label"><i class="fas fa-user-shield"></i> 책임 소재 인식</span>
                 <div class="chart-wrapper">
                     <canvas id="universalRiskChart"></canvas>
                 </div>
                 <p class="stat-insight" style="margin-top: 0.5rem; color: var(--danger); font-weight: 600;">
-                    <span data-lang="stat_light_title">⚠️ 안전지대는 없다</span><br>
-                    <span style="font-weight: 400; font-size: 0.9rem; color: #495057;" data-lang="stat_light_desc">하루 2시간 미만 쓰는 '라이트 유저'조차 38%가 유해 콘텐츠를 목격했어요. 잠깐 쓴다고 안전하지 않습니다.</span>
+                    <span data-lang="stat_light_title">⚠️ 개인의 책임 강조</span><br>
+                    <span style="font-weight: 400; font-size: 0.9rem; color: #495057;" data-lang="stat_light_desc">플랫폼(10.2%)보다 최초 생성자(89.8%)에게 압도적인 책임을 묻고 있습니다.</span>
                 </p>
             </div>
 
@@ -621,7 +621,7 @@
                     <option value="unethical" data-lang="opt_unethical">🚫 윤리적 위반 인식</option>
                     <option value="responsibility" data-lang="opt_responsibility">⚖️ 책임 소재 인식</option>
                     <option value="deepfake" data-lang="opt_deepfake">👮 딥페이크 처벌 동의</option>
-                    <option value="frequency" data-lang="opt_frequency">👀 허위정보 목격 빈도</option>
+                    <option value="frequency" data-lang="opt_frequency">👀 위험 노출과 사용 시간</option>
                     <option value="reporting" data-lang="opt_reporting">📢 신고 채널 인지도</option>
                 </select>
 
@@ -702,10 +702,6 @@
 
     <script>
         // --- Language Translation Logic ---
-        // Complaints Addressed:
-        // #1: Natural Chinese (Kawaii yet pro)
-        // #2: Tone (Friendly polite)
-        // #4: Inclusive wording for SA context ("Campus/Community" instead of "HQ")
         const translations = {
             ko: {
                 link_tk1: "https://docs.google.com/document/d/1pkKRHfcO6w9bk1Rl5u-SeKMVp9czQWCRlFWCxAS8Ivk/edit?usp=sharing",
@@ -719,11 +715,11 @@
                 hero_btn: "내 AI 사용 유형 진단해 보기",
                 stats_title: "데이터로 본 현실",
                 stats_subtitle: "2025년 11월, 대학생 118명의 목소리를 조사하였습니다.",
-                stat_risk_label: "위험 노출도", stat_risk_main: "주 1회 이상 목격", stat_risk_desc: "3명 중 2명은 매주 허위정보를 목격해요.",
-                stat_void_label: "안전망 인식", stat_void_main: "\"신고처를 전혀 몰라요\"", stat_void_desc: "시스템은 있지만, 우리 일상과는 연결되지 못하고 있어요.",
-                stat_witness_label: "직접 목격 경험", stat_witness_desc: "가짜뉴스나 딥페이크 등을 직접 목격한 경험도 35.6%나 돼요.",
-                stat_light_label: "라이트 유저 위험도", stat_light_title: "⚠️ 안전지대는 없다",
-                stat_light_desc: "하루 2시간 미만 쓰는 '라이트 유저'조차 38%가 유해 콘텐츠를 목격했어요.",
+                stat_risk_label: "위험 노출도 (Heavy Users)", stat_risk_main: "헤비 유저 목격 경험", stat_risk_desc: "사용 시간이 길수록 위험 노출이 급증합니다. 헤비 유저 3명 중 2명은 오용을 목격했습니다.",
+                stat_void_label: "안전망 인식", stat_void_main: "\"신고처를 전혀 몰라요\"", stat_void_desc: "96.6%가 처벌에 동의하지만, 정작 신고 채널 인지율은 6.8%로 참담한 수준입니다.",
+                stat_witness_label: "직접 목격 경험 (전체)", stat_witness_desc: "전체 응답자의 22.9%가 AI 비윤리적 행위를 직접 경험하거나 목격했습니다.",
+                stat_light_label: "책임 소재 인식", stat_light_title: "⚠️ 개인의 책임 강조",
+                stat_light_desc: "플랫폼(10.2%)보다 최초 생성자(89.8%)에게 압도적인 책임을 묻고 있습니다.",
                 btn_full_report: "📊 설문 결과 전체 상세 보기",
                 toolkit_title: "F.A.K.E. 툴킷 창고",
                 toolkit_subtitle: "레벨에 맞는 장비를 챙겨서 디지털 세상을 안전하게 항해해 보세요!",
@@ -742,7 +738,7 @@
                 report_modal_title: "데이터 상세 분석 리포트", report_modal_instr: "궁금한 주제를 선택해 보세요.",
                 report_insight_label: "💡 분석 인사이트:",
                 opt_tools: "🛠️ AI 도구 사용 비율", opt_purpose: "🤖 AI 사용 목적", opt_unethical: "🚫 윤리적 위반 인식",
-                opt_responsibility: "⚖️ 책임 소재 인식", opt_deepfake: "👮 딥페이크 처벌 동의", opt_frequency: "👀 허위정보 목격 빈도", opt_reporting: "📢 신고 채널 인지도",
+                opt_responsibility: "⚖️ 책임 소재 인식", opt_deepfake: "👮 딥페이크 처벌 동의", opt_frequency: "👀 위험 노출과 사용 시간", opt_reporting: "📢 신고 채널 인지도",
                 test_header: "내 AI 윤리 점수 진단 (Self-Check)",
                 q1_title: "Q1. 과제할 때 AI의 답변을 어떻게 활용하시나요?", q1_opt1: "🔍 팩트체크는 필수! 신뢰할 수 있는 출처로 교차 검증해요.", q1_opt2: "🤔 그럴듯하면 일단 쓰고 봐요.", q1_opt3: "⚡ 복사+붙여넣기 1초 컷!",
                 q2_title: "Q2. 친구의 딥페이크 사진이 단톡방에 올라왔다면?", q2_opt1: "🚨 즉시 신고하고 친구들에게 공유 중단을 요청해요.", q2_opt2: "🤐 찜찜하지만 조용히 방을 나가요.", q2_opt3: "🤣 \"이거 진짜 같다\"며 다른 방에 공유해요.",
@@ -765,10 +761,10 @@
                 hero_desc: "Project F.A.K.E.: An AI Literacy Initiative for a Safer Digital Campus.",
                 hero_btn: "Start AI Ethics Self-Check",
                 stats_title: "Reality in Data", stats_subtitle: "Survey of 118 students in Nov 2025.",
-                stat_risk_label: "Risk Exposure", stat_risk_main: "Weekly Witness", stat_risk_desc: "2 out of 3 students witness fake info weekly.",
-                stat_void_label: "Safety Net Awareness", stat_void_main: "\"Don't Know Where to Report\"", stat_void_desc: "The system exists but is disconnected from our daily lives.",
-                stat_witness_label: "Direct Witness", stat_witness_desc: "35.6% have directly witnessed unethical acts like deepfakes.",
-                stat_light_label: "Light User Risk", stat_light_title: "⚠️ No Safety Zone", stat_light_desc: "Even 'Light Users' (<2hrs/day) aren't safe—38% saw harmful content.",
+                stat_risk_label: "Risk Exposure (Heavy Users)", stat_risk_main: "Heavy Users Witnessed", stat_risk_desc: "Risk exposure spikes with usage time. 2 out of 3 heavy users have witnessed abuse.",
+                stat_void_label: "Safety Net Awareness", stat_void_main: "\"Don't Know Where to Report\"", stat_void_desc: "96.6% agree on punishment, yet reporting channel awareness is abysmal at 6.8%.",
+                stat_witness_label: "Direct Witness (Total)", stat_witness_desc: "22.9% of total respondents have directly witnessed unethical AI acts.",
+                stat_light_label: "Responsibility Perception", stat_light_title: "⚠️ Individual Responsibility", stat_light_desc: "Overwhelming responsibility is placed on creators (89.8%) rather than platforms (10.2%).",
                 btn_full_report: "📊 View Full Survey Report",
                 toolkit_title: "F.A.K.E. Toolkit Inventory", toolkit_subtitle: "Equip yourself to navigate the digital world safely!",
                 tk1_title: "Lv.1 Survival Toolkit", tk1_desc: "Essential kit to survive in the dangerous AI jungle.", tk1_item1: "Basic Terminology PDF", tk1_item2: "Emergency Contact List",
@@ -779,7 +775,7 @@
                 pledge_title: "Stand With Us", pledge_desc: "\"I act responsibly with AI, build stronger communities,<br>and stand with digital crime victims!\"",
                 pledge_btn_sign: "Sign the Pledge", pledge_btn_id: "Get F.A.K.E. ID",
                 report_modal_title: "Detailed Data Report", report_modal_instr: "Select a topic to explore.", report_insight_label: "💡 Insight:",
-                opt_tools: "🛠️ AI Tool Usage", opt_purpose: "🤖 Usage Purpose", opt_unethical: "🚫 Unethical Acts", opt_responsibility: "⚖️ Responsibility", opt_deepfake: "👮 Deepfake Punishment", opt_frequency: "👀 Witness Frequency", opt_reporting: "📢 Reporting Awareness",
+                opt_tools: "🛠️ AI Tool Usage", opt_purpose: "🤖 Usage Purpose", opt_unethical: "🚫 Unethical Acts", opt_responsibility: "⚖️ Responsibility", opt_deepfake: "👮 Deepfake Punishment", opt_frequency: "👀 Exposure vs Usage", opt_reporting: "📢 Reporting Awareness",
                 test_header: "My AI Ethics Score (Self-Check)",
                 q1_title: "Q1. How do you use AI for assignments?", q1_opt1: "🔍 Fact-checking is a must! Verify with reliable sources.", q1_opt2: "🤔 If it looks okay, I just use it.", q1_opt3: "⚡ Copy & Paste in 1 second!",
                 q2_title: "Q2. If a friend's deepfake photo appears in a chat?", q2_opt1: "🚨 Report immediately and ask to stop sharing.", q2_opt2: "🤐 It feels wrong, but I just leave silently.", q2_opt3: "🤣 I share it saying \"This looks real\".",
@@ -792,7 +788,7 @@
                 res_lv2_title: "Junior Sheriff", res_lv2_desc: "Ready at heart, but need gear? Protect yourself first!", res_lv2_toolkit: "Lv.2 Junior Sheriff Toolkit",
                 res_lv1_title: "Digital Stray", res_lv1_desc: "Lost in the jungle? Survival knowledge is urgent!", res_lv1_toolkit: "Lv.1 Survival Toolkit"
             },
-            cn: { // Complaint #1 & #2 Fixed: More natural, cute, yet educational tone
+            cn: {
                 link_tk1: "https://docs.google.com/document/d/1feLm0awxVFzE3NZtJk8tfAfkF_-5lj4TsYDVB8GrR2Q/edit?usp=sharing",
                 link_tk2: "https://docs.google.com/document/d/1PmiMVFr3x8biYGdPuqmhlR-UOPc4NnXDmVkFCy0pH1g/edit?usp=sharing",
                 link_tk3: "https://docs.google.com/document/d/1J3PC4-QIea6I9oIUyC6J53Ip1sxAe3NBxFH__4SIREc/edit?usp=sharing",
@@ -802,10 +798,10 @@
                 hero_desc: "为了安全的数字校园，大学生AI素养计划 F.A.K.E.，现在启动！✨",
                 hero_btn: "测试我的AI使用人格",
                 stats_title: "数据不说谎", stats_subtitle: "2025年11月，倾听了118名同学的声音。",
-                stat_risk_label: "危险指数", stat_risk_main: "每周至少看到1次", stat_risk_desc: "3个同学里就有2个每周都看到假消息。这已经不是别人的事了。",
-                stat_void_label: "安全网在哪里", stat_void_main: "“完全不知道<br>去哪里举报”", stat_void_desc: "虽然有系统，但离我们的生活太远了。",
-                stat_witness_label: "亲眼目睹", stat_witness_desc: "35.6%的同学亲眼见过假新闻或Deepfake。比想象中更近哦。",
-                stat_light_label: "轻度用户也危险", stat_light_title: "⚠️ 没有安全区", stat_light_desc: "哪怕每天只用不到2小时，也有38%的人看到了有害内容。",
+                stat_risk_label: "危险指数 (重度用户)", stat_risk_main: "重度用户目睹经历", stat_risk_desc: "使用时间越长，风险暴露激增。3名重度用户中就有2名目睹过滥用。",
+                stat_void_label: "安全网意识", stat_void_main: "“完全不知道举报渠道”", stat_void_desc: "96.6%赞成处罚，但举报渠道的认知率仅为6.8%，情况堪忧。",
+                stat_witness_label: "亲眼目睹 (全体)", stat_witness_desc: "22.9%的受访者曾直接经历或目睹AI不道德行为。",
+                stat_light_label: "责任归属认知", stat_light_title: "⚠️ 强调个人责任", stat_light_desc: "相比平台(10.2%)，绝大多数人认为最初制作者(89.8%)应承担责任。",
                 btn_full_report: "📊 查看完整报告",
                 toolkit_title: "F.A.K.E. 装备库", toolkit_subtitle: "带上适合你的装备，在数字世界安全探险吧！",
                 tk1_title: "Lv.1 求生工具包", tk1_desc: "在危险的AI丛林里活下来的必备套装！", tk1_item1: "超易懂的AI术语词典", tk1_item2: "紧急联络通讯录",
@@ -816,7 +812,7 @@
                 pledge_title: "请和我们在一起", pledge_desc: "“我承诺安全使用AI，守护我们的校园社区，<br>并与数字犯罪受害者站在一起！”",
                 pledge_btn_sign: "签名支持", pledge_btn_id: "领取 F.A.K.E. ID",
                 report_modal_title: "详细数据报告", report_modal_instr: "选一个感兴趣的话题看看吧。", report_insight_label: "💡 发现:",
-                opt_tools: "🛠️ 大家都在用什么AI?", opt_purpose: "🤖 用AI做什么?", opt_unethical: "🚫 这些行为不太好吧?", opt_responsibility: "⚖️ 谁该负责?", opt_deepfake: "👮 Deepfake该罚吗?", opt_frequency: "👀 经常看到假消息吗?", opt_reporting: "📢 知道怎么举报吗?",
+                opt_tools: "🛠️ AI工具使用率", opt_purpose: "🤖 AI使用目的", opt_unethical: "🚫 不道德行为认知", opt_responsibility: "⚖️ 责任归属", opt_deepfake: "👮 Deepfake处罚", opt_frequency: "👀 风险暴露与时长", opt_reporting: "📢 举报渠道认知",
                 test_header: "我的AI伦理分数 (Self-Check)",
                 q1_title: "Q1. 做作业时怎么用AI？", q1_opt1: "🔍 必须核实！我会找可靠来源确认一遍。", q1_opt2: "🤔 看起来没问题就先用着。", q1_opt3: "⚡ 复制粘贴，1秒搞定！",
                 q2_title: "Q2. 群里出现了朋友的Deepfake照片？", q2_opt1: "🚨 马上举报，并叫大家别再传了。", q2_opt2: "🤐 虽然觉得不对劲，但悄悄退群保平安。", q2_opt3: "🤣 “这也太像了吧” 转发给别的群。",
@@ -829,7 +825,7 @@
                 res_lv2_title: "新手警长", res_lv2_desc: "有心想做，但缺装备？<br>先学会怎么保护自己吧！", res_lv2_toolkit: "Lv.2 新手警长工具包",
                 res_lv1_title: "数字迷路人", res_lv1_desc: "在危险的丛林里迷路了吗？<br>你需要赶紧补充生存知识！", res_lv1_toolkit: "Lv.1 求生工具包"
             },
-            jp: { // Complaint #2: Polite but Kawaii
+            jp: {
                 link_tk1: "https://docs.google.com/document/d/1feLm0awxVFzE3NZtJk8tfAfkF_-5lj4TsYDVB8GrR2Q/edit?usp=sharing",
                 link_tk2: "https://docs.google.com/document/d/1PmiMVFr3x8biYGdPuqmhlR-UOPc4NnXDmVkFCy0pH1g/edit?usp=sharing",
                 link_tk3: "https://docs.google.com/document/d/1J3PC4-QIea6I9oIUyC6J53Ip1sxAe3NBxFH__4SIREc/edit?usp=sharing",
@@ -839,10 +835,10 @@
                 hero_desc: "安全なデジタルキャンパスのためのAIリテラシープロジェクト F.A.K.E.、はじまります✨",
                 hero_btn: "AIタイプ診断をやってみる",
                 stats_title: "データで見る現実", stats_subtitle: "2025年11月、118人の大学生の声を聞きました。",
-                stat_risk_label: "リスク露出度", stat_risk_main: "週1回以上目撃", stat_risk_desc: "3人に2人は毎週フェイク情報を見ています。もう他人事じゃありません💦",
-                stat_void_label: "安全網はある？", stat_void_main: "「通報先？全然知りません…」", stat_void_desc: "システムはあるけど、日常とは繋がっていません。",
-                stat_witness_label: "目撃経験", stat_witness_desc: "フェイクニュースやディープフェイクを直接見た人も35.6%。思ったより身近にあります。",
-                stat_light_label: "ライトユーザーも危険", stat_light_title: "⚠️ 安全地帯はない", stat_light_desc: "1日2時間未満の利用でも、38%が有害なコンテンツを目撃しました。",
+                stat_risk_label: "リスク露出度 (ヘビーユーザー)", stat_risk_main: "ヘビーユーザーの目撃経験", stat_risk_desc: "利用時間が長いほどリスクが急増します。ヘビーユーザーの3人に2人は悪用を目撃しました。",
+                stat_void_label: "安全網の認識", stat_void_main: "「通報先？全然知りません」", stat_void_desc: "96.6%が処罰に同意していますが、通報先の認知率は6.8%と絶望的です。",
+                stat_witness_label: "目撃経験 (全体)", stat_witness_desc: "全回答者の22.9%が、AIによる非倫理的な行為を直接経験または目撃しました。",
+                stat_light_label: "責任の所在", stat_light_title: "⚠️ 個人の責任を強調", stat_light_desc: "PF(10.2%)より、最初の作成者(89.8%)に圧倒的な責任があると考えています。",
                 btn_full_report: "📊 詳細レポートを見る",
                 toolkit_title: "F.A.K.E. アイテム倉庫", toolkit_subtitle: "レベルに合った装備を整えて、デジタル世界を安全に冒険しよう！",
                 tk1_title: "Lv.1 サバイバルキット", tk1_desc: "危険なAIジャングルで生き残るための必須アイテムだよ！", tk1_item1: "やさしいAI用語集", tk1_item2: "緊急連絡先リスト",
@@ -853,7 +849,7 @@
                 pledge_title: "一緒に連帯してください", pledge_desc: "「私はAIを正しく使い、キャンパスを守り、<br>デジタル犯罪の被害者と連帯するデジタル市民です！」",
                 pledge_btn_sign: "署名して参加", pledge_btn_id: "F.A.K.E. IDを発行",
                 report_modal_title: "データ詳細分析", report_modal_instr: "気になるトピックを選んでね。", report_insight_label: "💡 インサイト:",
-                opt_tools: "🛠️ みんな使ってるツール", opt_purpose: "🤖 AIを使う目的", opt_unethical: "🚫 それってダメじゃない？", opt_responsibility: "⚖️ 誰の責任？", opt_deepfake: "👮 処罰に賛成？", opt_frequency: "👀 どれくらい目撃する？", opt_reporting: "📢 通報先、知ってる？",
+                opt_tools: "🛠️ AIツール使用率", opt_purpose: "🤖 AI使用目的", opt_unethical: "🚫 非倫理的行為の認識", opt_responsibility: "⚖️ 責任の所在", opt_deepfake: "👮 処罰への同意", opt_frequency: "👀 リスク露出と時間", opt_reporting: "📢 通報先の認知度",
                 test_header: "私のAI倫理スコア (Self-Check)",
                 q1_title: "Q1. 課題でAIの回答、どう使う？", q1_opt1: "🔍 ファクトチェック必須！信頼できるソースで確認する。", q1_opt2: "🤔 っぽかったら、とりあえず使っちゃう。", q1_opt3: "⚡ コピペで1秒カット！",
                 q2_title: "Q2. 友達のディープフェイク写真が流れてきたら？", q2_opt1: "🚨 すぐに通報して、共有をやめるよう言う。", q2_opt2: "🤐 モヤッとするけど、そっと退出。", q2_opt3: "🤣 「本物みたいw」って拡散しちゃう。",
@@ -876,10 +872,10 @@
                 hero_desc: "Proyecto F.A.K.E.: Alfabetización en IA para un campus digital seguro.",
                 hero_btn: "Iniciar test de ética de IA",
                 stats_title: "Realidad en Datos", stats_subtitle: "Encuesta a 118 estudiantes en nov. 2025.",
-                stat_risk_label: "Exposición al Riesgo", stat_risk_main: "Testigo Semanal", stat_risk_desc: "2 de cada 3 estudiantes ven información falsa semanalmente.",
-                stat_void_label: "Red de Seguridad", stat_void_main: "\"No sé dónde reportar\"", stat_void_desc: "El sistema existe, pero está desconectado de nuestra vida diaria.",
-                stat_witness_label: "Testigo Directo", stat_witness_desc: "El 35.6% ha presenciado directamente deepfakes o noticias falsas.",
-                stat_light_label: "Riesgo de Usuario Ligero", stat_light_title: "⚠️ Sin Zona Segura", stat_light_desc: "Incluso con <2h/día, el 38% vio contenido dañino.",
+                stat_risk_label: "Exposición al Riesgo (Heavy)", stat_risk_main: "Testigo (Usuario Intensivo)", stat_risk_desc: "El riesgo aumenta con el uso. 2 de cada 3 usuarios intensivos fueron testigos de abusos.",
+                stat_void_label: "Red de Seguridad", stat_void_main: "\"No sé dónde reportar\"", stat_void_desc: "El 96.6% apoya el castigo, pero el conocimiento del canal de denuncia es pésimo (6.8%).",
+                stat_witness_label: "Testigo Directo (Total)", stat_witness_desc: "El 22.9% de todos los encuestados ha presenciado actos poco éticos de IA.",
+                stat_light_label: "Percepción de Responsabilidad", stat_light_title: "⚠️ Responsabilidad Individual", stat_light_desc: "Se culpa abrumadoramente al creador original (89.8%) más que a la plataforma (10.2%).",
                 btn_full_report: "📊 Ver Informe Completo",
                 toolkit_title: "Inventario F.A.K.E.", toolkit_subtitle: "¡Equípate para navegar seguro por el mundo digital!",
                 tk1_title: "Lv.1 Kit de Supervivencia", tk1_desc: "Kit esencial para la jungla de la IA.", tk1_item1: "Glosario Básico", tk1_item2: "Contactos de Emergencia",
@@ -890,7 +886,7 @@
                 pledge_title: "Únete a Nosotros", pledge_desc: "\"¡Soy un ciudadano digital que usa la IA responsablemente<br>y apoya a las víctimas de delitos digitales!\"",
                 pledge_btn_sign: "Firmar el Compromiso", pledge_btn_id: "Obtener ID F.A.K.E.",
                 report_modal_title: "Informe Detallado", report_modal_instr: "Selecciona un tema.", report_insight_label: "💡 Insight:",
-                opt_tools: "🛠️ Herramientas de IA", opt_purpose: "🤖 Propósito de Uso", opt_unethical: "🚫 Actos Poco Éticos", opt_responsibility: "⚖️ Responsabilidad", opt_deepfake: "👮 Castigo a Deepfakes", opt_frequency: "👀 Frecuencia", opt_reporting: "📢 Dónde Denunciar",
+                opt_tools: "🛠️ Herramientas de IA", opt_purpose: "🤖 Propósito de Uso", opt_unethical: "🚫 Actos Poco Éticos", opt_responsibility: "⚖️ Responsabilidad", opt_deepfake: "👮 Castigo a Deepfakes", opt_frequency: "👀 Exposición vs Uso", opt_reporting: "📢 Dónde Denunciar",
                 test_header: "Mi Puntuación de Ética (Self-Check)",
                 q1_title: "P1. ¿Cómo usas la IA para tareas?", q1_opt1: "🔍 ¡Verifico todo con fuentes confiables!", q1_opt2: "🤔 Si se ve bien, lo uso.", q1_opt3: "⚡ ¡Copiar y pegar en 1 segundo!",
                 q2_title: "P2. ¿Si ves un deepfake de un amigo?", q2_opt1: "🚨 Reporto y pido que no compartan.", q2_opt2: "🤐 Me salgo del chat en silencio.", q2_opt3: "🤣 Lo comparto diciendo 'Parece real'.",
@@ -903,7 +899,7 @@
                 res_lv2_title: "Sheriff Junior", res_lv2_desc: "¿Listo de corazón pero sin equipo? ¡Protégete primero!", res_lv2_toolkit: "Lv.2 Kit de Sheriff Junior",
                 res_lv1_title: "Extraviado Digital", res_lv1_desc: "¿Perdido en la jungla? ¡Necesitas saber sobrevivir!", res_lv1_toolkit: "Lv.1 Kit de Supervivencia"
             },
-            af: { // Complaint #4: Generalized wording for SA context
+            af: {
                 link_tk1: "https://docs.google.com/document/d/1feLm0awxVFzE3NZtJk8tfAfkF_-5lj4TsYDVB8GrR2Q/edit?usp=sharing",
                 link_tk2: "https://docs.google.com/document/d/1PmiMVFr3x8biYGdPuqmhlR-UOPc4NnXDmVkFCy0pH1g/edit?usp=sharing",
                 link_tk3: "https://docs.google.com/document/d/1J3PC4-QIea6I9oIUyC6J53Ip1sxAe3NBxFH__4SIREc/edit?usp=sharing",
@@ -913,10 +909,10 @@
                 hero_desc: "Projek F.A.K.E.: 'n KI-geletterdheidsinisiatief vir 'n Veiliger Digitale Gemeenskap.",
                 hero_btn: "Begin My KI-etiek Selfdiagnose",
                 stats_title: "Realiteit in Data", stats_subtitle: "Opname van 118 studente in Nov 2025.",
-                stat_risk_label: "Risiko Blootstelling", stat_risk_main: "Weeklikse Getuie", stat_risk_desc: "2 uit 3 studente sien weekliks vals inligting.",
-                stat_void_label: "Veiligheidsnet", stat_void_main: "\"Weet Nie Waar Rapporteer\"", stat_void_desc: "Die stelsel bestaan, maar is ontkoppel van ons daaglikse lewens.",
-                stat_witness_label: "Direkte Getuie", stat_witness_desc: "35.6% het onetiese dade soos deepfakes direk aanskou.",
-                stat_light_label: "Ligte Gebruiker Risiko", stat_light_title: "⚠️ Geen Veilige Sone", stat_light_desc: "Selfs gebruikers wat <2h/dag spandeer is nie veilig nie.",
+                stat_risk_label: "Risiko Blootstelling (Heavy)", stat_risk_main: "Heavy Users Getuie", stat_risk_desc: "Risiko styg met gebruik. 2 uit 3 swaar gebruikers het misbruik aanskou.",
+                stat_void_label: "Veiligheidsnet", stat_void_main: "\"Weet Nie Waar Rapporteer\"", stat_void_desc: "96.6% stem saam met straf, maar bewustheid van kanale is uiters laag (6.8%).",
+                stat_witness_label: "Direkte Getuie (Totaal)", stat_witness_desc: "22.9% van totale respondente het onetiese KI-dade aanskou.",
+                stat_light_label: "Verantwoordelikheid", stat_light_title: "⚠️ Individuele Verantwoordelikheid", stat_light_desc: "Oorweldigende verantwoordelikheid word op skeppers (89.8%) geplaas eerder as platforms (10.2%).",
                 btn_full_report: "📊 Sien Volledige Verslag",
                 toolkit_title: "F.A.K.E. Inventaris", toolkit_subtitle: "Rus jouself toe om die digitale wêreld veilig te navigeer!",
                 tk1_title: "Lv.1 Oorlewingskit", tk1_desc: "Noodsaaklike kit om in die KI-oerwoud te oorleef.", tk1_item1: "Basiese Terminologie", tk1_item2: "Noodkontaklys",
@@ -927,7 +923,7 @@
                 pledge_title: "Staan Saam Met Ons", pledge_desc: "\"Ek is 'n digitale burger wat KI verantwoordelik gebruik<br>en saamstaan met slagoffers van digitale misdaad!\"",
                 pledge_btn_sign: "Teken die Onderneming", pledge_btn_id: "Kry F.A.K.E. ID",
                 report_modal_title: "Gedetailleerde Verslag", report_modal_instr: "Kies 'n onderwerp.", report_insight_label: "💡 Insig:",
-                opt_tools: "🛠️ KI-gereedskap", opt_purpose: "🤖 Doel van Gebruik", opt_unethical: "🚫 Onetiese Dade", opt_responsibility: "⚖️ Verantwoordelikheid", opt_deepfake: "👮 Deepfake Straf", opt_frequency: "👀 Frekwensie", opt_reporting: "📢 Rapportering",
+                opt_tools: "🛠️ KI-gereedskap", opt_purpose: "🤖 Doel van Gebruik", opt_unethical: "🚫 Onetiese Dade", opt_responsibility: "⚖️ Verantwoordelikheid", opt_deepfake: "👮 Deepfake Straf", opt_frequency: "👀 Blootstelling vs Gebruik", opt_reporting: "📢 Rapportering",
                 test_header: "My KI-etiek Telling",
                 q1_title: "V1. Hoe gebruik jy KI vir opdragte?", q1_opt1: "🔍 Feitekontrole is 'n moet!", q1_opt2: "🤔 As dit oukei lyk, gebruik ek dit.", q1_opt3: "⚡ Kopieer & Plak dadelik!",
                 q2_title: "V2. As 'n vriend se deepfake verskyn?", q2_opt1: "🚨 Rapporteer en vra om te stop.", q2_opt2: "🤐 Verlaat die klets stilweg.", q2_opt3: "🤣 Deel dit en sê \"Dit lyk eg\".",
@@ -996,100 +992,104 @@
             };
             const commonOptions = { maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } } };
 
+            // Risk Chart: Heavy User Witness 66.7% vs Non-Witness 33.3%
             createChart('riskChart', 'doughnut', {
-                labels: ['Risk', 'Safe'], datasets: [{ data: [66.9, 33.1], backgroundColor: ['#ff6b6b', '#e9ecef'], borderWidth: 0 }]
+                labels: ['Witnessed', 'Safe'], datasets: [{ data: [66.7, 33.3], backgroundColor: ['#ff6b6b', '#e9ecef'], borderWidth: 0 }]
             }, { ...commonOptions, cutout: '70%' });
 
+            // Witness Chart: Total Witness 22.9% vs Non-Witness 77.1%
             createChart('witnessChart', 'bar', {
-                labels: ['Witnessed', 'None'], datasets: [{ data: [35.6, 64.4], backgroundColor: ['#fab005', '#e9ecef'], borderRadius: 6 }]
+                labels: ['Witnessed', 'None'], datasets: [{ data: [22.9, 77.1], backgroundColor: ['#fab005', '#e9ecef'], borderRadius: 6 }]
             }, { ...commonOptions, indexAxis: 'y', scales: { x: { display: false, max: 100 }, y: { grid: { display: false } } } });
 
+            // Responsibility Chart (Universal Risk Placeholder): Creator 89.8% vs Platform 10.2%
             createChart('universalRiskChart', 'bar', {
-                labels: ['Witnessed', 'None'], datasets: [{ data: [38.2, 61.8], backgroundColor: ['#ff6b6b', '#e9ecef'], borderRadius: 6 }]
+                labels: ['Creator', 'Platform'], datasets: [{ data: [89.8, 10.2], backgroundColor: ['#ff6b6b', '#e9ecef'], borderRadius: 6 }]
             }, { ...commonOptions, indexAxis: 'y', scales: { x: { display: false, max: 100 }, y: { grid: { display: false } } } });
         };
 
         // --- Interactive Chart Logic ---
         let dynamicChart = null;
-        // Simplified data structure for demo - Using KO/EN as base for fallback
+        
+        // Detailed Data from "Data_Analysis_Report_Revision.md"
         const chartData = {
             'tools': {
                 type: 'bar', 
                 data: [96.6, 44.9, 12.7, 8.5],
                 color: ['#10a37f', '#4c6ef5', '#20c997', '#fab005'],
-                ko: { labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn'], label: '사용률', desc: "ChatGPT(96.6%) 의존도가 압도적입니다. 도구의 편향성이 우려됩니다." },
-                en: { labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn'], label: 'Usage', desc: "Overwhelming dependence on ChatGPT (96.6%). Bias concerns exist." },
-                cn: { labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn'], label: '使用率', desc: "ChatGPT (96.6%) 占据绝对主导。需警惕工具偏差。" },
-                jp: { labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn'], label: '使用率', desc: "ChatGPT(96.6%)への依存が圧倒的です。バイアスが懸念されます。" },
-                es: { labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn'], label: 'Uso', desc: "Dependencia abrumadora de ChatGPT (96.6%). Preocupan los sesgos." },
-                af: { labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn'], label: 'Gebruik', desc: "Oorweldigende afhanklikheid van ChatGPT (96.6%)." }
+                ko: { labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn'], label: '사용률(%)', desc: "ChatGPT(96.6%) 의존도가 압도적입니다. 도구의 편향성과 할루시네이션 대비 교육이 시급합니다." },
+                en: { labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn'], label: 'Usage(%)', desc: "Overwhelming dependence on ChatGPT (96.6%). Education on bias and hallucinations is urgent." },
+                cn: { labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn'], label: '使用率(%)', desc: "ChatGPT(96.6%)占据绝对主导。急需针对工具偏差和幻觉的教育。" },
+                jp: { labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn'], label: '使用率(%)', desc: "ChatGPT(96.6%)への依存が圧倒的です。バイアスやハルシネーションへの対策教育が急務です。" },
+                es: { labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn'], label: 'Uso(%)', desc: "Dependencia abrumadora de ChatGPT (96.6%). Urge educación sobre sesgos y alucinaciones." },
+                af: { labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn'], label: 'Gebruik(%)', desc: "Oorweldigende afhanklikheid van ChatGPT (96.6%). Onderwys oor vooroordeel is dringend." }
             },
             'purpose': {
                 type: 'bar', 
                 indexAxis: 'y', 
-                data: [27.9, 23.3, 20.9],
+                data: [89.8, 66.1, 55.1],
                 color: '#4c6ef5',
-                ko: { labels: ['자료검색', '과제', '아이디어'], label: '목적', desc: "학업의 필수 도구로 자리 잡았습니다." },
-                en: { labels: ['Search', 'Assignment', 'Idea'], label: 'Purpose', desc: "It has become an essential academic tool." },
-                cn: { labels: ['资料搜索', '作业', '创意'], label: '目的', desc: "已成为学习的必备工具。" },
-                jp: { labels: ['検索', '課題', 'アイデア'], label: '目的', desc: "学業の必須ツールとして定着しました。" },
-                es: { labels: ['Búsqueda', 'Tarea', 'Idea'], label: 'Propósito', desc: "Es una herramienta académica esencial." },
-                af: { labels: ['Soek', 'Opdrag', 'Idee'], label: 'Doel', desc: "Dit het 'n noodsaaklike akademiese hulpmiddel geword." }
+                ko: { labels: ['과제/보고서', '번역', '아이디어'], label: '목적(%)', desc: "학업 성취가 주된 동력입니다. 과제 의존도(90%)가 높아 표절 윤리 교육이 핵심 쟁점입니다." },
+                en: { labels: ['Assignments', 'Translation', 'Idea'], label: 'Purpose(%)', desc: "Academic performance is the driver. High assignment dependency (90%) makes ethics education critical." },
+                cn: { labels: ['作业/报告', '翻译', '创意'], label: '目的(%)', desc: "学业是主要动力。作业依赖度高(90%)，剽窃伦理教育是关键。" },
+                jp: { labels: ['課題/レポート', '翻訳', 'アイデア'], label: '目的(%)', desc: "学業が主な動機です。課題依存度(90%)が高く、倫理教育が重要な争点です。" },
+                es: { labels: ['Tareas', 'Traducción', 'Ideas'], label: 'Propósito(%)', desc: "El rendimiento académico es el motor. La alta dependencia (90%) hace crítica la ética." },
+                af: { labels: ['Opdragte', 'Vertaling', 'Idee'], label: 'Doel(%)', desc: "Akademiese prestasie is die dryfveer. Hoë afhanklikheid (90%) maak etiek krities." }
             },
             'unethical': { 
                 type: 'bar', 
-                data: [20, 16, 14], 
+                data: [91.5, 87.3, 76.3], 
                 color: '#ff6b6b', 
-                ko: {labels:['장난','유포','표절'], label:'비윤리', desc:'장난으로 딥페이크를 소비하는 것도 문제라고 인식합니다.'}, 
-                en: {labels:['Fun','Spread','Plagiarism'], label:'Unethical', desc:'Consuming deepfakes for fun is seen as a problem.'}, 
-                cn: {labels:['娱乐','散布','剽窃'], label:'不道德', desc:'娱乐性使用Deepfake也是严重问题。'}, 
-                jp: {labels:['悪ふざけ','流布','盗作'], label:'非倫理', desc:'悪ふざけでの消費も問題だと認識しています。'}, 
-                es: {labels:['Diversión','Difusión','Plagio'], label:'No ético', desc:'Consumir deepfakes por diversión es un problema.'}, 
-                af: {labels:['Pret','Versprei','Plagiaat'], label:'Oneties', desc:'Om deepfakes vir pret te gebruik is \'n probleem.'}
+                ko: {labels:['딥페이크(제작)','딥페이크(장난)','AI과제제출'], label:'심각성 인식(%)', desc:'딥페이크(인권 침해)를 표절보다 더 심각한 범죄로 인식하고 있습니다. 경각심이 매우 높습니다.'}, 
+                en: {labels:['Deepfake(Make)','Deepfake(Joke)','AI Submission'], label:'Severity(%)', desc:'Deepfakes (rights violation) are seen as worse than plagiarism. Awareness is very high.'}, 
+                cn: {labels:['Deepfake(制作)','Deepfake(玩笑)','AI作业提交'], label:'严重性(%)', desc:'Deepfake（侵犯人权）被视为比剽窃更严重的犯罪。警惕性很高。'}, 
+                jp: {labels:['Deepfake(制作)','Deepfake(悪ふざけ)','AI課題提出'], label:'深刻度(%)', desc:'ディープフェイク（人権侵害）を盗作より深刻な犯罪と認識しています。'}, 
+                es: {labels:['Deepfake(Crear)','Deepfake(Broma)','Entrega AI'], label:'Gravedad(%)', desc:'Los deepfakes se ven más graves que el plagio. La concienciación es muy alta.'}, 
+                af: {labels:['Deepfake(Maak)','Deepfake(Grap)','KI-inhandiging'], label:'Erns(%)', desc:'Deepfakes word as erger as plagiaat beskou. Bewustheid is baie hoog.'}
             },
             'responsibility': { 
                 type: 'doughnut', 
-                data: [46, 29, 8], 
+                data: [89.8, 44.7, 10.2], 
                 color: ['#ff6b6b','#fab005','#20c997'], 
-                ko: {labels:['생성자','공유자','플랫폼'], label:'책임', desc:'공유자에게도 큰 책임을 묻고 있습니다.'}, 
-                en: {labels:['Creator','Sharer','Platform'], label:'Resp.', desc:'Sharers are also held heavily responsible.'}, 
-                cn: {labels:['生成者','传播者','平台'], label:'责任', desc:'传播者也要承担重大责任。'}, 
-                jp: {labels:['生成者','共有者','PF'], label:'責任', desc:'共有者にも大きな責任を問うています。'}, 
-                es: {labels:['Creador','Compartidor','Plataforma'], label:'Resp.', desc:'Los que comparten también son responsables.'}, 
-                af: {labels:['Skepper','Deler','Platform'], label:'Verant.', desc:'Delers word ook verantwoordelik gehou.'}
+                ko: {labels:['최초생성자','유포/공유자','플랫폼'], label:'책임(%)', desc:'플랫폼 규제보다 개인의 도덕적 책임(제작자 89.8%)을 훨씬 중요하게 여기고 있습니다.'}, 
+                en: {labels:['Creator','Sharer','Platform'], label:'Resp.(%)', desc:'Individual moral responsibility (Creator 89.8%) is valued significantly over platform regulation.'}, 
+                cn: {labels:['最初制作者','传播者','平台'], label:'责任(%)', desc:'相比平台监管，更看重个人的道德责任（制作者 89.8%）。'}, 
+                jp: {labels:['作成者','共有者','PF'], label:'責任(%)', desc:'プラットフォームの規制より、個人の道徳的責任（作成者89.8%）を重視しています。'}, 
+                es: {labels:['Creador','Compartidor','Plataforma'], label:'Resp.(%)', desc:'Se valora más la responsabilidad moral individual (Creador 89.8%) que la regulación.'}, 
+                af: {labels:['Skepper','Deler','Platform'], label:'Verant.(%)', desc:'Individuele morele verantwoordelikheid (Skepper 89.8%) word bo platformregulering geag.'}
             },
             'deepfake': { 
                 type: 'pie', 
-                data: [83, 12, 5], 
-                color: ['#4c6ef5','#e9ecef','#ff6b6b'], 
-                ko: {labels:['찬성','중립','반대'], label:'처벌', desc:'83%가 처벌에 찬성합니다.'}, 
-                en: {labels:['Agree','Neutral','Disagree'], label:'Punish', desc:'83% agree with punishment.'}, 
-                cn: {labels:['赞成','中立','反对'], label:'处罚', desc:'83%赞成处罚。'}, 
-                jp: {labels:['賛成','中立','反対'], label:'処罰', desc:'83%が処罰に賛成しています。'}, 
-                es: {labels:['Acuerdo','Neutral','Desacuerdo'], label:'Castigo', desc:'83% está de acuerdo con el castigo.'}, 
-                af: {labels:['Stem saam','Neutraal','Stem nie saam'], label:'Straf', desc:'83% stem saam met straf.'}
+                data: [96.6, 3.4], 
+                color: ['#4c6ef5','#e9ecef'], 
+                ko: {labels:['처벌 찬성','기타'], label:'동의율(%)', desc:'디지털 성범죄에 대해서는 "무관용 원칙"을 지지하는 여론(96.6%)이 절대적으로 지배적입니다.'}, 
+                en: {labels:['Agree','Other'], label:'Consent(%)', desc:'There is a dominant consensus (96.6%) for "zero tolerance" regarding digital sex crimes.'}, 
+                cn: {labels:['赞成处罚','其他'], label:'同意率(%)', desc:'对于数字性犯罪，支持"零容忍原则"的舆论(96.6%)占绝对主导。'}, 
+                jp: {labels:['処罰賛成','その他'], label:'同意率(%)', desc:'デジタル性犯罪に対しては「ゼロ・トレランス（無寛容）」を支持する声(96.6%)が圧倒的です。'}, 
+                es: {labels:['Acuerdo','Otro'], label:'Acuerdo(%)', desc:'Consenso dominante (96.6%) de "tolerancia cero" ante delitos sexuales digitales.'}, 
+                af: {labels:['Stem saam','Ander'], label:'Stem saam(%)', desc:'Oorheersende konsensus (96.6%) vir "zero toleransie" ten opsigte van digitale seksmisdade.'}
             },
             'frequency': { 
                 type: 'bar', 
-                data: [28, 21, 18], 
+                data: [66.7, 22.9], 
                 color: '#fab005', 
-                ko: {labels:['주3회+','주1-2회','매일'], label:'빈도', desc:'디지털 환경이 오염되었습니다.'}, 
-                en: {labels:['3+/Wk','1-2/Wk','Daily'], label:'Freq', desc:'Digital environment is polluted.'}, 
-                cn: {labels:['每周3+','每周1-2','每天'], label:'频率', desc:'数字环境已被污染。'}, 
-                jp: {labels:['週3+','週1-2','毎日'], label:'頻度', desc:'デジタル環境が汚染されています。'}, 
-                es: {labels:['3+/Sem','1-2/Sem','Diario'], label:'Freq', desc:'El entorno digital está contaminado.'}, 
-                af: {labels:['3+/Wk','1-2/Wk','Daagliks'], label:'Freq', desc:'Digitale omgewing is besoedel.'}
+                ko: {labels:['헤비유저 목격','전체평균 목격'], label:'목격율(%)', desc:'사용 시간이 길수록 위험 노출이 급증합니다. 헤비 유저는 66.7%가 오용을 목격했습니다.'}, 
+                en: {labels:['Heavy User','Average'], label:'Witness(%)', desc:'Risk exposure spikes with usage time. 66.7% of heavy users witnessed abuse.'}, 
+                cn: {labels:['重度用户','平均'], label:'目击率(%)', desc:'使用时间越长，风险暴露激增。66.7%的重度用户目睹过滥用。'}, 
+                jp: {labels:['ヘビーユーザー','平均'], label:'目撃率(%)', desc:'利用時間が長いほどリスク露出が急増します。ヘビーユーザーの66.7%が悪用を目撃しました。'}, 
+                es: {labels:['Usuario Heavy','Promedio'], label:'Testigos(%)', desc:'El riesgo sube con el uso. El 66.7% de los usuarios intensivos fue testigo de abusos.'}, 
+                af: {labels:['Swaar Gebruiker','Gemiddeld'], label:'Getuie(%)', desc:'Risiko neem toe met gebruik. 66.7% van swaar gebruikers het misbruik aanskou.'}
             },
             'reporting': { 
                 type: 'doughnut', 
-                data: [66, 27, 7], 
+                data: [66.1, 27.1, 6.8], 
                 color: ['#ff6b6b','#fab005','#20c997'], 
-                ko: {labels:['모름','들어봄','앎'], label:'인지', desc:'신고처를 전혀 모르는 학생이 대다수입니다.'}, 
-                en: {labels:['Unknown','Heard','Known'], label:'Awareness', desc:'Most do not know where to report.'}, 
-                cn: {labels:['不知道','听过','知道'], label:'认知', desc:'大多数学生完全不知道举报渠道。'}, 
-                jp: {labels:['不明','聞いた','知ってる'], label:'認知', desc:'通報先を知らない学生が大多数です。'}, 
-                es: {labels:['Desconocido','Oído','Conocido'], label:'Conciencia', desc:'La mayoría no sabe dónde denunciar.'}, 
-                af: {labels:['Onbekend','Gehoor','Bekend'], label:'Bewustheid', desc:'Meeste weet nie waar om te rapporteer nie.'}
+                ko: {labels:['전혀 모름','들어본 적 있음','알고 있음'], label:'인지도(%)', desc:'처벌 동의율은 높지만, 정작 신고 채널을 명확히 아는 비율은 6.8%로 참담한 수준입니다.'}, 
+                en: {labels:['Unaware','Heard of','Aware'], label:'Awareness(%)', desc:'High agreement on punishment, yet reporting channel awareness is abysmal at 6.8%.'}, 
+                cn: {labels:['完全不知','听说过','知道'], label:'认知度(%)', desc:'虽然赞成处罚，但明确知道举报渠道的比例仅为6.8%，情况堪忧。'}, 
+                jp: {labels:['不明','聞いたことある','知っている'], label:'認知度(%)', desc:'処罰への賛成は多いですが、通報先を明確に知っているのは6.8%と絶望的なレベルです。'}, 
+                es: {labels:['Desconocido','Oído','Conocido'], label:'Conciencia(%)', desc:'Alto apoyo al castigo, pero el conocimiento del canal de denuncia es pésimo (6.8%).'}, 
+                af: {labels:['Onbekend','Gehoor','Bekend'], label:'Bewustheid(%)', desc:'Hoë ooreenstemming oor straf, tog is bewustheid van rapporteringskanale slegs 6.8%.'}
             }
         };
 
