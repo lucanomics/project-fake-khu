@@ -128,6 +128,7 @@
             "아시아학과": { code: "244", eng: "Dept. of Asian Studies" },
             "글로벌한국학과": { code: "244", eng: "Dept. of Asian Studies" },
             "약학과": { code: "145", eng: "Dept. of Pharmacy" },
+            "약과학과": { code: "146", eng: "Dept. of Pharmaceutical Science" },
             "연극영화학과": { code: "246", eng: "Dept. of Theatre and Film" },
             "영어영문학과": { code: "147", eng: "Dept. of English Language & Literature" },
             "우주과학과": { code: "248", eng: "Dept. of Space Science" },
@@ -143,6 +144,7 @@
             "의류디자인학과": { code: "256", eng: "Dept. of Fashion Design" },
             "의상학과": { code: "157", eng: "Dept. of Clothing and Textiles" },
             "의예과": { code: "158", eng: "Premedical Course (Medicine)" },
+            "의학과": { code: "158", eng: "Dept. of Medicine" },
             "인공지능학과": { code: "259", eng: "Dept. of Artificial Intelligence" },
             "일본어학과": { code: "260", eng: "Dept. of Japanese Language" },
             "자유전공학부": { code: "261", eng: "Div. of Free Major Studies" },
@@ -165,8 +167,9 @@
             "프랑스어학과": { code: "277", eng: "Dept. of French Language" },
             "한국어학과": { code: "278", eng: "Dept. of Korean Language" },
             "한국화과": { code: "179", eng: "Dept. of Korean Painting" },
-            "한약학과": { code: "180", eng: "Dept. of Herbal Pharmacology" },
+            "한약학과": { code: "180", eng: "Dept. of Korean Pharmacy" },
             "한의예과": { code: "181", eng: "Pre-Korean Medicine Course" },
+            "한의학과": { code: "181",eng: "Dept. of Korean Medicine" },
             "행정학과": { code: "182", eng: "Dept. of Public Administration" },
             "화학공학과": { code: "283", eng: "Dept. of Chemical Engineering" },
             "화학과": { code: "184", eng: "Dept. of Chemistry" },
@@ -174,7 +177,8 @@
             "환경학및환경공학과": { code: "286", eng: "Dept. of Env. Science & Eng." },
             "회계세무학과": { code: "187", eng: "Dept. of Accounting and Taxation" },
             "회화과": { code: "188", eng: "Dept. of Painting" },
-            "Florida State University": { code: "850", eng: "Florida State University" }
+            "Florida State University": { code: "850", eng: "Florida State University" },
+            "University of Maryland, College Park": { code: "301", eng: "University of Maryland, College Park" }
         };
 
         // Icons
@@ -502,58 +506,30 @@
 
                 // 3. Header: F.A.K.E Text REMOVED and REPLACED with FRONT LOGO logic
                 
-                // Front Logo (Upper Right logic based on request)
-                if (frontLogo) {
+                // Front Logo REMOVED - User requested to delete the top-left logo (which was the rotated front logo)
+                
+                // 3-1. Back Logo (MOVED from Top Right to Top Left)
+                if (backLogo) {
                     try {
-                        const logo = await loadImage(frontLogo);
+                        const logo = await loadImage(backLogo);
                         // Using user requested logic for sizing
                         const maxW = 330; 
-                        const maxH = 330;  
+                        const maxH = 100; // Limit height 
                         const aspect = logo.width / logo.height;
                         
                         let dw = maxW; 
                         let dh = maxW / aspect;
                         if (dh > maxH) { dh = maxH; dw = maxH * aspect; }
 
-                        // [MODIFIED] Place at Top Left (x=80, y=80) and Rotate -90 degrees
-                        ctx.save();
-                        // 1. Move origin to where we want the center of the logo to be
-                        // Ideally, we want the logo to be centered at roughly x=80, y=80 (Top Left)
-                        ctx.translate(80, 80); 
+                        // Positioning at top LEFT to align with the start of the white box/lines
+                        // "Cleanly aligned with white shape and line"
+                        // White shape starts at x=25 (margin)
+                        // Lines start at x=60 (startX)
+                        // Aligning with the line (x=60) usually looks best for text alignment
+                        const logoX = 60; 
+                        const logoY = 30; // Top padding
                         
-                        // 2. Rotate -90 degrees (Counter Clockwise)
-                        ctx.rotate(-Math.PI / 2);
-                        
-                        // 3. Scale down a bit to fit the header neatly (Header height ~140px)
-                        // If we use full 330px width, it will be massive. Let's scale it to fit neatly in header.
-                        // Assuming neat fit means max dimension around 100-120px.
-                        const neatScale = 120 / Math.max(dw, dh); 
-                        const finalW = dw * neatScale;
-                        const finalH = dh * neatScale;
-
-                        // 4. Draw centered at the new origin
-                        ctx.drawImage(logo, -finalW/2, -finalH/2, finalW, finalH);
-                        
-                        ctx.restore();
-
-                    } catch(e) { console.warn("Front Logo draw on back failed"); }
-                }
-
-                // 3-1. Back Logo (Existing Right Side Logo)
-                if (backLogo) {
-                    try {
-                        const logo = await loadImage(backLogo);
-                        const logoW = 330; 
-                        const logoH = 330; 
-                        const aspect = logo.width / logo.height;
-                        let drawW = logoW;
-                        let drawH = logoW / aspect;
-                        if (drawH > logoH) {
-                            drawH = logoH;
-                            drawW = logoH * aspect;
-                        }
-                        // Adjust position to prevent overlapping if front logo is wide
-                        ctx.drawImage(logo, width - drawW - 40, 30, drawW, drawH);
+                        ctx.drawImage(logo, logoX, logoY, dw, dh);
                     } catch(e) { console.warn("Back Logo draw failed"); }
                 }
 
@@ -955,9 +931,11 @@
                                                 <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
                                                 <span className="text-sm font-bold flex items-center justify-center gap-2"><ImageIcon size={16}/> {rawImage ? 'Change Photo' : 'Upload Photo'}</span>
                                             </label>
+                                            <label className="block w-full py-3 bg-slate-800 rounded-xl text-center cursor-pointer hover:bg-slate-700">
+                                                <input type="file" accept="image/*" onChange={handleLogoChange} className="hidden" />
+                                                <span className="text-sm font-bold flex items-center justify-center gap-2"><UploadCloud size={16}/> {frontLogo !== './fakhu_logo.png' ? 'Change Logo' : 'Upload Logo'}</span>
+                                            </label>
                                         </div>
-
-                                        
 
                                         <div className="bg-slate-800 rounded-xl p-2 space-y-2">
                                             <select value={metaData.role} onChange={e => setMetaData({...metaData, role: e.target.value})} className="w-full p-2 bg-transparent text-white font-bold border-b border-slate-700">
