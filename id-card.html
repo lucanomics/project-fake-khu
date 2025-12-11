@@ -479,7 +479,7 @@
             };
 
 
-            // [Back Side] - Updated for Horizontal Logo & Name Font Auto-sizing
+            // [Back Side] - Updated: REMOVED LOGO DRAWING LOGIC
             const generateBackSide = async (serialCode, themeColor) => {
                 const canvas = document.createElement('canvas');
                 const width = 600;
@@ -500,26 +500,8 @@
                 drawRoundRect(ctx, margin, 140, width - (margin*2), height - 140 - margin, 30);
                 ctx.fill();
 
-                // 3-1. Back Logo (MOVED from Top Right to Top Left)
-                if (backLogo) {
-                    try {
-                        const logo = await loadImage(backLogo);
-                        // Using user requested logic for sizing
-                        const maxW = 330; 
-                        const maxH = 330; // UPDATED to 330 to match front logo size logic
-                        const aspect = logo.width / logo.height;
-                        
-                        let dw = maxW; 
-                        let dh = maxW / aspect;
-                        if (dh > maxH) { dh = maxH; dw = maxH * aspect; }
-
-                        // Positioning at top LEFT to align with the start of the white box/lines
-                        const logoX = 60; 
-                        const logoY = 30; // Top padding
-                        
-                        ctx.drawImage(logo, logoX, logoY, dw, dh);
-                    } catch(e) { console.warn("Back Logo draw failed"); }
-                }
+                // 3. (REMOVED) Back Logo Logic
+                // The previous code block for drawing `backLogo` has been removed here.
 
                 // 4. Content Text
                 const startX = 60;
@@ -581,7 +563,7 @@
                          while (ctx.measureText(value).width > maxWidth && fontSize > 20) {
                              fontSize -= 2; 
                              ctx.font = `bold ${fontSize}px 'Montserrat', sans-serif`;
-                         }
+                          }
                         ctx.fillText(value, startX, currentY);
                     }
                     currentY += 120;
@@ -607,7 +589,7 @@
                 }
 
                 if (!matchedInfo) {
-                     for (const key in departmentData) {
+                      for (const key in departmentData) {
                         if (normalize(departmentData[key].eng) === target) {
                             matchedInfo = departmentData[key];
                             break;
