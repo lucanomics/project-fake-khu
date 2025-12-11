@@ -392,13 +392,13 @@
                     <i class="fas fa-shield-alt"></i> 안전망 인식
                 </span>
 
-                <!-- 2. 메인 콘텐츠 그룹 (사이즈 축소 적용: 아이콘 3.5rem, 숫자 2.8rem) -->
+                <!-- 2. 메인 콘텐츠 그룹 -->
                 <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%;">
                     
-                    <!-- (1) 아이콘: 사이즈 축소 (4.5rem -> 3.5rem) -->
+                    <!-- (1) 아이콘 -->
                     <i class="fas fa-question-circle" style="font-size: 3.5rem; color: #A0D6B4; margin-bottom: 0.5rem;"></i>
                     
-                    <!-- (2) 숫자: 사이즈 축소 (3.5rem -> 2.8rem) -->
+                    <!-- (2) 숫자 -->
                     <div style="font-size: 2.8rem; line-height: 1; font-weight: 800; color: #A0D6B4; margin-bottom: 0.3rem;">
                         66.1<span style="font-size: 1.8rem;">%</span>
                     </div>
@@ -438,7 +438,6 @@
             </div>
 
             <!-- Action Card: Full Report Button -->
-            <!-- 수정: inline style 중복(box-shadow) 제거, 텍스트에서 이모지 삭제 -->
             <div style="grid-column: 1 / -1; display: flex; justify-content: center; margin-top: 1rem; width: 100%; height: auto;">
                 <button id="openReportBtn" class="btn btn-primary">
                     <i class="fas fa-chart-pie"></i> <span data-lang="btn_full_report">설문 결과 전체 상세 보기</span>
@@ -546,21 +545,23 @@
     <div id="reportModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 style="font-size: 1.5rem; color: var(--dark);">데이터 상세 분석 리포트</h2>
+                <!-- data-lang added -->
+                <h2 style="font-size: 1.5rem; color: var(--dark);" data-lang="report_modal_title">데이터 상세 분석 리포트</h2>
                 <span class="close-btn" id="closeReportBtn">&times;</span>
             </div>
             <div class="modal-body">
-                <p style="margin-bottom: 1.5rem; color: #666; text-align: center;">궁금한 주제를 선택해 보세요.</p>
+                <!-- data-lang added -->
+                <p style="margin-bottom: 1.5rem; color: #666; text-align: center;" data-lang="report_modal_instr">궁금한 주제를 선택해 보세요.</p>
                 
-                <!-- Dropdown (확장됨) -->
+                <!-- Dropdown (data-lang added to options) -->
                 <select id="chartSelector" class="chart-select">
-                    <option value="tools">🛠️ AI 도구 사용 비율 </option>
-                    <option value="purpose">🤖 AI 사용 목적</option>
-                    <option value="unethical">🚫 윤리적 위반 인식</option>
-                    <option value="responsibility">⚖️ 책임 소재 인식</option>
-                    <option value="deepfake">👮 딥페이크 처벌 동의</option>
-                    <option value="frequency">👀 허위정보 목격 빈도</option>
-                    <option value="reporting">📢 신고 채널 인지도</option>
+                    <option value="tools" data-lang="opt_tools">🛠️ AI 도구 사용 비율</option>
+                    <option value="purpose" data-lang="opt_purpose">🤖 AI 사용 목적</option>
+                    <option value="unethical" data-lang="opt_unethical">🚫 윤리적 위반 인식</option>
+                    <option value="responsibility" data-lang="opt_responsibility">⚖️ 책임 소재 인식</option>
+                    <option value="deepfake" data-lang="opt_deepfake">👮 딥페이크 처벌 동의</option>
+                    <option value="frequency" data-lang="opt_frequency">👀 허위정보 목격 빈도</option>
+                    <option value="reporting" data-lang="opt_reporting">📢 신고 채널 인지도</option>
                 </select>
 
                 <!-- Dynamic Chart Area -->
@@ -569,7 +570,8 @@
                 </div>
                 
                 <div class="report-desc-box">
-                    <span class="report-insight-title">💡 분석 인사이트:</span>
+                    <!-- data-lang added -->
+                    <span class="report-insight-title" data-lang="report_insight_label">💡 분석 인사이트:</span>
                     <p id="chartDesc" class="report-desc">
                         <!-- Description will be updated by JS -->
                     </p>
@@ -582,7 +584,6 @@
     <div id="testModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <!-- data-lang 추가 -->
                 <h2 style="font-size: 1.5rem;" data-lang="test_header">내 AI 윤리 점수 진단 (Self-Check)</h2>
                 <span class="close-btn" id="closeTestBtn">&times;</span>
             </div>
@@ -592,9 +593,7 @@
                 <div id="quizContainer">
                     <!-- Q1 -->
                     <div class="question-card active" data-step="1">
-                        <!-- data-lang 추가 -->
                         <h2 class="q-title" data-lang="q1_title">Q1. 과제할 때 AI의 답변을 어떻게 활용하시나요?</h2>
-                        <!-- span으로 텍스트 감싸고 data-lang 추가 -->
                         <label class="q-option"><input type="radio" name="q1" value="20" onclick="nextStep(20)"> <span data-lang="q1_opt1">🔍 팩트체크는 필수! 신뢰할 수 있는 출처로 교차 검증해요.</span></label>
                         <label class="q-option"><input type="radio" name="q1" value="10" onclick="nextStep(10)"> <span data-lang="q1_opt2">🤔 그럴듯하면 일단 쓰고 봐요.</span></label>
                         <label class="q-option"><input type="radio" name="q1" value="0" onclick="nextStep(0)"> <span data-lang="q1_opt3">⚡ 복사+붙여넣기 1초 컷!</span></label>
@@ -697,7 +696,19 @@
                 pledge_btn_sign: "서명하고 동참하기",
                 pledge_btn_id: "F.A.K.E. ID 발급받기",
 
-                // --- Test Modal Translations (Korean) ---
+                // --- Report Modal (Static) ---
+                report_modal_title: "데이터 상세 분석 리포트",
+                report_modal_instr: "궁금한 주제를 선택해 보세요.",
+                report_insight_label: "💡 분석 인사이트:",
+                opt_tools: "🛠️ AI 도구 사용 비율",
+                opt_purpose: "🤖 AI 사용 목적",
+                opt_unethical: "🚫 윤리적 위반 인식",
+                opt_responsibility: "⚖️ 책임 소재 인식",
+                opt_deepfake: "👮 딥페이크 처벌 동의",
+                opt_frequency: "👀 허위정보 목격 빈도",
+                opt_reporting: "📢 신고 채널 인지도",
+
+                // --- Test Modal ---
                 test_header: "내 AI 윤리 점수 진단 (Self-Check)",
                 q1_title: "Q1. 과제할 때 AI의 답변을 어떻게 활용하시나요?",
                 q1_opt1: "🔍 팩트체크는 필수! 신뢰할 수 있는 출처로 교차 검증해요.",
@@ -719,12 +730,10 @@
                 q5_opt1: "🙆‍♂️ 네, 알고 있었어요.",
                 q5_opt2: "🙅‍♂️ 아니오, 몰랐어요.",
                 
-                // Result Translations
                 res_rec_label: "RECOMMENDED SOLUTION",
                 btn_get_solution: "맞춤형 솔루션 받기",
                 btn_retry: "테스트 다시 하기",
                 
-                // Result Levels (Dynamic)
                 res_lv4_title: "캠퍼스 앰버서더",
                 res_lv4_desc: "와우! 당신은 이미 준비된 리더예요!<br>이제 친구들에게 올바른 길을 안내해 주세요.",
                 res_lv4_toolkit: "Lv.4 캠퍼스 앰버서더 툴킷",
@@ -791,7 +800,19 @@
                 pledge_btn_sign: "Sign the Pledge",
                 pledge_btn_id: "Get Your F.A.K.E. ID",
 
-                // --- Test Modal Translations (English) ---
+                // --- Report Modal (Static) ---
+                report_modal_title: "Data Detailed Analysis Report",
+                report_modal_instr: "Select a topic to explore.",
+                report_insight_label: "💡 Analysis Insight:",
+                opt_tools: "🛠️ AI Tool Usage Ratio",
+                opt_purpose: "🤖 Purpose of AI Usage",
+                opt_unethical: "🚫 Perception of Unethical Acts",
+                opt_responsibility: "⚖️ Perception of Responsibility",
+                opt_deepfake: "👮 Agreement on Deepfake Punishment",
+                opt_frequency: "👀 Frequency of Witnessing Fake Info",
+                opt_reporting: "📢 Awareness of Reporting Channels",
+
+                // --- Test Modal ---
                 test_header: "My AI Ethics Score (Self-Check)",
                 q1_title: "Q1. How do you use AI answers for assignments?",
                 q1_opt1: "🔍 Fact-checking is a must! Verify with reliable sources.",
@@ -813,12 +834,10 @@
                 q5_opt1: "🙆‍♂️ Yes, I knew that.",
                 q5_opt2: "🙅‍♂️ No, I didn't know.",
 
-                // Result Translations
                 res_rec_label: "RECOMMENDED SOLUTION",
                 btn_get_solution: "Get Tailored Solution",
                 btn_retry: "Retry Test",
 
-                // Result Levels (Dynamic)
                 res_lv4_title: "Campus Ambassador",
                 res_lv4_desc: "Wow! You are already a ready-made leader!<br>Now guide your friends to the right path.",
                 res_lv4_toolkit: "Lv.4 Campus Ambassador Toolkit",
@@ -843,12 +862,18 @@
             currentLang = currentLang === 'ko' ? 'en' : 'ko';
             document.getElementById('langBtnText').innerText = currentLang === 'ko' ? 'EN' : 'KO';
             
+            // Translate all static elements
             document.querySelectorAll('[data-lang]').forEach(el => {
                 const key = el.getAttribute('data-lang');
                 if (translations[currentLang][key]) {
                     el.innerHTML = translations[currentLang][key];
                 }
             });
+
+            // Update chart if modal is open
+            if(document.getElementById('reportModal').classList.contains('show')) {
+                updateChart();
+            }
         }
 
         // --- Modal Logic ---
@@ -916,71 +941,123 @@
             });
         };
 
-        // --- Interactive Chart Logic (Report Modal - UPDATED) ---
+        // --- Interactive Chart Logic (Report Modal) ---
+        // UPDATED: Now supports dual languages structure in 'ko' and 'en' keys
         let dynamicChart = null;
         const chartData = {
-            'tools': { // [NEW] 1. AI Tool Usage
+            'tools': {
                 type: 'bar',
-                labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn', 'Copilot', 'Claude', 'Deepseek', '기타'],
+                // Shared data/colors
                 data: [96.6, 44.9, 12.7, 8.5, 6.8, 5.1, 3.4, 8.0],
-                label: '사용 비율 (%)',
-                color: ['#10a37f', '#4c6ef5', '#20c997', '#fab005', '#e9ecef', '#e9ecef', '#e9ecef', '#e9ecef'], // ChatGPT 강조
+                color: ['#10a37f', '#4c6ef5', '#20c997', '#fab005', '#e9ecef', '#e9ecef', '#e9ecef', '#e9ecef'], 
                 indexAxis: 'x',
-                desc: "💡 분석 인사이트:<br><strong>ChatGPT(96.6%)</strong>가 압도적인 1위입니다. 대학생들의 AI 활용이 특정 도구에 극심하게 편중되어 있음을 보여줍니다. 특정 AI 모델의 편향성이 학생들의 사고에 그대로 반영될 우려가 있습니다."
+                // Language specific text
+                ko: {
+                    labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn', 'Copilot', 'Claude', 'Deepseek', '기타'],
+                    label: '사용 비율 (%)',
+                    desc: "💡 분석 인사이트:<br><strong>ChatGPT(96.6%)</strong>가 압도적인 1위입니다. 대학생들의 AI 활용이 특정 도구에 극심하게 편중되어 있음을 보여줍니다. 특정 AI 모델의 편향성이 학생들의 사고에 그대로 반영될 우려가 있습니다."
+                },
+                en: {
+                    labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn', 'Copilot', 'Claude', 'Deepseek', 'Others'],
+                    label: 'Usage Ratio (%)',
+                    desc: "💡 Analysis Insight:<br><strong>ChatGPT (96.6%)</strong> is overwhelmingly dominant. This shows extreme polarization in tool usage. There is a risk that the bias of a specific AI model could be reflected in students' thinking."
+                }
             },
-            'purpose': { // 2. Purpose
+            'purpose': {
                 type: 'bar',
-                labels: ['자료 검색', '과제/리포트 작성', '아이디어 생성', '사진/비디오 편집', '외국어 번역', '코딩'],
                 data: [27.9, 23.3, 20.9, 12.4, 9.3, 3.9],
-                label: '응답 비율 (%)',
                 color: '#4c6ef5',
                 indexAxis: 'y',
-                desc: "💡 분석 인사이트:<br>단순한 흥미가 아닌 <strong>'자료 수집'과 '과제 작성'</strong> 등 학업의 핵심 도구로 자리 잡았습니다. 이제 AI 윤리 교육은 선택이 아닌 학업 성취를 위한 필수 요건입니다."
+                ko: {
+                    labels: ['자료 검색', '과제/리포트 작성', '아이디어 생성', '사진/비디오 편집', '외국어 번역', '코딩'],
+                    label: '응답 비율 (%)',
+                    desc: "💡 분석 인사이트:<br>단순한 흥미가 아닌 <strong>'자료 수집'과 '과제 작성'</strong> 등 학업의 핵심 도구로 자리 잡았습니다. 이제 AI 윤리 교육은 선택이 아닌 학업 성취를 위한 필수 요건입니다."
+                },
+                en: {
+                    labels: ['Info Search', 'Assignment/Report', 'Idea Generation', 'Photo/Video Edit', 'Translation', 'Coding'],
+                    label: 'Response Ratio (%)',
+                    desc: "💡 Analysis Insight:<br>AI has become a core academic tool for <strong>'data collection' and 'assignments'</strong>, not just for fun. AI ethics education is now a requirement for academic achievement, not an option."
+                }
             },
-            'unethical': { // 3. Unethical Perception
+            'unethical': {
                 type: 'bar',
-                labels: ['딥페이크 장난 소비', '허위사실 유포', '표절', '딥페이크 제작', '과제 통생성'],
                 data: [20.0, 16.3, 14.3, 13.7, 7.8],
-                label: '비윤리적 행위 인식 (%)',
                 color: '#ff6b6b',
                 indexAxis: 'y',
-                desc: "💡 분석 인사이트:<br>학생들은 <strong>'딥페이크를 장난으로 소비하는 행위'</strong>를 가장 심각한 문제로 꼽았습니다. 직접 만드는 것뿐만 아니라, 보고 즐기는 것도 명백한 가해라는 인식이 자리 잡고 있습니다."
+                ko: {
+                    labels: ['딥페이크 장난 소비', '허위사실 유포', '표절', '딥페이크 제작', '과제 통생성'],
+                    label: '비윤리적 행위 인식 (%)',
+                    desc: "💡 분석 인사이트:<br>학생들은 <strong>'딥페이크를 장난으로 소비하는 행위'</strong>를 가장 심각한 문제로 꼽았습니다. 직접 만드는 것뿐만 아니라, 보고 즐기는 것도 명백한 가해라는 인식이 자리 잡고 있습니다."
+                },
+                en: {
+                    labels: ['Consuming Deepfake for Fun', 'Spreading False Info', 'Plagiarism', 'Creating Deepfake', 'Generating Full Homework'],
+                    label: 'Unethical Perception (%)',
+                    desc: "💡 Analysis Insight:<br>Students identified <strong>'consuming deepfakes for fun'</strong> as the most serious issue. There is a growing awareness that watching and enjoying it is also a clear act of harm."
+                }
             },
-            'responsibility': { // 4. Responsibility
+            'responsibility': {
                 type: 'doughnut',
-                labels: ['최초 생성자', '무비판적 공유자', '플랫폼/개발사', '대학본부'],
                 data: [46.1, 29.1, 7.8, 3.0],
-                label: '책임 인식 (%)',
                 color: ['#ff6b6b', '#fab005', '#20c997', '#adb5bd'],
                 indexAxis: 'x',
-                desc: "💡 분석 인사이트:<br>최초 생성자(46.1%)뿐만 아니라 <strong>'무비판적 공유자(29.1%)'</strong>에게도 큰 책임을 묻고 있습니다. \"나르기만 했다\"는 변명은 더 이상 통하지 않습니다."
+                ko: {
+                    labels: ['최초 생성자', '무비판적 공유자', '플랫폼/개발사', '대학본부'],
+                    label: '책임 인식 (%)',
+                    desc: "💡 분석 인사이트:<br>최초 생성자(46.1%)뿐만 아니라 <strong>'무비판적 공유자(29.1%)'</strong>에게도 큰 책임을 묻고 있습니다. \"나르기만 했다\"는 변명은 더 이상 통하지 않습니다."
+                },
+                en: {
+                    labels: ['Initial Creator', 'Uncritical Sharer', 'Platform/Developer', 'University HQ'],
+                    label: 'Responsibility (%)',
+                    desc: "💡 Analysis Insight:<br>Responsibility is placed heavily on <strong>'uncritical sharers (29.1%)'</strong> as well as creators (46.1%). The excuse \"I just forwarded it\" is no longer valid."
+                }
             },
-            'deepfake': { // 5. Deepfake Punishment
+            'deepfake': {
                 type: 'pie',
-                labels: ['처벌 찬성', '보통/중립', '반대'],
                 data: [83.0, 11.9, 5.1],
-                label: '비율 (%)',
                 color: ['#4c6ef5', '#e9ecef', '#ff6b6b'],
                 indexAxis: 'x',
-                desc: "💡 분석 인사이트:<br>10명 중 8명 이상이 <strong>'장난이라도 딥페이크 제작은 처벌해야 한다'</strong>고 답했습니다. 대학생들의 윤리적 기준은 이미 법적 기준보다 훨씬 엄격합니다."
+                ko: {
+                    labels: ['처벌 찬성', '보통/중립', '반대'],
+                    label: '비율 (%)',
+                    desc: "💡 분석 인사이트:<br>10명 중 8명 이상이 <strong>'장난이라도 딥페이크 제작은 처벌해야 한다'</strong>고 답했습니다. 대학생들의 윤리적 기준은 이미 법적 기준보다 훨씬 엄격합니다."
+                },
+                en: {
+                    labels: ['Agree with Punishment', 'Neutral', 'Disagree'],
+                    label: 'Ratio (%)',
+                    desc: "💡 Analysis Insight:<br>More than 8 out of 10 students said <strong>'Deepfake creation should be punished even if it's a joke.'</strong> Students' ethical standards are already much stricter than legal ones."
+                }
             },
-            'frequency': { // 6. Witness Frequency
+            'frequency': {
                 type: 'bar',
-                labels: ['주 3회 이상', '주 1-2회', '거의 매일', '잘 모름'],
                 data: [28.0, 21.2, 17.8, 14.4],
-                label: '목격 빈도 (%)',
                 color: '#fab005',
                 indexAxis: 'x',
-                desc: "💡 분석 인사이트:<br>절반 가까운 학생들이 '일주일에 한 번 이상' 허위정보를 마주치고 있으며, 특히 <strong>'거의 매일' 본다는 응답도 17.8%</strong>에 달합니다. 디지털 환경이 이미 오염되어 있음을 시사합니다."
+                ko: {
+                    labels: ['주 3회 이상', '주 1-2회', '거의 매일', '잘 모름'],
+                    label: '목격 빈도 (%)',
+                    desc: "💡 분석 인사이트:<br>절반 가까운 학생들이 '일주일에 한 번 이상' 허위정보를 마주치고 있으며, 특히 <strong>'거의 매일' 본다는 응답도 17.8%</strong>에 달합니다. 디지털 환경이 이미 오염되어 있음을 시사합니다."
+                },
+                en: {
+                    labels: ['3+ Times/Week', '1-2 Times/Week', 'Almost Everyday', 'Don\'t Know'],
+                    label: 'Witness Frequency (%)',
+                    desc: "💡 Analysis Insight:<br>Nearly half of students encounter fake info 'at least once a week', and <strong>17.8% see it 'almost everyday'</strong>. This suggests the digital environment is already polluted."
+                }
             },
-            'reporting': { // 7. Reporting Channel
+            'reporting': {
                 type: 'doughnut',
-                labels: ['전혀 모름', '들어는 봤음', '정확히 앎'],
                 data: [66.1, 27.1, 6.8],
-                label: '인지도 (%)',
                 color: ['#ff6b6b', '#fab005', '#20c997'],
                 indexAxis: 'x',
-                desc: "💡 분석 인사이트:<br><strong>66% 이상이 신고 채널을 전혀 모릅니다.</strong> 피해를 입어도 어디에 도움을 청해야 할지 막막한 '제도적 공백' 상태입니다. F.A.K.E. 프로젝트가 시급한 이유입니다."
+                ko: {
+                    labels: ['전혀 모름', '들어는 봤음', '정확히 앎'],
+                    label: '인지도 (%)',
+                    desc: "💡 분석 인사이트:<br><strong>66% 이상이 신고 채널을 전혀 모릅니다.</strong> 피해를 입어도 어디에 도움을 청해야 할지 막막한 '제도적 공백' 상태입니다. F.A.K.E. 프로젝트가 시급한 이유입니다."
+                },
+                en: {
+                    labels: ['Don\'t Know At All', 'Heard of It', 'Know Exactly'],
+                    label: 'Awareness (%)',
+                    desc: "💡 Analysis Insight:<br><strong>Over 66% don't know reporting channels at all.</strong> It's a state of 'Institutional Void' where victims don't know where to ask for help. This is why Project F.A.K.E. is urgent."
+                }
             }
         };
 
@@ -989,7 +1066,10 @@
             if (!selector) return;
             
             const selected = selector.value;
-            const data = chartData[selected];
+            const entry = chartData[selected];
+            // Access data based on current Language
+            const langData = entry[currentLang];
+
             const canvas = document.getElementById('dynamicChart');
             const desc = document.getElementById('chartDesc');
 
@@ -999,13 +1079,13 @@
             if (dynamicChart) dynamicChart.destroy();
 
             let config = {
-                type: data.type,
+                type: entry.type,
                 data: {
-                    labels: data.labels,
+                    labels: langData.labels, // Use translated labels
                     datasets: [{
-                        label: data.label,
-                        data: data.data,
-                        backgroundColor: data.color,
+                        label: langData.label, // Use translated dataset label
+                        data: entry.data,
+                        backgroundColor: entry.color,
                         borderRadius: 6,
                         borderWidth: 0
                     }]
@@ -1013,16 +1093,16 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    indexAxis: data.indexAxis,
+                    indexAxis: entry.indexAxis,
                     plugins: { 
-                        legend: { position: 'bottom', display: data.type !== 'bar' || data.indexAxis === 'x' },
+                        legend: { position: 'bottom', display: entry.type !== 'bar' || entry.indexAxis === 'x' },
                         tooltip: { enabled: true }
                     }
                 }
             };
 
             dynamicChart = new Chart(ctx, config);
-            if (desc) desc.innerHTML = data.desc;
+            if (desc) desc.innerHTML = langData.desc; // Use translated description
         }
 
         const chartSelector = document.getElementById('chartSelector');
