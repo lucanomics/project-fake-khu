@@ -7,7 +7,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Pretendard:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Chart.js CDN -->
@@ -28,7 +28,7 @@
             --shadow-lg: 0 10px 30px rgba(76, 110, 245, 0.15);
             --radius: 20px;
             
-            --font-title: 'Jua', sans-serif;
+            --font-title: 'Jua', sans-serif; /* 귀여운 타이틀 폰트 */
             --font-body: 'Pretendard', sans-serif;
         }
 
@@ -47,6 +47,22 @@
             font-family: var(--font-title);
         }
 
+        /* --- Global Word Break Fix for CJK (Complaint #5 Fix) --- */
+        h1, h2, h3, h4, p, span, li, .stat-title, .toolkit-title, .toolkit-desc {
+            word-break: keep-all; /* 한국어 기본 */
+            overflow-wrap: break-word;
+        }
+
+        /* 중국어, 일본어일 때는 단어 중간에서도 줄바꿈 허용하여 레이아웃 깨짐 방지 */
+        html[lang="cn"] body, html[lang="jp"] body {
+            font-family: 'Noto Sans SC', 'Noto Sans JP', sans-serif; /* 폰트 변경 */
+        }
+        
+        html[lang="cn"] h1, html[lang="cn"] h2, html[lang="cn"] p,
+        html[lang="jp"] h1, html[lang="jp"] h2, html[lang="jp"] p {
+            word-break: break-all; 
+        }
+
         a { text-decoration: none; color: inherit; transition: 0.3s; }
         ul { list-style: none; }
 
@@ -63,7 +79,7 @@
             align-items: center;
             z-index: 1000;
             border-bottom: 1px solid rgba(0,0,0,0.05);
-            flex-wrap: wrap; /* 화면이 좁을 때 줄바꿈 허용 */
+            flex-wrap: wrap;
         }
 
         .logo {
@@ -71,12 +87,15 @@
             color: var(--primary);
             letter-spacing: -0.5px;
             flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 2rem; /* 기본 간격 */
+            gap: 2rem;
         }
 
         .nav-links a {
@@ -84,7 +103,7 @@
             font-size: 1rem;
             color: var(--dark);
             cursor: pointer;
-            white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+            white-space: nowrap;
         }
         .nav-links a:hover { color: var(--primary); }
 
@@ -133,23 +152,20 @@
         }
 
         .hero h1 {
-            font-size: 3.8rem;
+            font-size: 3.5rem;
             line-height: 1.3;
             margin-bottom: 1.5rem;
             color: var(--dark);
-            word-break: keep-all;
-            word-wrap: break-word; /* 긴 단어 줄바꿈 허용 */
         }
 
         .hero p {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             color: #555;
             margin-bottom: 3rem;
             max-width: 650px;
             margin-left: auto;
             margin-right: auto;
             font-weight: 500;
-            word-break: keep-all;
         }
 
         .hero-btns {
@@ -236,14 +252,13 @@
         .bento-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
 
         .stat-label { font-size: 0.9rem; font-weight: 700; color: #adb5bd; text-transform: uppercase; margin-bottom: 0.8rem; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-        .stat-title { font-size: 1.4rem; font-weight: 700; color: var(--dark); margin-bottom: 0.5rem; line-height: 1.3; font-family: var(--font-title); word-break: keep-all; }
-        .stat-insight { font-size: 0.9rem; color: #495057; line-height: 1.5; word-break: keep-all; margin-top: auto; }
+        .stat-title { font-size: 1.4rem; font-weight: 700; color: var(--dark); margin-bottom: 0.5rem; line-height: 1.3; font-family: var(--font-title); }
+        .stat-insight { font-size: 0.95rem; color: #495057; line-height: 1.5; margin-top: auto; }
         
-        /* Chart Wrapper: 높이를 제한하여 통일성 유지 */
         .chart-wrapper { 
             position: relative; 
             width: 100%; 
-            height: 180px; /* 높이 고정 */
+            height: 180px; 
             flex-grow: 1; 
             display: flex; 
             align-items: center; 
@@ -254,7 +269,16 @@
         /* --- Toolkit Section --- */
         .toolkit-section { padding: 8rem 5%; background: var(--white); text-align: center; }
         .toolkit-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; max-width: 1300px; margin: 3rem auto 0; }
-        .toolkit-card { background: var(--white); border: 2px solid #eee; border-radius: var(--radius); padding: 2.5rem 1.5rem; transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between; }
+        .toolkit-card { 
+            background: var(--white); 
+            border: 2px solid #eee; 
+            border-radius: var(--radius); 
+            padding: 2.5rem 1.5rem; 
+            transition: 0.3s; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+        }
         .toolkit-card:hover { border-color: var(--primary); box-shadow: var(--shadow-lg); transform: translateY(-5px); }
         
         @keyframes highlightPulse {
@@ -265,8 +289,8 @@
         .toolkit-card.highlight { animation: highlightPulse 1.5s ease-out; border-color: var(--primary) !important; border-width: 3px; z-index: 10; }
 
         .toolkit-icon { font-size: 3rem; margin-bottom: 1rem; color: var(--primary); }
-        .toolkit-title { font-size: 1.3rem; margin-bottom: 0.5rem; word-break: keep-all; }
-        .toolkit-desc { color: #666; margin-bottom: 1.5rem; font-size: 0.95rem; line-height: 1.5; word-break: keep-all; }
+        .toolkit-title { font-size: 1.3rem; margin-bottom: 0.5rem; }
+        .toolkit-desc { color: #666; margin-bottom: 1.5rem; font-size: 0.95rem; line-height: 1.5; flex-grow: 1; }
         .toolkit-list { text-align: left; background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.9rem; color: #555; list-style: none; }
         .toolkit-list li { margin-bottom: 5px; padding-left: 1.2em; position: relative; }
         .toolkit-list li::before { content: '•'; position: absolute; left: 0; color: var(--primary); }
@@ -312,7 +336,7 @@
 
         .question-card { display: none; text-align: left; animation: fadeIn 0.5s; }
         .question-card.active { display: block; }
-        .q-title { font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--dark); font-weight: 700; line-height: 1.4; word-break: keep-all; }
+        .q-title { font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--dark); font-weight: 700; line-height: 1.4; }
         .q-option {
             display: block; padding: 1.2rem; border: 2px solid #f1f3f5; border-radius: 12px;
             margin-bottom: 1rem; cursor: pointer; transition: 0.2s; font-size: 1.1rem; color: #495057;
@@ -325,7 +349,7 @@
         .result-icon { font-size: 5rem; margin-bottom: 1rem; animation: bounce 2s infinite; }
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
         .result-title { font-size: 2.2rem; color: var(--primary); margin-bottom: 0.5rem; font-family: var(--font-title); }
-        .result-desc { font-size: 1.1rem; color: #555; margin-bottom: 1.5rem; word-break: keep-all; line-height: 1.6; }
+        .result-desc { font-size: 1.1rem; color: #555; margin-bottom: 1.5rem; line-height: 1.6; }
         
         .recommend-box {
             background: #f8f9fa; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;
@@ -343,22 +367,23 @@
             .bento-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
+        /* --- [Layout Fix] Complaint #5: MacBook/Laptop Layout Fix --- */
+        /* 중국어/일본어 등 폰트 크기가 달라서 깨지는 경우를 대비해 1440px 이하부터 2열로 강제 변경 */
+        @media (max-width: 1440px) {
+            .toolkit-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
         @media (max-width: 1024px) {
             header { flex-direction: row; justify-content: space-between; }
-            .nav-links { display: none; /* 모바일/태블릿에서는 메뉴 숨김 (간소화) 또는 햄버거 메뉴 필요할 수 있음. 여기서는 일단 간격 조정 */ }
-            /* 중간 사이즈(태블릿 가로/작은 랩탑)에서 메뉴가 너무 길면... */
             .nav-links { display: flex; gap: 1rem; }
             .nav-links a { font-size: 0.85rem; }
-            
             .bento-grid { grid-template-columns: repeat(2, 1fr); }
             .col-span-1, .col-span-2 { grid-column: span 1; }
-            .toolkit-grid { grid-template-columns: repeat(2, 1fr); }
         }
         
         @media (max-width: 850px) {
-            /* 좁은 랩탑/태블릿 환경에서 메뉴 레이아웃 변경 */
             header { flex-wrap: wrap; gap: 10px; justify-content: center; }
-            .logo { width: 100%; text-align: center; margin-bottom: 0.5rem; }
+            .logo { width: 100%; text-align: center; margin-bottom: 0.5rem; justify-content: center; }
             .nav-links { width: auto; justify-content: center; margin-bottom: 0.5rem; }
             .lang-group { margin-left: 0; }
         }
@@ -369,11 +394,9 @@
             .bento-grid, .toolkit-grid { grid-template-columns: 1fr; }
             .col-span-2 { grid-column: span 1; }
             .btn { width: 100%; justify-content: center; }
-            /* 모바일에서는 차트 높이 재조정 */
             .chart-wrapper { height: 220px; }
-            .bento-grid { grid-auto-rows: auto; } /* 모바일은 자동 높이 */
+            .bento-grid { grid-auto-rows: auto; }
             
-            /* 모바일 헤더 */
             header { padding: 0.8rem 5%; flex-direction: column; gap: 10px; }
             .logo { margin-bottom: 0; }
             .nav-links { gap: 1rem; flex-wrap: wrap; justify-content: center; }
@@ -386,7 +409,7 @@
     <!-- Header -->
     <header>
         <div class="logo">
-            <img src="fake_logo_revised.png" alt="F.A.K.E. Logo" style="height: 40px; vertical-align: middle;" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgNDAiPjx0ZXh0IHk9IjMwIiBmb250LXNpemU9IjI1IiBmaWxsPSIjNGM2ZWY1IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkYuQS5LLkUuPC90ZXh0Pjwvc3ZnPg==';">
+             <i class="fas fa-fingerprint" style="font-size: 2rem;"></i> F.A.K.E.
         </div>
         
         <nav class="nav-links">
@@ -422,11 +445,11 @@
     <section class="stats-section">
         <div class="section-header">
             <h2 class="section-title" data-lang="stats_title">데이터로 본 현실</h2>
-            <p class="section-subtitle" data-lang="stats_subtitle">2025년 11월, 대학생 118명의 목소리를 조사하였습니다. (조사기간: 11.01~11.14)</p>
+            <p class="section-subtitle" data-lang="stats_subtitle">2025년 11월, 대학생 118명의 목소리를 조사하였습니다.</p>
         </div>
         
         <div class="bento-grid">
-            <!-- Card 1: Risk Exposure (Doughnut - Modified to fit uniform size) -->
+            <!-- Card 1: Risk Exposure -->
             <div class="bento-card col-span-1" style="align-items: center; text-align: center; justify-content: space-between;">
                 <span class="stat-label" style="align-self: flex-start;" data-lang="stat_risk_label"><i class="fas fa-exclamation-circle"></i> 위험 노출도</span>
                 <div class="chart-wrapper">
@@ -439,39 +462,29 @@
                 <p class="stat-insight" data-lang="stat_risk_desc">3명 중 2명은 매주 허위정보를 목격해요. 허위정보 피해는 더 이상 남의 일이 아닙니다.</p>
             </div>
 
-            <!-- Card 2: Institutional Void (Vertical Icon-Number-Text, Scaled Down) -->
+            <!-- Card 2: Institutional Void -->
             <div class="bento-card col-span-1" style="display: flex; flex-direction: column; align-items: center; text-align: center; justify-content: space-between;">
                 
-                <!-- 1. 상단 라벨 -->
                 <span class="stat-label" style="align-self: flex-start; margin-bottom: 0.5rem; opacity: 0.8;" data-lang="stat_void_label">
                     <i class="fas fa-shield-alt"></i> 안전망 인식
                 </span>
 
-                <!-- 2. 메인 콘텐츠 그룹 -->
                 <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%;">
-                    
-                    <!-- (1) 아이콘 -->
                     <i class="fas fa-question-circle" style="font-size: 3.5rem; color: #A0D6B4; margin-bottom: 0.5rem;"></i>
-                    
-                    <!-- (2) 숫자 -->
                     <div style="font-size: 2.8rem; line-height: 1; font-weight: 800; color: #A0D6B4; margin-bottom: 0.3rem;">
                         66.1<span style="font-size: 1.8rem;">%</span>
                     </div>
-
-                    <!-- (3) 텍스트 설명 -->
                     <div style="font-size: 1rem; font-weight: 600;" data-lang="stat_void_main">
                         "신고처를 전혀 몰라요"
                     </div>
-
                 </div>
 
-                <!-- 3. 하단 인사이트 설명 -->
                 <p class="stat-insight" style="margin-top: 0.5rem; opacity: 0.7;" data-lang="stat_void_desc">
                     시스템은 있지만, 우리의 일상과는 연결되지 못하고 있어요. 우리 모두 '사각지대'에 놓여있죠.
                 </p>
             </div>
 
-            <!-- Card 3: Witness Experience (Horizontal Bar - Standard Size) -->
+            <!-- Card 3: Witness Experience -->
             <div class="bento-card col-span-1" style="align-items: center; text-align: center; justify-content: space-between;">
                 <span class="stat-label" style="align-self: flex-start;" data-lang="stat_witness_label"><i class="fas fa-eye"></i> 직접 목격 경험</span>
                 <div class="chart-wrapper">
@@ -480,7 +493,7 @@
                 <p class="stat-insight" style="margin-top: 0.5rem;" data-lang="stat_witness_desc">가짜뉴스나 딥페이크 등 비윤리적 행위를 직접 목격한 경험도 35.6%나 돼요. 생각보다 가까이에 있답니다.</p>
             </div>
 
-            <!-- Card 4: Universal Risk (Bar - Standard Size) -->
+            <!-- Card 4: Universal Risk -->
             <div class="bento-card col-span-1" style="align-items: center; text-align: center; justify-content: space-between;">
                 <span class="stat-label" style="align-self: flex-start;" data-lang="stat_light_label"><i class="fas fa-user-shield"></i> 라이트 유저 위험도</span>
                 <div class="chart-wrapper">
@@ -516,8 +529,7 @@
                     <li data-lang="tk1_item1">쉬운 말로 풀어쓴 AI 용어 사전</li>
                     <li data-lang="tk1_item2">긴급 상황 시 연락할 비상 연락망</li>
                 </ul>
-                <!-- Added ID to change href via JS -->
-                <a id="btn-tk1" href="https://docs.google.com/document/d/1pkKRHfcO6w9bk1Rl5u-SeKMVp9czQWCRlFWCxAS8Ivk/edit?usp=sharing" target="_blank" class="btn-download">
+                <a id="btn-tk1" href="#" target="_blank" class="btn-download">
                     <i class="fas fa-download"></i> <span data-lang="btn_download">다운로드</span>
                 </a>
             </div>
@@ -532,8 +544,7 @@
                     <li data-lang="tk2_item2">워터마크 생성기 링크</li>
                     <li data-lang="tk2_item3">AI 대화 기록 완전 삭제법</li>
                 </ul>
-                <!-- Added ID to change href via JS -->
-                <a id="btn-tk2" href="https://docs.google.com/document/d/1ieaA36l3-y8e1Lp_W1kl6h93Ct9aCVo3MJLX3pYrXxY/edit?usp=sharing" target="_blank" class="btn-download">
+                <a id="btn-tk2" href="#" target="_blank" class="btn-download">
                     <i class="fas fa-download"></i> <span data-lang="btn_download">다운로드</span>
                 </a>
             </div>
@@ -548,8 +559,7 @@
                     <li data-lang="tk3_item2">학술 자료 기반 정보 검증 팁</li>
                     <li data-lang="tk3_item3">텍스트/이미지 진위 판별하기</li>
                 </ul>
-                <!-- Added ID to change href via JS -->
-                <a id="btn-tk3" href="https://docs.google.com/document/d/1zFOpyoSdUK5l6zFB56-K_LZ1qWgcAlhNCvvjLC13oLs/edit?usp=sharing" target="_blank" class="btn-download">
+                <a id="btn-tk3" href="#" target="_blank" class="btn-download">
                     <i class="fas fa-download"></i> <span data-lang="btn_download">다운로드</span>
                 </a>
             </div>
@@ -561,11 +571,10 @@
                 <p class="toolkit-desc" data-lang="tk4_desc">AI를 활용해 캠퍼스를 지켜나가는 리더를 위한 활동 패키지예요.</p>
                 <ul class="toolkit-list">
                     <li data-lang="tk4_item1">완벽한 프롬프트 작성의 5대 원칙</li>
-                    <li data-lang="tk4_item2">일상 및 교육용 대본 생성 프롬프트 템플릿</li>
-                    <li data-lang="tk4_item2">친구들을 위한 토론 주제 아이디어 생성 가이드</li>
+                    <li data-lang="tk4_item2">친구들을 위한 토론 주제 아이디어</li>
+                    <li data-lang="tk4_item3">앰버서더 공식 인증 배지</li>
                 </ul>
-                <!-- Added ID to change href via JS -->
-                <a id="btn-tk4" href="https://docs.google.com/document/d/1qODK23YI3IvpNwDcmNMzEOjIWakZGPlJcnH5N7IVCMU/edit?usp=sharing" target="_blank" class="btn-download">
+                <a id="btn-tk4" href="#" target="_blank" class="btn-download">
                     <i class="fas fa-download"></i> <span data-lang="btn_download">다운로드</span>
                 </a>
             </div>
@@ -581,13 +590,10 @@
             </p>
             
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                <!-- 기존 서명 버튼 -->
                 <a href="https://forms.gle/17dRfyub7eZMfXa58" target="_blank" class="btn btn-white">
                     ✋ <span data-lang="pledge_btn_sign">서명하고 동참하기</span>
                 </a>
-                
-                <!-- ✨ 새로 추가한 ID 발급 버튼 ✨ -->
-                <a href="id-card.html" target="_blank" class="btn btn-primary" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
+                <a href="#" class="btn btn-primary" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
                     💳 <span data-lang="pledge_btn_id">F.A.K.E. ID 발급받기</span>
                 </a>
             </div>
@@ -604,15 +610,11 @@
     <div id="reportModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <!-- data-lang added -->
                 <h2 style="font-size: 1.5rem; color: var(--dark);" data-lang="report_modal_title">데이터 상세 분석 리포트</h2>
                 <span class="close-btn" id="closeReportBtn">&times;</span>
             </div>
             <div class="modal-body">
-                <!-- data-lang added -->
                 <p style="margin-bottom: 1.5rem; color: #666; text-align: center;" data-lang="report_modal_instr">궁금한 주제를 선택해 보세요.</p>
-                
-                <!-- Dropdown (data-lang added to options) -->
                 <select id="chartSelector" class="chart-select">
                     <option value="tools" data-lang="opt_tools">🛠️ AI 도구 사용 비율</option>
                     <option value="purpose" data-lang="opt_purpose">🤖 AI 사용 목적</option>
@@ -623,17 +625,13 @@
                     <option value="reporting" data-lang="opt_reporting">📢 신고 채널 인지도</option>
                 </select>
 
-                <!-- Dynamic Chart Area -->
                 <div class="chart-container">
                     <canvas id="dynamicChart"></canvas>
                 </div>
                 
                 <div class="report-desc-box">
-                    <!-- data-lang added -->
                     <span class="report-insight-title" data-lang="report_insight_label">💡 분석 인사이트:</span>
-                    <p id="chartDesc" class="report-desc">
-                        <!-- Description will be updated by JS -->
-                    </p>
+                    <p id="chartDesc" class="report-desc"></p>
                 </div>
             </div>
         </div>
@@ -695,7 +693,7 @@
                         <span class="recommend-label" data-lang="res_rec_label">RECOMMENDED SOLUTION</span>
                         <div class="recommend-toolkit" id="resToolkit"></div>
                     </div>
-                    <button class="btn" onclick="closeTestAndScroll()"><i class="fas fa-gift"></i> <span data-lang="btn_get_solution">맞춤형 솔루션 받기</span></button>
+                    <button class="btn btn-primary" onclick="closeTestAndScroll()"><i class="fas fa-gift"></i> <span data-lang="btn_get_solution">맞춤형 솔루션 받기</span></button>
                     <button class="btn-outline" style="margin-top: 10px; width:100%" onclick="resetTest()" data-lang="btn_retry">테스트 다시 하기</button>
                 </div>
             </div>
@@ -704,685 +702,256 @@
 
     <script>
         // --- Language Translation Logic ---
+        // Complaints Addressed:
+        // #1: Natural Chinese (Kawaii yet pro)
+        // #2: Tone (Friendly polite)
+        // #4: Inclusive wording for SA context ("Campus/Community" instead of "HQ")
         const translations = {
             ko: {
-                // Link Data (Korean)
                 link_tk1: "https://docs.google.com/document/d/1pkKRHfcO6w9bk1Rl5u-SeKMVp9czQWCRlFWCxAS8Ivk/edit?usp=sharing",
                 link_tk2: "https://docs.google.com/document/d/1ieaA36l3-y8e1Lp_W1kl6h93Ct9aCVo3MJLX3pYrXxY/edit?usp=sharing",
                 link_tk3: "https://docs.google.com/document/d/1zFOpyoSdUK5l6zFB56-K_LZ1qWgcAlhNCvvjLC13oLs/edit?usp=sharing",
                 link_tk4: "https://docs.google.com/document/d/1qODK23YI3IvpNwDcmNMzEOjIWakZGPlJcnH5N7IVCMU/edit?usp=sharing",
 
-                menu_test: "진단하기",
-                menu_toolkit: "툴킷",
-                menu_pledge: "연대하기",
+                menu_test: "진단하기", menu_toolkit: "툴킷", menu_pledge: "연대하기",
                 hero_title: "검증된 정보와 안전한 기술,<br>우리가 함께 여는 올바른 AI 시대.",
                 hero_desc: "안전한 디지털 캠퍼스를 위한 대학생 AI 리터러시 프로젝트 F.A.K.E., 지금 시작합니다.",
                 hero_btn: "내 AI 사용 유형 진단해 보기",
-                
                 stats_title: "데이터로 본 현실",
-                stats_subtitle: "2025년 11월, 대학생 118명의 목소리를 조사하였습니다. (조사기간: 11.01~11.14)",
-                stat_risk_label: "위험 노출도",
-                stat_risk_main: "주 1회 이상 목격",
-                stat_risk_desc: "3명 중 2명은 매주 허위정보를 목격해요. 허위정보로 인한 피해는 더 이상 남의 일이 아니예요.",
-                stat_void_label: "안전망 인식",
-                stat_void_main: "\"신고처를 전혀 몰라요\"",
-                stat_void_desc: "시스템은 있지만, 우리의 일상과는 연결되지 못하고 있어요. 우리 모두 '사각지대'에 놓여있죠.",
-                stat_witness_label: "직접 목격 경험",
-                stat_witness_desc: "가짜뉴스나 딥페이크 등 비윤리적 행위를 직접 목격한 경험도 35.6%나 돼요. 생각보다 우리 가까이에 있답니다.",
-                stat_light_label: "라이트 유저 위험도",
-                stat_light_title: "⚠️ 안전지대는 없다",
-                stat_light_desc: "하루 2시간도 안 쓰는 '라이트 유저'조차 38%가 유해 콘텐츠를 목격했어요. 잠깐 쓴다고 해서 결코 안전하지 않습니다.",
+                stats_subtitle: "2025년 11월, 대학생 118명의 목소리를 조사하였습니다.",
+                stat_risk_label: "위험 노출도", stat_risk_main: "주 1회 이상 목격", stat_risk_desc: "3명 중 2명은 매주 허위정보를 목격해요.",
+                stat_void_label: "안전망 인식", stat_void_main: "\"신고처를 전혀 몰라요\"", stat_void_desc: "시스템은 있지만, 우리 일상과는 연결되지 못하고 있어요.",
+                stat_witness_label: "직접 목격 경험", stat_witness_desc: "가짜뉴스나 딥페이크 등을 직접 목격한 경험도 35.6%나 돼요.",
+                stat_light_label: "라이트 유저 위험도", stat_light_title: "⚠️ 안전지대는 없다",
+                stat_light_desc: "하루 2시간 미만 쓰는 '라이트 유저'조차 38%가 유해 콘텐츠를 목격했어요.",
                 btn_full_report: "📊 설문 결과 전체 상세 보기",
-
                 toolkit_title: "F.A.K.E. 툴킷 창고",
                 toolkit_subtitle: "레벨에 맞는 장비를 챙겨서 디지털 세상을 안전하게 항해해 보세요!",
-                tk1_title: "Lv.1 서바이벌 툴킷",
-                tk1_desc: "위험한 AI 정글에서 살아남기 위한 필수 생존 키트예요.",
-                tk1_item1: "기초 용어집 PDF",
-                tk1_item2: "응급 신고처 목록",
-                tk2_title: "Lv.2 보안관 꿈나무 툴킷",
-                tk2_desc: "나와 지인의 정보를 안전하게 보호하는 방어구 세트예요.",
-                tk2_item1: "SNS 비공개 설정 가이드",
-                tk2_item2: "워터마크 생성기 링크",
-                tk2_item3: "AI 대화 기록 완전 삭제법",
-                tk3_title: "Lv.3 보안관 심화 툴킷",
-                tk3_desc: "거짓 정보를 꿰뚫어보고 검증하는 전문가 장비예요.",
-                tk3_item1: "딥페이크 탐지 AI 모음",
-                tk3_item2: "팩트체크 체크리스트",
-                tk3_item3: "진위 판별 가이드",
-                tk4_title: "Lv.4 캠퍼스 앰버서더 툴킷",
-                tk4_desc: "캠퍼스의 문화를 바꾸는 리더를 위한 활동 패키지예요.",
-                tk4_item1: "친구들을 위한 10분 교육 PPT",
-                tk4_item2: "공식 앰배서더 인증 배지",
+                tk1_title: "Lv.1 서바이벌 툴킷", tk1_desc: "위험한 AI 정글에서 살아남기 위한 필수 생존 키트예요.",
+                tk1_item1: "쉬운 말로 풀어쓴 AI 용어 사전", tk1_item2: "긴급 상황 시 연락할 비상 연락망",
+                tk2_title: "Lv.2 보안관 꿈나무 툴킷", tk2_desc: "나와 지인의 정보를 안전하게 보호하는 방어구 세트예요.",
+                tk2_item1: "SNS 비공개 설정 가이드", tk2_item2: "워터마크 생성기 링크", tk2_item3: "AI 대화 기록 완전 삭제법",
+                tk3_title: "Lv.3 보안관 심화 툴킷", tk3_desc: "거짓 정보를 꿰뚫어보고 검증하는 전문가 장비예요.",
+                tk3_item1: "AI로 출처 확인하는 법", tk3_item2: "학술 자료 기반 정보 검증 팁", tk3_item3: "텍스트/이미지 진위 판별하기",
+                tk4_title: "Lv.4 캠퍼스 앰버서더 툴킷", tk4_desc: "AI를 활용해 캠퍼스를 지켜나가는 리더를 위한 패키지예요.",
+                tk4_item1: "완벽한 프롬프트 작성의 5대 원칙", tk4_item2: "친구들을 위한 토론 주제 아이디어", tk4_item3: "앰버서더 공식 인증 배지",
                 btn_download: "다운로드",
-
                 pledge_title: "함께 연대해 주세요",
                 pledge_desc: "\"나는 AI를 안전하게 사용하고, 캠퍼스와 공동체를 가꾸며,<br>디지털 범죄 피해자와 연대하는 행동하는 디지털 시민입니다!\"",
-                pledge_btn_sign: "서명하고 동참하기",
-                pledge_btn_id: "F.A.K.E. ID 발급받기",
-
-                // --- Report Modal (Static) ---
-                report_modal_title: "데이터 상세 분석 리포트",
-                report_modal_instr: "궁금한 주제를 선택해 보세요.",
+                pledge_btn_sign: "서명하고 동참하기", pledge_btn_id: "F.A.K.E. ID 발급받기",
+                report_modal_title: "데이터 상세 분석 리포트", report_modal_instr: "궁금한 주제를 선택해 보세요.",
                 report_insight_label: "💡 분석 인사이트:",
-                opt_tools: "🛠️ AI 도구 사용 비율",
-                opt_purpose: "🤖 AI 사용 목적",
-                opt_unethical: "🚫 윤리적 위반 인식",
-                opt_responsibility: "⚖️ 책임 소재 인식",
-                opt_deepfake: "👮 딥페이크 처벌 동의",
-                opt_frequency: "👀 허위정보 목격 빈도",
-                opt_reporting: "📢 신고 채널 인지도",
-
-                // --- Test Modal ---
+                opt_tools: "🛠️ AI 도구 사용 비율", opt_purpose: "🤖 AI 사용 목적", opt_unethical: "🚫 윤리적 위반 인식",
+                opt_responsibility: "⚖️ 책임 소재 인식", opt_deepfake: "👮 딥페이크 처벌 동의", opt_frequency: "👀 허위정보 목격 빈도", opt_reporting: "📢 신고 채널 인지도",
                 test_header: "내 AI 윤리 점수 진단 (Self-Check)",
-                q1_title: "Q1. 과제할 때 AI의 답변을 어떻게 활용하시나요?",
-                q1_opt1: "🔍 팩트체크는 필수! 신뢰할 수 있는 출처로 교차 검증해요.",
-                q1_opt2: "🤔 그럴듯하면 일단 쓰고 봐요.",
-                q1_opt3: "⚡ 복사+붙여넣기 1초 컷!",
-                q2_title: "Q2. 친구의 딥페이크 사진이 단톡방에 올라왔다면?",
-                q2_opt1: "🚨 즉시 신고하고 친구들에게 공유 중단을 요청해요.",
-                q2_opt2: "🤐 찜찜하지만 조용히 방을 나가요.",
-                q2_opt3: "🤣 \"이거 진짜 같다\"며 다른 방에 공유해요.",
-                q3_title: "Q3. 학교 내 공식적인 AI 악용 신고처를 알고 계신가요?",
-                q3_opt1: "📞 정확한 부서명과 연락처를 알고 있어요.",
-                q3_opt2: "🏫 인권센터...? 어디 있는 것 같기는 한데...?",
-                q3_opt3: "🤷‍♂️ 그런 게 있었나요?",
-                q4_title: "Q4. AI 생성물을 SNS에 올릴 때 표기를 하시나요?",
-                q4_opt1: "🏷️ #AI생성 태그를 반드시 달아요.",
-                q4_opt2: "🎨 내가 그린 척하고 싶을 땐 안 해요.",
-                q4_opt3: "❌ 전혀 신경 쓰지 않아요.",
-                q5_title: "Q5. AI가 만든 이미지는 저작권법상 보호받지 못한다는 사실을 알고 계셨나요?",
-                q5_opt1: "🙆‍♂️ 네, 알고 있었어요.",
-                q5_opt2: "🙅‍♂️ 아니오, 몰랐어요.",
-                
-                res_rec_label: "RECOMMENDED SOLUTION",
-                btn_get_solution: "맞춤형 솔루션 받기",
-                btn_retry: "테스트 다시 하기",
-                
-                res_lv4_title: "캠퍼스 앰버서더",
-                res_lv4_desc: "와우! 당신은 이미 준비된 리더예요!<br>이제 친구들에게 올바른 길을 안내해 주세요.",
-                res_lv4_toolkit: "Lv.4 캠퍼스 앰버서더 툴킷",
-                
-                res_lv3_title: "캠퍼스 보안관",
-                res_lv3_desc: "능동적으로 정보를 검증할 줄 아시네요!<br>조금 더 전문적인 도구를 써볼까요?",
-                res_lv3_toolkit: "Lv.3 보안관 심화 툴킷",
-
-                res_lv2_title: "보안관 꿈나무",
-                res_lv2_desc: "마음은 준비됐는데, 장비가 부족하군요?<br>나와 지인을 지키는 법부터 배워요!",
-                res_lv2_toolkit: "Lv.2 보안관 꿈나무 툴킷",
-
-                res_lv1_title: "디지털 미아",
-                res_lv1_desc: "위험한 정글 속에 혼자 계시나요?<br>생존을 위한 필수 지식이 시급해요!",
-                res_lv1_toolkit: "Lv.1 서바이벌 툴킷"
+                q1_title: "Q1. 과제할 때 AI의 답변을 어떻게 활용하시나요?", q1_opt1: "🔍 팩트체크는 필수! 신뢰할 수 있는 출처로 교차 검증해요.", q1_opt2: "🤔 그럴듯하면 일단 쓰고 봐요.", q1_opt3: "⚡ 복사+붙여넣기 1초 컷!",
+                q2_title: "Q2. 친구의 딥페이크 사진이 단톡방에 올라왔다면?", q2_opt1: "🚨 즉시 신고하고 친구들에게 공유 중단을 요청해요.", q2_opt2: "🤐 찜찜하지만 조용히 방을 나가요.", q2_opt3: "🤣 \"이거 진짜 같다\"며 다른 방에 공유해요.",
+                q3_title: "Q3. 학교 내 공식적인 AI 악용 신고처를 알고 계신가요?", q3_opt1: "📞 정확한 부서명과 연락처를 알고 있어요.", q3_opt2: "🏫 인권센터...? 어디 있는 것 같기는 한데...?", q3_opt3: "🤷‍♂️ 그런 게 있었나요?",
+                q4_title: "Q4. AI 생성물을 SNS에 올릴 때 표기를 하시나요?", q4_opt1: "🏷️ #AI생성 태그를 반드시 달아요.", q4_opt2: "🎨 내가 그린 척하고 싶을 땐 안 해요.", q4_opt3: "❌ 전혀 신경 쓰지 않아요.",
+                q5_title: "Q5. AI가 만든 이미지는 저작권법상 보호받지 못한다는 사실을 알고 계셨나요?", q5_opt1: "🙆‍♂️ 네, 알고 있었어요.", q5_opt2: "🙅‍♂️ 아니오, 몰랐어요.",
+                res_rec_label: "추천 솔루션 (SOLUTION)", btn_get_solution: "맞춤형 솔루션 받기", btn_retry: "테스트 다시 하기",
+                res_lv4_title: "캠퍼스 앰버서더", res_lv4_desc: "와우! 당신은 이미 준비된 리더예요!<br>이제 친구들에게 올바른 길을 안내해 주세요.", res_lv4_toolkit: "Lv.4 캠퍼스 앰버서더 툴킷",
+                res_lv3_title: "캠퍼스 보안관", res_lv3_desc: "능동적으로 정보를 검증할 줄 아시네요!<br>조금 더 전문적인 도구를 써볼까요?", res_lv3_toolkit: "Lv.3 보안관 심화 툴킷",
+                res_lv2_title: "보안관 꿈나무", res_lv2_desc: "마음은 준비됐는데, 장비가 부족하군요?<br>나와 지인을 지키는 법부터 배워요!", res_lv2_toolkit: "Lv.2 보안관 꿈나무 툴킷",
+                res_lv1_title: "디지털 미아", res_lv1_desc: "위험한 정글 속에 혼자 계시나요?<br>생존을 위한 필수 지식이 시급해요!", res_lv1_toolkit: "Lv.1 서바이벌 툴킷"
             },
             en: {
-                // Link Data (English)
                 link_tk1: "https://docs.google.com/document/d/1feLm0awxVFzE3NZtJk8tfAfkF_-5lj4TsYDVB8GrR2Q/edit?usp=sharing",
                 link_tk2: "https://docs.google.com/document/d/1PmiMVFr3x8biYGdPuqmhlR-UOPc4NnXDmVkFCy0pH1g/edit?usp=sharing",
                 link_tk3: "https://docs.google.com/document/d/1J3PC4-QIea6I9oIUyC6J53Ip1sxAe3NBxFH__4SIREc/edit?usp=sharing",
                 link_tk4: "https://docs.google.com/document/d/17BR0HkAEQLQl8aEUpoUEkjycUMVlFtb9pwUCvrSUosg/edit?usp=sharing",
-
-                menu_test: "Self-Check",
-                menu_toolkit: "Toolkit",
-                menu_pledge: "Pledge",
-                hero_title: "Verified Truth & Safe Tech,<br>Together We Open the Right AI Era.",
+                menu_test: "Self-Check", menu_toolkit: "Toolkit", menu_pledge: "Pledge",
+                hero_title: "Verified Truth & Safe Tech,<br>Opening the Right AI Era Together.",
                 hero_desc: "Project F.A.K.E.: An AI Literacy Initiative for a Safer Digital Campus.",
-                hero_btn: "Start My AI Ethics Self-Check",
-
-                stats_title: "Reality in Data",
-                stats_subtitle: "Survey of 118 university students in Nov 2025. (Period: 11.01~11.14)",
-                stat_risk_label: "Risk Exposure",
-                stat_risk_main: "Weekly Witness",
-                stat_risk_desc: "2 out of 3 students witness fake info weekly. The damage is no longer someone else's problem.",
-                stat_void_label: "Safety Net Awareness",
-                stat_void_main: "\"Don't Know<br>Where to Report\"",
-                stat_void_desc: "The system exists, but it's disconnected from our daily lives. We are all in a 'blind spot'.",
-                stat_witness_label: "Direct Witness",
-                stat_witness_desc: "35.6% have directly witnessed unethical acts like fake news or deepfakes. It's closer than you think.",
-                stat_light_label: "Light User Risk",
-                stat_light_title: "⚠️ No Safety Zone",
-                stat_light_desc: "Even 'Light Users' (<2hrs/day) aren't safe—38% witnessed harmful content. Brief usage doesn't guarantee safety.",
+                hero_btn: "Start AI Ethics Self-Check",
+                stats_title: "Reality in Data", stats_subtitle: "Survey of 118 students in Nov 2025.",
+                stat_risk_label: "Risk Exposure", stat_risk_main: "Weekly Witness", stat_risk_desc: "2 out of 3 students witness fake info weekly.",
+                stat_void_label: "Safety Net Awareness", stat_void_main: "\"Don't Know Where to Report\"", stat_void_desc: "The system exists but is disconnected from our daily lives.",
+                stat_witness_label: "Direct Witness", stat_witness_desc: "35.6% have directly witnessed unethical acts like deepfakes.",
+                stat_light_label: "Light User Risk", stat_light_title: "⚠️ No Safety Zone", stat_light_desc: "Even 'Light Users' (<2hrs/day) aren't safe—38% saw harmful content.",
                 btn_full_report: "📊 View Full Survey Report",
-
-                toolkit_title: "F.A.K.E. Toolkit Inventory",
-                toolkit_subtitle: "Equip yourself with the right toolkit to navigate the digital world safely!",
-                tk1_title: "Lv.1 Survival Toolkit",
-                tk1_desc: "Essential survival kit to stay alive in the dangerous AI jungle.",
-                tk1_item1: "Basic Terminology PDF",
-                tk1_item2: "Emergency Contact List",
-                tk2_title: "Lv.2 Junior Sheriff Toolkit",
-                tk2_desc: "Defense set to protect the privacy of you and your acquaintances.",
-                tk2_item1: "SNS Privacy Guide",
-                tk2_item2: "Watermark Generator Link",
-                tk2_item3: "Permanently Delete AI Chat History",
-                tk3_title: "Lv.3 Senior Sheriff Toolkit",
-                tk3_desc: "Expert gear to pierce through lies and verify the truth.",
-                tk3_item1: "Deepfake Detection AI Tools",
-                tk3_item2: "Fact-Check Checklist",
-                tk3_item3: "Verification Guide",
-                tk4_title: "Lv.4 Campus Ambassador Toolkit",
-                tk4_desc: "Activity package for leaders changing the campus culture.",
-                tk4_item1: "10-min Edu PPT for Friends",
-                tk4_item2: "Official Ambassador Badge",
+                toolkit_title: "F.A.K.E. Toolkit Inventory", toolkit_subtitle: "Equip yourself to navigate the digital world safely!",
+                tk1_title: "Lv.1 Survival Toolkit", tk1_desc: "Essential kit to survive in the dangerous AI jungle.", tk1_item1: "Basic Terminology PDF", tk1_item2: "Emergency Contact List",
+                tk2_title: "Lv.2 Junior Sheriff Toolkit", tk2_desc: "Defense set to protect you and your friends' privacy.", tk2_item1: "SNS Privacy Guide", tk2_item2: "Watermark Generator", tk2_item3: "Delete AI Chat History",
+                tk3_title: "Lv.3 Senior Sheriff Toolkit", tk3_desc: "Expert gear to verify truth and pierce through lies.", tk3_item1: "Deepfake Detection Tools", tk3_item2: "Fact-Check Checklist", tk3_item3: "Verification Guide",
+                tk4_title: "Lv.4 Campus Ambassador Toolkit", tk4_desc: "Package for leaders changing campus culture.", tk4_item1: "5 Rules for Perfect Prompts", tk4_item2: "Debate Topics for Friends", tk4_item3: "Official Ambassador Badge",
                 btn_download: "Download",
-
-                pledge_title: "Stand With Us",
-                pledge_desc: "\"I am a digital citizen who takes action:<br>using AI responsibly, building stronger communities, and standing with victims of digital crime.\"",
-                pledge_btn_sign: "Sign the Pledge",
-                pledge_btn_id: "Get Your F.A.K.E. ID",
-
-                // --- Report Modal (Static) ---
-                report_modal_title: "Data Detailed Analysis Report",
-                report_modal_instr: "Select a topic to explore.",
-                report_insight_label: "💡 Analysis Insight:",
-                opt_tools: "🛠️ AI Tool Usage Ratio",
-                opt_purpose: "🤖 Purpose of AI Usage",
-                opt_unethical: "🚫 Perception of Unethical Acts",
-                opt_responsibility: "⚖️ Perception of Responsibility",
-                opt_deepfake: "👮 Agreement on Deepfake Punishment",
-                opt_frequency: "👀 Frequency of Witnessing Fake Info",
-                opt_reporting: "📢 Awareness of Reporting Channels",
-
-                // --- Test Modal ---
+                pledge_title: "Stand With Us", pledge_desc: "\"I act responsibly with AI, build stronger communities,<br>and stand with digital crime victims!\"",
+                pledge_btn_sign: "Sign the Pledge", pledge_btn_id: "Get F.A.K.E. ID",
+                report_modal_title: "Detailed Data Report", report_modal_instr: "Select a topic to explore.", report_insight_label: "💡 Insight:",
+                opt_tools: "🛠️ AI Tool Usage", opt_purpose: "🤖 Usage Purpose", opt_unethical: "🚫 Unethical Acts", opt_responsibility: "⚖️ Responsibility", opt_deepfake: "👮 Deepfake Punishment", opt_frequency: "👀 Witness Frequency", opt_reporting: "📢 Reporting Awareness",
                 test_header: "My AI Ethics Score (Self-Check)",
-                q1_title: "Q1. How do you use AI answers for assignments?",
-                q1_opt1: "🔍 Fact-checking is a must! Verify with reliable sources.",
-                q1_opt2: "🤔 If it looks okay, I just use it.",
-                q1_opt3: "⚡ Copy & Paste in 1 second!",
-                q2_title: "Q2. If a friend's deepfake photo appeared in a group chat?",
-                q2_opt1: "🚨 Report immediately and ask to stop sharing.",
-                q2_opt2: "🤐 It feels wrong, but I just leave the chat silently.",
-                q2_opt3: "🤣 I share it to other chats saying \"This looks real\".",
-                q3_title: "Q3. Do you know the official school reporting center for AI abuse?",
-                q3_opt1: "📞 I know the exact department and contact number.",
-                q3_opt2: "🏫 Human Rights Center...? Maybe somewhere there?",
-                q3_opt3: "🤷‍♂️ Did such a thing exist?",
-                q4_title: "Q4. Do you label AI-generated content when posting on SNS?",
-                q4_opt1: "🏷️ I always add the #AI_Generated tag.",
-                q4_opt2: "🎨 I don't if I want to pretend I drew it.",
-                q4_opt3: "❌ I don't care at all.",
-                q5_title: "Q5. Did you know AI-generated images are not protected by copyright?",
-                q5_opt1: "🙆‍♂️ Yes, I knew that.",
-                q5_opt2: "🙅‍♂️ No, I didn't know.",
-
-                res_rec_label: "RECOMMENDED SOLUTION",
-                btn_get_solution: "Get Tailored Solution",
-                btn_retry: "Retry Test",
-
-                res_lv4_title: "Campus Ambassador",
-                res_lv4_desc: "Wow! You are already a ready-made leader!<br>Now guide your friends to the right path.",
-                res_lv4_toolkit: "Lv.4 Campus Ambassador Toolkit",
-                
-                res_lv3_title: "Senior Sheriff",
-                res_lv3_desc: "You know how to verify information actively!<br>Shall we try more professional tools?",
-                res_lv3_toolkit: "Lv.3 Senior Sheriff Toolkit",
-
-                res_lv2_title: "Junior Sheriff",
-                res_lv2_desc: "You are ready at heart, but lack the gear?<br>Learn how to protect yourself first!",
-                res_lv2_toolkit: "Lv.2 Junior Sheriff Toolkit",
-
-                res_lv1_title: "Digital Stray",
-                res_lv1_desc: "Are you alone in the dangerous jungle?<br>Survival knowledge is urgent!",
-                res_lv1_toolkit: "Lv.1 Survival Toolkit"
+                q1_title: "Q1. How do you use AI for assignments?", q1_opt1: "🔍 Fact-checking is a must! Verify with reliable sources.", q1_opt2: "🤔 If it looks okay, I just use it.", q1_opt3: "⚡ Copy & Paste in 1 second!",
+                q2_title: "Q2. If a friend's deepfake photo appears in a chat?", q2_opt1: "🚨 Report immediately and ask to stop sharing.", q2_opt2: "🤐 It feels wrong, but I just leave silently.", q2_opt3: "🤣 I share it saying \"This looks real\".",
+                q3_title: "Q3. Do you know where to report AI abuse on campus?", q3_opt1: "📞 I know the exact department.", q3_opt2: "🏫 Maybe somewhere in the Human Rights Center?", q3_opt3: "🤷‍♂️ Does that exist?",
+                q4_title: "Q4. Do you label AI content on SNS?", q4_opt1: "🏷️ Always add #AI_Generated tag.", q4_opt2: "🎨 Not if I want to pretend I drew it.", q4_opt3: "❌ I don't care at all.",
+                q5_title: "Q5. Did you know AI images aren't copyrighted?", q5_opt1: "🙆‍♂️ Yes, I knew.", q5_opt2: "🙅‍♂️ No, I didn't.",
+                res_rec_label: "RECOMMENDED SOLUTION", btn_get_solution: "Get Tailored Solution", btn_retry: "Retry Test",
+                res_lv4_title: "Campus Ambassador", res_lv4_desc: "Wow! You're a ready-made leader! Guide your friends.", res_lv4_toolkit: "Lv.4 Campus Ambassador Toolkit",
+                res_lv3_title: "Senior Sheriff", res_lv3_desc: "You verify actively! Try professional tools?", res_lv3_toolkit: "Lv.3 Senior Sheriff Toolkit",
+                res_lv2_title: "Junior Sheriff", res_lv2_desc: "Ready at heart, but need gear? Protect yourself first!", res_lv2_toolkit: "Lv.2 Junior Sheriff Toolkit",
+                res_lv1_title: "Digital Stray", res_lv1_desc: "Lost in the jungle? Survival knowledge is urgent!", res_lv1_toolkit: "Lv.1 Survival Toolkit"
             },
-            cn: {
-                // Link Data (Chinese - linking to English for now)
+            cn: { // Complaint #1 & #2 Fixed: More natural, cute, yet educational tone
                 link_tk1: "https://docs.google.com/document/d/1feLm0awxVFzE3NZtJk8tfAfkF_-5lj4TsYDVB8GrR2Q/edit?usp=sharing",
                 link_tk2: "https://docs.google.com/document/d/1PmiMVFr3x8biYGdPuqmhlR-UOPc4NnXDmVkFCy0pH1g/edit?usp=sharing",
                 link_tk3: "https://docs.google.com/document/d/1J3PC4-QIea6I9oIUyC6J53Ip1sxAe3NBxFH__4SIREc/edit?usp=sharing",
                 link_tk4: "https://docs.google.com/document/d/17BR0HkAEQLQl8aEUpoUEkjycUMVlFtb9pwUCvrSUosg/edit?usp=sharing",
-
-                menu_test: "自我诊断",
-                menu_toolkit: "工具包",
-                menu_pledge: "参与联署",
-                hero_title: "经过验证的真相与安全的技术，<br>我们共同开启的正确AI时代。",
-                hero_desc: "为了安全的数字校园，大学生AI素养项目 F.A.K.E.，现在开始。",
-                hero_btn: "开始AI使用类型自我诊断",
-
-                stats_title: "数据中的现实",
-                stats_subtitle: "2025年11月，对118名大学生的声音进行了调查。(调查期间: 11.01~11.14)",
-                stat_risk_label: "风险暴露度",
-                stat_risk_main: "每周目击1次以上",
-                stat_risk_desc: "每3名学生中就有2名每周目击虚假信息。虚假信息造成的伤害不再是别人的事。",
-                stat_void_label: "安全网认知",
-                stat_void_main: "\"完全不知道<br>举报处\"",
-                stat_void_desc: "虽然有系统，但与我们的日常生活脱节。我们都处于‘死角’。",
-                stat_witness_label: "直接目击经验",
-                stat_witness_desc: "直接目击假新闻或Deepfake等不道德行为的经验也高达35.6%。比想象中离我们更近。",
-                stat_light_label: "轻度用户风险",
-                stat_light_title: "⚠️ 没有安全区",
-                stat_light_desc: "即使是每天使用不到2小时的‘轻度用户’，也有38%目击了有害内容。使用时间短并不意味着安全。",
-                btn_full_report: "📊 查看完整调查结果",
-
-                toolkit_title: "F.A.K.E. 工具包仓库",
-                toolkit_subtitle: "带上适合等级的装备，安全地航行在数字世界吧！",
-                tk1_title: "Lv.1 生存工具包",
-                tk1_desc: "为了在危险的AI丛林中生存的必备生存工具包。",
-                tk1_item1: "简易AI术语词典 PDF",
-                tk1_item2: "紧急情况联系网列表",
-                tk2_title: "Lv.2 预备治安官工具包",
-                tk2_desc: "安全保护我和熟人信息的防御套装。",
-                tk2_item1: "SNS私密设置指南",
-                tk2_item2: "水印生成器链接",
-                tk2_item3: "AI对话记录完全删除法",
-                tk3_title: "Lv.3 治安官深化工具包",
-                tk3_desc: "看穿虚假信息并进行验证的专家装备。",
-                tk3_item1: "Deepfake检测AI合集",
-                tk3_item2: "事实核查清单",
-                tk3_item3: "真伪判别指南",
-                tk4_title: "Lv.4 校园大使工具包",
-                tk4_desc: "为了改变校园文化的领导者准备的活动套餐。",
-                tk4_item1: "给朋友们的10分钟教育PPT",
-                tk4_item2: "官方大使认证徽章",
-                btn_download: "下载",
-
-                pledge_title: "请一起参与联署",
-                pledge_desc: "\"我是安全使用AI，建设校园和共同体，<br>与数字犯罪受害者团结一致的行动派数字公民！\"",
-                pledge_btn_sign: "签名并参与",
-                pledge_btn_id: "领取 F.A.K.E. ID",
-
-                // --- Report Modal (Static) ---
-                report_modal_title: "数据详细分析报告",
-                report_modal_instr: "请选择感兴趣的主题。",
-                report_insight_label: "💡 分析洞察:",
-                opt_tools: "🛠️ AI工具使用比例",
-                opt_purpose: "🤖 AI使用目的",
-                opt_unethical: "🚫 不道德行为认知",
-                opt_responsibility: "⚖️ 责任归属认知",
-                opt_deepfake: "👮 同意Deepfake处罚",
-                opt_frequency: "👀 虚假信息目击频率",
-                opt_reporting: "📢 举报渠道认知度",
-
-                // --- Test Modal ---
-                test_header: "我的AI伦理分数诊断 (Self-Check)",
-                q1_title: "Q1. 做作业时如何利用AI的回答？",
-                q1_opt1: "🔍 事实核查是必须的！通过可信来源进行交叉验证。",
-                q1_opt2: "🤔 看起来不错就先用。",
-                q1_opt3: "⚡ 复制+粘贴 1秒搞定！",
-                q2_title: "Q2. 如果朋友的Deepfake照片出现在群聊中？",
-                q2_opt1: "🚨 立即举报并要求朋友们停止传播。",
-                q2_opt2: "🤐 虽然觉得不对劲，但还是悄悄退群。",
-                q2_opt3: "🤣 说着\"这个真像\"并转发到其他群。",
-                q3_title: "Q3. 您知道校内正式的AI滥用举报处吗？",
-                q3_opt1: "📞 知道确切的部门名称和联系方式。",
-                q3_opt2: "🏫 人权中心...? 好像在哪里见过...?",
-                q3_opt3: "🤷‍♂️ 有这种东西吗？",
-                q4_title: "Q4. 在SNS上发布AI生成物时会进行标注吗？",
-                q4_opt1: "🏷️ 一定会加上 #AI生成 标签。",
-                q4_opt2: "🎨 想要假装是自己画的时候就不加。",
-                q4_opt3: "❌ 完全不在意。",
-                q5_title: "Q5. 您知道AI生成的图像不受版权法保护吗？",
-                q5_opt1: "🙆‍♂️ 是的，我知道。",
-                q5_opt2: "🙅‍♂️ 不，我不知道。",
-
-                res_rec_label: "推荐解决方案",
-                btn_get_solution: "获取定制解决方案",
-                btn_retry: "重新测试",
-
-                res_lv4_title: "校园大使",
-                res_lv4_desc: "哇！您已经是准备好的领导者了！<br>现在请引导朋友们走上正确的道路。",
-                res_lv4_toolkit: "Lv.4 校园大使工具包",
-
-                res_lv3_title: "校园治安官",
-                res_lv3_desc: "您懂得主动验证信息！<br>要不要尝试更专业的工具？",
-                res_lv3_toolkit: "Lv.3 治安官深化工具包",
-
-                res_lv2_title: "预备治安官",
-                res_lv2_desc: "虽然心意已决，但装备不足？<br>先学习如何保护自己和熟人吧！",
-                res_lv2_toolkit: "Lv.2 预备治安官工具包",
-
-                res_lv1_title: "数字迷途者",
-                res_lv1_desc: "您独自一人在危险的丛林中吗？<br>生存所需的必要知识刻不容缓！",
-                res_lv1_toolkit: "Lv.1 生存工具包"
+                menu_test: "测一测", menu_toolkit: "工具包", menu_pledge: "加入我们",
+                hero_title: "靠谱的真相，安心的技术，<br>让我们一起开启正确的AI时代。",
+                hero_desc: "为了安全的数字校园，大学生AI素养计划 F.A.K.E.，现在启动！✨",
+                hero_btn: "测试我的AI使用人格",
+                stats_title: "数据不说谎", stats_subtitle: "2025年11月，倾听了118名同学的声音。",
+                stat_risk_label: "危险指数", stat_risk_main: "每周至少看到1次", stat_risk_desc: "3个同学里就有2个每周都看到假消息。这已经不是别人的事了。",
+                stat_void_label: "安全网在哪里", stat_void_main: "“完全不知道<br>去哪里举报”", stat_void_desc: "虽然有系统，但离我们的生活太远了。",
+                stat_witness_label: "亲眼目睹", stat_witness_desc: "35.6%的同学亲眼见过假新闻或Deepfake。比想象中更近哦。",
+                stat_light_label: "轻度用户也危险", stat_light_title: "⚠️ 没有安全区", stat_light_desc: "哪怕每天只用不到2小时，也有38%的人看到了有害内容。",
+                btn_full_report: "📊 查看完整报告",
+                toolkit_title: "F.A.K.E. 装备库", toolkit_subtitle: "带上适合你的装备，在数字世界安全探险吧！",
+                tk1_title: "Lv.1 求生工具包", tk1_desc: "在危险的AI丛林里活下来的必备套装！", tk1_item1: "超易懂的AI术语词典", tk1_item2: "紧急联络通讯录",
+                tk2_title: "Lv.2 新手警长工具包", tk2_desc: "保护我和朋友隐私的防御装备。", tk2_item1: "SNS私密设置指南", tk2_item2: "水印生成器", tk2_item3: "彻底删除AI对话记录",
+                tk3_title: "Lv.3 资深警长工具包", tk3_desc: "看穿谎言、查证真相的专家装备。", tk3_item1: "Deepfake检测神器", tk3_item2: "事实核查清单", tk3_item3: "真伪鉴别指南",
+                tk4_title: "Lv.4 校园大使工具包", tk4_desc: "改变校园文化的领袖专用包。", tk4_item1: "完美提示词的5大原则", tk4_item2: "给朋友们的讨论话题", tk4_item3: "官方大使认证徽章",
+                btn_download: "Get! (下载)",
+                pledge_title: "请和我们在一起", pledge_desc: "“我承诺安全使用AI，守护我们的校园社区，<br>并与数字犯罪受害者站在一起！”",
+                pledge_btn_sign: "签名支持", pledge_btn_id: "领取 F.A.K.E. ID",
+                report_modal_title: "详细数据报告", report_modal_instr: "选一个感兴趣的话题看看吧。", report_insight_label: "💡 发现:",
+                opt_tools: "🛠️ 大家都在用什么AI?", opt_purpose: "🤖 用AI做什么?", opt_unethical: "🚫 这些行为不太好吧?", opt_responsibility: "⚖️ 谁该负责?", opt_deepfake: "👮 Deepfake该罚吗?", opt_frequency: "👀 经常看到假消息吗?", opt_reporting: "📢 知道怎么举报吗?",
+                test_header: "我的AI伦理分数 (Self-Check)",
+                q1_title: "Q1. 做作业时怎么用AI？", q1_opt1: "🔍 必须核实！我会找可靠来源确认一遍。", q1_opt2: "🤔 看起来没问题就先用着。", q1_opt3: "⚡ 复制粘贴，1秒搞定！",
+                q2_title: "Q2. 群里出现了朋友的Deepfake照片？", q2_opt1: "🚨 马上举报，并叫大家别再传了。", q2_opt2: "🤐 虽然觉得不对劲，但悄悄退群保平安。", q2_opt3: "🤣 “这也太像了吧” 转发给别的群。",
+                q3_title: "Q3. 知道学校哪里可以举报AI滥用吗？", q3_opt1: "📞 知道具体的部门和电话。", q3_opt2: "🏫 人权中心...？好像在哪听过？", q3_opt3: "🤷‍♂️ 还有这种地方？",
+                q4_title: "Q4. 发AI生成的图会加标签吗？", q4_opt1: "🏷️ 一定会加 #AI生成 标签。", q4_opt2: "🎨 假装是自己画的时候就不加。", q4_opt3: "❌ 完全不在意这个。",
+                q5_title: "Q5. 你知道AI生成的图没有版权吗？", q5_opt1: "🙆‍♂️ 嗯，我知道。", q5_opt2: "🙅‍♂️ 哎？不知道耶。",
+                res_rec_label: "为你推荐 (SOLUTION)", btn_get_solution: "获取专属方案", btn_retry: "再测一次",
+                res_lv4_title: "校园大使", res_lv4_desc: "哇！你已经是天生的领袖了！<br>带上装备，给朋友们指路吧。", res_lv4_toolkit: "Lv.4 校园大使工具包",
+                res_lv3_title: "校园警长", res_lv3_desc: "你很懂得分辨真假呢！<br>试试更专业的工具怎么样？", res_lv3_toolkit: "Lv.3 资深警长工具包",
+                res_lv2_title: "新手警长", res_lv2_desc: "有心想做，但缺装备？<br>先学会怎么保护自己吧！", res_lv2_toolkit: "Lv.2 新手警长工具包",
+                res_lv1_title: "数字迷路人", res_lv1_desc: "在危险的丛林里迷路了吗？<br>你需要赶紧补充生存知识！", res_lv1_toolkit: "Lv.1 求生工具包"
             },
-            jp: {
-                // Link Data (Japanese - linking to English for now)
+            jp: { // Complaint #2: Polite but Kawaii
                 link_tk1: "https://docs.google.com/document/d/1feLm0awxVFzE3NZtJk8tfAfkF_-5lj4TsYDVB8GrR2Q/edit?usp=sharing",
                 link_tk2: "https://docs.google.com/document/d/1PmiMVFr3x8biYGdPuqmhlR-UOPc4NnXDmVkFCy0pH1g/edit?usp=sharing",
                 link_tk3: "https://docs.google.com/document/d/1J3PC4-QIea6I9oIUyC6J53Ip1sxAe3NBxFH__4SIREc/edit?usp=sharing",
                 link_tk4: "https://docs.google.com/document/d/17BR0HkAEQLQl8aEUpoUEkjycUMVlFtb9pwUCvrSUosg/edit?usp=sharing",
-
-                menu_test: "診断する",
-                menu_toolkit: "ツールキット",
-                menu_pledge: "連帯する",
-                hero_title: "検証された真実と安全な技術、<br>私たちが共に開く正しいAI時代。",
-                hero_desc: "安全なデジタルキャンパスのための大学生AIリテラシープロジェクト F.A.K.E.、今始まります。",
-                hero_btn: "AI使用タイプを診断する",
-
-                stats_title: "データで見る現実",
-                stats_subtitle: "2025年11月、大学生118名の声を調査しました。(調査期間: 11.01~11.14)",
-                stat_risk_label: "リスク露出度",
-                stat_risk_main: "週1回以上目撃",
-                stat_risk_desc: "3人に2人は毎週虚偽情報を目撃しています。虚偽情報による被害はもはや他人事ではありません。",
-                stat_void_label: "安全網への認識",
-                stat_void_main: "\"通報先を<br>全く知りません\"",
-                stat_void_desc: "システムはありますが、日常とは繋がっていません。私たちは皆「死角」に置かれています。",
-                stat_witness_label: "直接目撃経験",
-                stat_witness_desc: "フェイクニュースやディープフェイクなどの非倫理的行為を直接目撃した経験も35.6%に上ります。思ったより身近にあります。",
-                stat_light_label: "ライトユーザーのリスク",
-                stat_light_title: "⚠️ 安全地帯はない",
-                stat_light_desc: "1日2時間未満の「ライトユーザー」でさえ、38%が有害コンテンツを目撃しました。使用時間が短いからといって安全ではありません。",
-                btn_full_report: "📊 調査結果の詳細を見る",
-
-                toolkit_title: "F.A.K.E. ツールキット倉庫",
-                toolkit_subtitle: "レベルに合った装備を整えて、デジタル世界を安全に航海しましょう！",
-                tk1_title: "Lv.1 サバイバルキット",
-                tk1_desc: "危険なAIジャングルで生き残るための必須生存キットです。",
-                tk1_item1: "わかりやすいAI用語集 PDF",
-                tk1_item2: "緊急時の連絡先リスト",
-                tk2_title: "Lv.2 保安官見習いキット",
-                tk2_desc: "自分と知人の情報を安全に守る防具セットです。",
-                tk2_item1: "SNS非公開設定ガイド",
-                tk2_item2: "ウォーターマーク生成リンク",
-                tk2_item3: "AI会話履歴の完全削除法",
-                tk3_title: "Lv.3 保安官深化キット",
-                tk3_desc: "虚偽情報を見抜いて検証する専門家の装備です。",
-                tk3_item1: "ディープフェイク検知AIまとめ",
-                tk3_item2: "ファクトチェックリスト",
-                tk3_item3: "真偽判別ガイド",
-                tk4_title: "Lv.4 キャンパスアンバサダーキット",
-                tk4_desc: "キャンパスの文化を変えるリーダーのための活動パッケージです。",
-                tk4_item1: "友人のための10分教育PPT",
-                tk4_item2: "公式アンバサダー認証バッジ",
-                btn_download: "ダウンロード",
-
-                pledge_title: "共に連帯してください",
-                pledge_desc: "\"私はAIを安全に使用し、キャンパスと共同体を守り、<br>デジタル犯罪の被害者と連帯する行動するデジタル市民です！\"",
-                pledge_btn_sign: "署名して参加する",
-                pledge_btn_id: "F.A.K.E. IDを発行する",
-
-                // --- Report Modal (Static) ---
-                report_modal_title: "データ詳細分析レポート",
-                report_modal_instr: "気になるトピックを選択してください。",
-                report_insight_label: "💡 分析インサイト:",
-                opt_tools: "🛠️ AIツール使用比率",
-                opt_purpose: "🤖 AI使用目的",
-                opt_unethical: "🚫 非倫理的行為への認識",
-                opt_responsibility: "⚖️ 責任の所在への認識",
-                opt_deepfake: "👮 ディープフェイク処罰への同意",
-                opt_frequency: "👀 虚偽情報の目撃頻度",
-                opt_reporting: "📢 通報チャンネルの認知度",
-
-                // --- Test Modal ---
-                test_header: "私のAI倫理スコア診断 (Self-Check)",
-                q1_title: "Q1. 課題をする時、AIの回答をどう活用しますか？",
-                q1_opt1: "🔍 ファクトチェックは必須！信頼できるソースでクロスチェックします。",
-                q1_opt2: "🤔 もっともらしければ、とりあえず使います。",
-                q1_opt3: "⚡ コピペで1秒カット！",
-                q2_title: "Q2. 友人のディープフェイク写真がグループチャットに上がってきたら？",
-                q2_opt1: "🚨 即座に通報し、友人たちに共有中止を要請します。",
-                q2_opt2: "🤐 モヤモヤしますが、静かにチャットを抜けます。",
-                q2_opt3: "🤣 「これ本物みたい」と言って他の部屋に共有します。",
-                q3_title: "Q3. 学内の公式なAI悪用通報先を知っていますか？",
-                q3_opt1: "📞 正確な部署名と連絡先を知っています。",
-                q3_opt2: "🏫 人権センター...？どこかにあったような...？",
-                q3_opt3: "🤷‍♂️ そんなものありましたか？",
-                q4_title: "Q4. AI生成物をSNSに投稿する際、表記をしますか？",
-                q4_opt1: "🏷️ #AI生成 タグを必ず付けます。",
-                q4_opt2: "🎨 自分が描いたふりをしたい時は付けません。",
-                q4_opt3: "❌ 全く気にしません。",
-                q5_title: "Q5. AIが作った画像は著作権法上保護されないという事実を知っていましたか？",
-                q5_opt1: "🙆‍♂️ はい、知っていました。",
-                q5_opt2: "🙅‍♂️ いいえ、知りませんでした。",
-
-                res_rec_label: "おすすめソリューション",
-                btn_get_solution: "カスタマイズされたソリューションを受け取る",
-                btn_retry: "テストをやり直す",
-
-                res_lv4_title: "キャンパスアンバサダー",
-                res_lv4_desc: "わあ！あなたはすでに準備万端のリーダーです！<br>これからは友人を正しい道へ導いてください。",
-                res_lv4_toolkit: "Lv.4 キャンパスアンバサダーキット",
-
-                res_lv3_title: "キャンパス保安官",
-                res_lv3_desc: "能動的に情報を検証することができますね！<br>もう少し専門的なツールを使ってみませんか？",
-                res_lv3_toolkit: "Lv.3 保安官深化キット",
-
-                res_lv2_title: "保安官見習い",
-                res_lv2_desc: "心構えはできていますが、装備が不足していますか？<br>自分と知人を守る方法から学びましょう！",
-                res_lv2_toolkit: "Lv.2 保安官見習いキット",
-
-                res_lv1_title: "デジタル迷子",
-                res_lv1_desc: "危険なジャングルの中に一人でいますか？<br>生存のための必須知識が急務です！",
-                res_lv1_toolkit: "Lv.1 サバイバルキット"
+                menu_test: "診断する", menu_toolkit: "ツールキット", menu_pledge: "連帯する",
+                hero_title: "確かな真実と安全な技術、<br>私たちが開く正しいAI時代。",
+                hero_desc: "安全なデジタルキャンパスのためのAIリテラシープロジェクト F.A.K.E.、はじまります✨",
+                hero_btn: "AIタイプ診断をやってみる",
+                stats_title: "データで見る現実", stats_subtitle: "2025年11月、118人の大学生の声を聞きました。",
+                stat_risk_label: "リスク露出度", stat_risk_main: "週1回以上目撃", stat_risk_desc: "3人に2人は毎週フェイク情報を見ています。もう他人事じゃありません💦",
+                stat_void_label: "安全網はある？", stat_void_main: "「通報先？全然知りません…」", stat_void_desc: "システムはあるけど、日常とは繋がっていません。",
+                stat_witness_label: "目撃経験", stat_witness_desc: "フェイクニュースやディープフェイクを直接見た人も35.6%。思ったより身近にあります。",
+                stat_light_label: "ライトユーザーも危険", stat_light_title: "⚠️ 安全地帯はない", stat_light_desc: "1日2時間未満の利用でも、38%が有害なコンテンツを目撃しました。",
+                btn_full_report: "📊 詳細レポートを見る",
+                toolkit_title: "F.A.K.E. アイテム倉庫", toolkit_subtitle: "レベルに合った装備を整えて、デジタル世界を安全に冒険しよう！",
+                tk1_title: "Lv.1 サバイバルキット", tk1_desc: "危険なAIジャングルで生き残るための必須アイテムだよ！", tk1_item1: "やさしいAI用語集", tk1_item2: "緊急連絡先リスト",
+                tk2_title: "Lv.2 見習いポリスキット", tk2_desc: "自分と友達の情報を守るための防具セットです。", tk2_item1: "SNS非公開設定ガイド", tk2_item2: "透かし(Watermark)作成機", tk2_item3: "AI会話履歴の完全削除法",
+                tk3_title: "Lv.3 ベテランポリスキット", tk3_desc: "嘘を見抜いて真実を突き止める専門家の装備です。", tk3_item1: "ディープフェイク検知ツール", tk3_item2: "ファクトチェックリスト", tk3_item3: "真偽判別ガイド",
+                tk4_title: "Lv.4 キャンパスアンバサダー", tk4_desc: "キャンパスの文化を変えるリーダーのためのパッケージ。", tk4_item1: "完璧なプロンプトの5原則", tk4_item2: "友達と話せる討論テーマ", tk4_item3: "公式アンバサダーバッジ",
+                btn_download: "Get! (ダウンロード)",
+                pledge_title: "一緒に連帯してください", pledge_desc: "「私はAIを正しく使い、キャンパスを守り、<br>デジタル犯罪の被害者と連帯するデジタル市民です！」",
+                pledge_btn_sign: "署名して参加", pledge_btn_id: "F.A.K.E. IDを発行",
+                report_modal_title: "データ詳細分析", report_modal_instr: "気になるトピックを選んでね。", report_insight_label: "💡 インサイト:",
+                opt_tools: "🛠️ みんな使ってるツール", opt_purpose: "🤖 AIを使う目的", opt_unethical: "🚫 それってダメじゃない？", opt_responsibility: "⚖️ 誰の責任？", opt_deepfake: "👮 処罰に賛成？", opt_frequency: "👀 どれくらい目撃する？", opt_reporting: "📢 通報先、知ってる？",
+                test_header: "私のAI倫理スコア (Self-Check)",
+                q1_title: "Q1. 課題でAIの回答、どう使う？", q1_opt1: "🔍 ファクトチェック必須！信頼できるソースで確認する。", q1_opt2: "🤔 っぽかったら、とりあえず使っちゃう。", q1_opt3: "⚡ コピペで1秒カット！",
+                q2_title: "Q2. 友達のディープフェイク写真が流れてきたら？", q2_opt1: "🚨 すぐに通報して、共有をやめるよう言う。", q2_opt2: "🤐 モヤッとするけど、そっと退出。", q2_opt3: "🤣 「本物みたいw」って拡散しちゃう。",
+                q3_title: "Q3. 学校のAI悪用通報先、知ってる？", q3_opt1: "📞 正確な部署と連絡先を知ってる。", q3_opt2: "🏫 人権センター...？どこかにあったような？", q3_opt3: "🤷‍♂️ そんなのあったっけ？",
+                q4_title: "Q4. AIで作った画像をアップする時、タグ付けする？", q4_opt1: "🏷️ #AI生成 タグを必ず付ける。", q4_opt2: "🎨 自分が描いたふりをしたい時は付けない。", q4_opt3: "❌ 全く気にしない。",
+                q5_title: "Q5. AI画像の著作権について知ってた？", q5_opt1: "🙆‍♂️ うん、知ってた。", q5_opt2: "🙅‍♂️ え、知らなかった。",
+                res_rec_label: "おすすめソリューション", btn_get_solution: "ソリューションを受け取る", btn_retry: "もう一度診断する",
+                res_lv4_title: "キャンパスアンバサダー", res_lv4_desc: "すごい！あなたはもう立派なリーダーだね！<br>友達を正しい道へ導いてあげて✨", res_lv4_toolkit: "Lv.4 キャンパスアンバサダーキット",
+                res_lv3_title: "キャンパスポリス", res_lv3_desc: "情報の見極めがバッチリだね！<br>もっと専門的なツールを使ってみる？😎", res_lv3_toolkit: "Lv.3 ベテランポリスキット",
+                res_lv2_title: "見習いポリス", res_lv2_desc: "やる気はあるけど装備が足りないかも？<br>まずは身を守る方法から学ぼう🛡️", res_lv2_toolkit: "Lv.2 見習いポリスキット",
+                res_lv1_title: "デジタル迷子", res_lv1_desc: "危険なジャングルで迷っちゃった？<br>生き残るための知識が急務だよ！🆘", res_lv1_toolkit: "Lv.1 サバイバルキット"
             },
             es: {
-                // Link Data (Spanish - linking to English for now)
                 link_tk1: "https://docs.google.com/document/d/1feLm0awxVFzE3NZtJk8tfAfkF_-5lj4TsYDVB8GrR2Q/edit?usp=sharing",
                 link_tk2: "https://docs.google.com/document/d/1PmiMVFr3x8biYGdPuqmhlR-UOPc4NnXDmVkFCy0pH1g/edit?usp=sharing",
                 link_tk3: "https://docs.google.com/document/d/1J3PC4-QIea6I9oIUyC6J53Ip1sxAe3NBxFH__4SIREc/edit?usp=sharing",
                 link_tk4: "https://docs.google.com/document/d/17BR0HkAEQLQl8aEUpoUEkjycUMVlFtb9pwUCvrSUosg/edit?usp=sharing",
-
-                menu_test: "Autodiagnóstico",
-                menu_toolkit: "Kit de Herramientas",
-                menu_pledge: "Compromiso",
+                menu_test: "Autodiagnóstico", menu_toolkit: "Herramientas", menu_pledge: "Compromiso",
                 hero_title: "Verdad Verificada y Tecnología Segura,<br>Juntos Abrimos la Era Correcta de la IA.",
-                hero_desc: "Proyecto F.A.K.E.: Una iniciativa de alfabetización en IA para un campus digital más seguro.",
-                hero_btn: "Iniciar mi autodiagnóstico de ética de IA",
-
-                stats_title: "Realidad en Datos",
-                stats_subtitle: "Encuesta a 118 estudiantes universitarios en nov. 2025. (Periodo: 01/11~14/11)",
-                stat_risk_label: "Exposición al Riesgo",
-                stat_risk_main: "Testigo Semanal",
-                stat_risk_desc: "2 de cada 3 estudiantes presencian información falsa semanalmente. El daño ya no es problema de otros.",
-                stat_void_label: "Conciencia de la Red de Seguridad",
-                stat_void_main: "\"No sé dónde<br>reportar\"",
-                stat_void_desc: "El sistema existe, pero está desconectado de nuestra vida diaria. Todos estamos en un 'punto ciego'.",
-                stat_witness_label: "Testigo Directo",
-                stat_witness_desc: "El 35.6% ha presenciado directamente actos poco éticos como noticias falsas o deepfakes. Está más cerca de lo que piensas.",
-                stat_light_label: "Riesgo de Usuario Ligero",
-                stat_light_title: "⚠️ Sin Zona Segura",
-                stat_light_desc: "Incluso los 'Usuarios Ligeros' (<2h/día) no están a salvo: el 38% presenció contenido dañino. El uso breve no garantiza la seguridad.",
+                hero_desc: "Proyecto F.A.K.E.: Alfabetización en IA para un campus digital seguro.",
+                hero_btn: "Iniciar test de ética de IA",
+                stats_title: "Realidad en Datos", stats_subtitle: "Encuesta a 118 estudiantes en nov. 2025.",
+                stat_risk_label: "Exposición al Riesgo", stat_risk_main: "Testigo Semanal", stat_risk_desc: "2 de cada 3 estudiantes ven información falsa semanalmente.",
+                stat_void_label: "Red de Seguridad", stat_void_main: "\"No sé dónde reportar\"", stat_void_desc: "El sistema existe, pero está desconectado de nuestra vida diaria.",
+                stat_witness_label: "Testigo Directo", stat_witness_desc: "El 35.6% ha presenciado directamente deepfakes o noticias falsas.",
+                stat_light_label: "Riesgo de Usuario Ligero", stat_light_title: "⚠️ Sin Zona Segura", stat_light_desc: "Incluso con <2h/día, el 38% vio contenido dañino.",
                 btn_full_report: "📊 Ver Informe Completo",
-
-                toolkit_title: "Inventario de Herramientas F.A.K.E.",
-                toolkit_subtitle: "¡Equípate con las herramientas adecuadas para navegar por el mundo digital de forma segura!",
-                tk1_title: "Lv.1 Kit de Supervivencia",
-                tk1_desc: "Kit esencial para sobrevivir en la peligrosa jungla de la IA.",
-                tk1_item1: "Glosario Básico PDF",
-                tk1_item2: "Lista de Contactos de Emergencia",
-                tk2_title: "Lv.2 Kit de Sheriff Junior",
-                tk2_desc: "Conjunto de defensa para proteger tu privacidad y la de tus conocidos.",
-                tk2_item1: "Guía de Privacidad en Redes Sociales",
-                tk2_item2: "Generador de Marcas de Agua",
-                tk2_item3: "Eliminación Permanente del Historial de Chat IA",
-                tk3_title: "Lv.3 Kit de Sheriff Senior",
-                tk3_desc: "Equipo experto para detectar mentiras y verificar la verdad.",
-                tk3_item1: "Herramientas de Detección de Deepfake",
-                tk3_item2: "Lista de Verificación de Hechos",
-                tk3_item3: "Guía de Verificación",
-                tk4_title: "Lv.4 Kit de Embajador del Campus",
-                tk4_desc: "Paquete de actividades para líderes que cambian la cultura del campus.",
-                tk4_item1: "PPT Educativo de 10 min para Amigos",
-                tk4_item2: "Insignia Oficial de Embajador",
+                toolkit_title: "Inventario F.A.K.E.", toolkit_subtitle: "¡Equípate para navegar seguro por el mundo digital!",
+                tk1_title: "Lv.1 Kit de Supervivencia", tk1_desc: "Kit esencial para la jungla de la IA.", tk1_item1: "Glosario Básico", tk1_item2: "Contactos de Emergencia",
+                tk2_title: "Lv.2 Kit de Sheriff Junior", tk2_desc: "Defensa para tu privacidad y la de tus amigos.", tk2_item1: "Guía de Privacidad en RRSS", tk2_item2: "Generador de Marcas de Agua", tk2_item3: "Borrar Historial de Chat",
+                tk3_title: "Lv.3 Kit de Sheriff Senior", tk3_desc: "Equipo experto para verificar la verdad.", tk3_item1: "Detector de Deepfakes", tk3_item2: "Lista de Verificación", tk3_item3: "Guía de Autenticidad",
+                tk4_title: "Lv.4 Kit de Embajador", tk4_desc: "Para líderes que cambian la cultura del campus.", tk4_item1: "5 Reglas de Prompts", tk4_item2: "Temas de Debate", tk4_item3: "Insignia Oficial",
                 btn_download: "Descargar",
-
-                pledge_title: "Únete a Nosotros",
-                pledge_desc: "\"Soy un ciudadano digital que actúa: usando la IA de manera responsable, construyendo comunidades más fuertes y apoyando a las víctimas de delitos digitales.\"",
-                pledge_btn_sign: "Firmar el Compromiso",
-                pledge_btn_id: "Obtener mi ID F.A.K.E.",
-
-                // --- Report Modal (Static) ---
-                report_modal_title: "Informe de Análisis Detallado de Datos",
-                report_modal_instr: "Selecciona un tema para explorar.",
-                report_insight_label: "💡 Perspectiva del Análisis:",
-                opt_tools: "🛠️ Proporción de Uso de Herramientas IA",
-                opt_purpose: "🤖 Propósito de Uso de IA",
-                opt_unethical: "🚫 Percepción de Actos Poco Éticos",
-                opt_responsibility: "⚖️ Percepción de Responsabilidad",
-                opt_deepfake: "👮 Acuerdo sobre Castigo a Deepfakes",
-                opt_frequency: "👀 Frecuencia de Presenciar Info Falsa",
-                opt_reporting: "📢 Conocimiento de Canales de Denuncia",
-
-                // --- Test Modal ---
-                test_header: "Mi Puntuación de Ética IA (Autodiagnóstico)",
-                q1_title: "P1. ¿Cómo utilizas las respuestas de la IA para las tareas?",
-                q1_opt1: "🔍 ¡La verificación de hechos es imprescindible! Verificar con fuentes confiables.",
-                q1_opt2: "🤔 Si parece estar bien, simplemente lo uso.",
-                q1_opt3: "⚡ ¡Copiar y pegar en 1 segundo!",
-                q2_title: "P2. ¿Si apareciera una foto deepfake de un amigo en un chat grupal?",
-                q2_opt1: "🚨 Reportar inmediatamente y pedir que dejen de compartir.",
-                q2_opt2: "🤐 Se siente mal, pero simplemente salgo del chat en silencio.",
-                q2_opt3: "🤣 Lo comparto en otros chats diciendo \"Esto parece real\".",
-                q3_title: "P3. ¿Conoces el centro oficial de denuncias de abuso de IA de la escuela?",
-                q3_opt1: "📞 Conozco el departamento exacto y el número de contacto.",
-                q3_opt2: "🏫 ¿Centro de Derechos Humanos...? ¿Quizás en algún lugar allí?",
-                q3_opt3: "🤷‍♂️ ¿Existía tal cosa?",
-                q4_title: "P4. ¿Etiquetas el contenido generado por IA al publicarlo en redes sociales?",
-                q4_opt1: "🏷️ Siempre añado la etiqueta #Generado_por_IA.",
-                q4_opt2: "🎨 No lo hago si quiero fingir que lo dibujé yo.",
-                q4_opt3: "❌ No me importa en absoluto.",
-                q5_title: "P5. ¿Sabías que las imágenes generadas por IA no están protegidas por derechos de autor?",
-                q5_opt1: "🙆‍♂️ Sí, lo sabía.",
-                q5_opt2: "🙅‍♂️ No, no lo sabía.",
-
-                res_rec_label: "SOLUCIÓN RECOMENDADA",
-                btn_get_solution: "Obtener Solución Personalizada",
-                btn_retry: "Reintentar Test",
-
-                res_lv4_title: "Embajador del Campus",
-                res_lv4_desc: "¡Guau! ¡Ya eres un líder preparado!<br>Ahora guía a tus amigos por el camino correcto.",
-                res_lv4_toolkit: "Lv.4 Kit de Embajador del Campus",
-                
-                res_lv3_title: "Sheriff Senior",
-                res_lv3_desc: "¡Sabes cómo verificar la información activamente!<br>¿Probamos herramientas más profesionales?",
-                res_lv3_toolkit: "Lv.3 Kit de Sheriff Senior",
-
-                res_lv2_title: "Sheriff Junior",
-                res_lv2_desc: "¿Estás listo de corazón, pero te falta el equipo?<br>¡Aprende a protegerte primero!",
-                res_lv2_toolkit: "Lv.2 Kit de Sheriff Junior",
-
-                res_lv1_title: "Extraviado Digital",
-                res_lv1_desc: "¿Estás solo en la peligrosa jungla?<br>¡El conocimiento de supervivencia es urgente!",
-                res_lv1_toolkit: "Lv.1 Kit de Supervivencia"
+                pledge_title: "Únete a Nosotros", pledge_desc: "\"¡Soy un ciudadano digital que usa la IA responsablemente<br>y apoya a las víctimas de delitos digitales!\"",
+                pledge_btn_sign: "Firmar el Compromiso", pledge_btn_id: "Obtener ID F.A.K.E.",
+                report_modal_title: "Informe Detallado", report_modal_instr: "Selecciona un tema.", report_insight_label: "💡 Insight:",
+                opt_tools: "🛠️ Herramientas de IA", opt_purpose: "🤖 Propósito de Uso", opt_unethical: "🚫 Actos Poco Éticos", opt_responsibility: "⚖️ Responsabilidad", opt_deepfake: "👮 Castigo a Deepfakes", opt_frequency: "👀 Frecuencia", opt_reporting: "📢 Dónde Denunciar",
+                test_header: "Mi Puntuación de Ética (Self-Check)",
+                q1_title: "P1. ¿Cómo usas la IA para tareas?", q1_opt1: "🔍 ¡Verifico todo con fuentes confiables!", q1_opt2: "🤔 Si se ve bien, lo uso.", q1_opt3: "⚡ ¡Copiar y pegar en 1 segundo!",
+                q2_title: "P2. ¿Si ves un deepfake de un amigo?", q2_opt1: "🚨 Reporto y pido que no compartan.", q2_opt2: "🤐 Me salgo del chat en silencio.", q2_opt3: "🤣 Lo comparto diciendo 'Parece real'.",
+                q3_title: "P3. ¿Sabes dónde denunciar el abuso de IA?", q3_opt1: "📞 Sé exactamente dónde.", q3_opt2: "🏫 ¿Quizás en el Centro de Derechos Humanos?", q3_opt3: "🤷‍♂️ ¿Existe eso?",
+                q4_title: "P4. ¿Etiquetas contenido de IA?", q4_opt1: "🏷️ Siempre uso #Generado_por_IA.", q4_opt2: "🎨 No si quiero fingir que lo hice yo.", q4_opt3: "❌ No me importa.",
+                q5_title: "P5. ¿Sabías que las imágenes de IA no tienen copyright?", q5_opt1: "🙆‍♂️ Sí, lo sabía.", q5_opt2: "🙅‍♂️ No tenía idea.",
+                res_rec_label: "SOLUCIÓN RECOMENDADA", btn_get_solution: "Obtener Solución", btn_retry: "Reintentar",
+                res_lv4_title: "Embajador del Campus", res_lv4_desc: "¡Guau! ¡Eres un líder nato! Guía a tus amigos.", res_lv4_toolkit: "Lv.4 Kit de Embajador",
+                res_lv3_title: "Sheriff Senior", res_lv3_desc: "¡Sabes verificar información! ¿Usamos herramientas pro?", res_lv3_toolkit: "Lv.3 Kit de Sheriff Senior",
+                res_lv2_title: "Sheriff Junior", res_lv2_desc: "¿Listo de corazón pero sin equipo? ¡Protégete primero!", res_lv2_toolkit: "Lv.2 Kit de Sheriff Junior",
+                res_lv1_title: "Extraviado Digital", res_lv1_desc: "¿Perdido en la jungla? ¡Necesitas saber sobrevivir!", res_lv1_toolkit: "Lv.1 Kit de Supervivencia"
             },
-            af: {
-                // Link Data (Afrikaans - linking to English for now)
+            af: { // Complaint #4: Generalized wording for SA context
                 link_tk1: "https://docs.google.com/document/d/1feLm0awxVFzE3NZtJk8tfAfkF_-5lj4TsYDVB8GrR2Q/edit?usp=sharing",
                 link_tk2: "https://docs.google.com/document/d/1PmiMVFr3x8biYGdPuqmhlR-UOPc4NnXDmVkFCy0pH1g/edit?usp=sharing",
                 link_tk3: "https://docs.google.com/document/d/1J3PC4-QIea6I9oIUyC6J53Ip1sxAe3NBxFH__4SIREc/edit?usp=sharing",
                 link_tk4: "https://docs.google.com/document/d/17BR0HkAEQLQl8aEUpoUEkjycUMVlFtb9pwUCvrSUosg/edit?usp=sharing",
-
-                menu_test: "Selfdiagnose",
-                menu_toolkit: "Gereedskapstel",
-                menu_pledge: "Onderneem",
+                menu_test: "Selfdiagnose", menu_toolkit: "Gereedskap", menu_pledge: "Onderneem",
                 hero_title: "Geverifieerde Waarheid & Veilige Tegnologie,<br>Saam Open Ons die Regte KI-era.",
-                hero_desc: "Projek F.A.K.E.: 'n KI-geletterdheidsinisiatief vir 'n Veiliger Digitale Kampus.",
+                hero_desc: "Projek F.A.K.E.: 'n KI-geletterdheidsinisiatief vir 'n Veiliger Digitale Gemeenskap.",
                 hero_btn: "Begin My KI-etiek Selfdiagnose",
-
-                stats_title: "Realiteit in Data",
-                stats_subtitle: "Opname van 118 universiteitstudente in Nov 2025. (Tydperk: 11.01~11.14)",
-                stat_risk_label: "Risiko Blootstelling",
-                stat_risk_main: "Weeklikse Getuie",
-                stat_risk_desc: "2 uit 3 studente sien weekliks vals inligting. Die skade is nie meer iemand anders se probleem nie.",
-                stat_void_label: "Veiligheidsnet Bewustheid",
-                stat_void_main: "\"Weet Nie Waar<br>om te Rapporteer nie\"",
-                stat_void_desc: "Die stelsel bestaan, maar dit is ontkoppel van ons daaglikse lewens. Ons is almal in 'n 'blinde kol'.",
-                stat_witness_label: "Direkte Getuie",
-                stat_witness_desc: "35.6% het onetiese dade soos fopnuus of deepfakes direk aanskou. Dit is nader as wat jy dink.",
-                stat_light_label: "Ligte Gebruiker Risiko",
-                stat_light_title: "⚠️ Geen Veilige Sone",
-                stat_light_desc: "Selfs 'Ligte Gebruikers' (<2h/dag) is nie veilig nie—38% het skadelike inhoud gesien. Kort gebruik waarborg nie veiligheid nie.",
-                btn_full_report: "📊 Sien Volledige Opnameverslag",
-
-                toolkit_title: "F.A.K.E. Gereedskap-inventaris",
-                toolkit_subtitle: "Rus jouself toe met die regte gereedskap om die digitale wêreld veilig te navigeer!",
-                tk1_title: "Lv.1 Oorlewingskit",
-                tk1_desc: "Noodsaaklike oorlewingskit om in die gevaarlike KI-oerwoud te oorleef.",
-                tk1_item1: "Basiese Terminologie PDF",
-                tk1_item2: "Noodkontaklys",
-                tk2_title: "Lv.2 Junior Balju-kit",
-                tk2_desc: "Verdedigingstel om jou privaatheid en dié van jou kennisse te beskerm.",
-                tk2_item1: "SNS Privaatheidsgids",
-                tk2_item2: "Watermerk Generator Skakel",
-                tk2_item3: "Vee KI-kletsgeskiedenis Permanent Uit",
-                tk3_title: "Lv.3 Senior Balju-kit",
-                tk3_desc: "Deskundige toerusting om leuens deur te steek en die waarheid te verifieer.",
-                tk3_item1: "Deepfake Opsporing KI-gereedskap",
-                tk3_item2: "Feitekontrole Kontrolelys",
-                tk3_item3: "Verifikasiegids",
-                tk4_title: "Lv.4 Kampus Ambassadeur-kit",
-                tk4_desc: "Aktiwiteitspakket vir leiers wat die kampuskultuur verander.",
-                tk4_item1: "10-min Opvoedkundige PPT vir Vriende",
-                tk4_item2: "Amptelike Ambassadeur Kenteken",
+                stats_title: "Realiteit in Data", stats_subtitle: "Opname van 118 studente in Nov 2025.",
+                stat_risk_label: "Risiko Blootstelling", stat_risk_main: "Weeklikse Getuie", stat_risk_desc: "2 uit 3 studente sien weekliks vals inligting.",
+                stat_void_label: "Veiligheidsnet", stat_void_main: "\"Weet Nie Waar Rapporteer\"", stat_void_desc: "Die stelsel bestaan, maar is ontkoppel van ons daaglikse lewens.",
+                stat_witness_label: "Direkte Getuie", stat_witness_desc: "35.6% het onetiese dade soos deepfakes direk aanskou.",
+                stat_light_label: "Ligte Gebruiker Risiko", stat_light_title: "⚠️ Geen Veilige Sone", stat_light_desc: "Selfs gebruikers wat <2h/dag spandeer is nie veilig nie.",
+                btn_full_report: "📊 Sien Volledige Verslag",
+                toolkit_title: "F.A.K.E. Inventaris", toolkit_subtitle: "Rus jouself toe om die digitale wêreld veilig te navigeer!",
+                tk1_title: "Lv.1 Oorlewingskit", tk1_desc: "Noodsaaklike kit om in die KI-oerwoud te oorleef.", tk1_item1: "Basiese Terminologie", tk1_item2: "Noodkontaklys",
+                tk2_title: "Lv.2 Junior Balju-kit", tk2_desc: "Verdediging om jou privaatheid te beskerm.", tk2_item1: "Privaatheidsgids", tk2_item2: "Watermerk Generator", tk2_item3: "Vee Kletsgeskiedenis Uit",
+                tk3_title: "Lv.3 Senior Balju-kit", tk3_desc: "Deskundige toerusting om die waarheid te verifieer.", tk3_item1: "Deepfake Opsporing", tk3_item2: "Feitekontrole Lys", tk3_item3: "Verifikasiegids",
+                tk4_title: "Lv.4 Ambassadeur-kit", tk4_desc: "Pakket vir leiers wat die kultuur verander.", tk4_item1: "5 Reëls vir Prompts", tk4_item2: "Debat Onderwerpe", tk4_item3: "Amptelike Kenteken",
                 btn_download: "Aflaai",
-
-                pledge_title: "Staan Saam Met Ons",
-                pledge_desc: "\"Ek is 'n digitale burger wat optree: gebruik KI verantwoordelik, bou sterker gemeenskappe, en staan saam met slagoffers van digitale misdaad.\"",
-                pledge_btn_sign: "Teken die Onderneming",
-                pledge_btn_id: "Kry Jou F.A.K.E. ID",
-
-                // --- Report Modal (Static) ---
-                report_modal_title: "Data Gedetailleerde Analise Verslag",
-                report_modal_instr: "Kies 'n onderwerp om te verken.",
-                report_insight_label: "💡 Analise Insig:",
-                opt_tools: "🛠️ KI-gereedskap Gebruiksverhouding",
-                opt_purpose: "🤖 Doel van KI-gebruik",
-                opt_unethical: "🚫 Persepsie van Onetiese Dade",
-                opt_responsibility: "⚖️ Persepsie van Verantwoordelikheid",
-                opt_deepfake: "👮 Ooreenkoms oor Deepfake Straf",
-                opt_frequency: "👀 Frekwensie van Vals Inligting Getuie",
-                opt_reporting: "📢 Bewustheid van Rapporteringskanale",
-
-                // --- Test Modal ---
-                test_header: "My KI-etiek Telling (Self-Check)",
-                q1_title: "V1. Hoe gebruik jy KI-antwoorde vir opdragte?",
-                q1_opt1: "🔍 Feitekontrole is 'n moet! Verifieer met betroubare bronne.",
-                q1_opt2: "🤔 As dit oukei lyk, gebruik ek dit net.",
-                q1_opt3: "⚡ Kopieer & Plak in 1 sekonde!",
-                q2_title: "V2. As 'n vriend se deepfake-foto in 'n groepklets verskyn?",
-                q2_opt1: "🚨 Rapporteer onmiddellik en vra om te stop met deel.",
-                q2_opt2: "🤐 Dit voel verkeerd, maar ek verlaat net die klets stilweg.",
-                q2_opt3: "🤣 Ek deel dit in ander kletse en sê \"Dit lyk eg\".",
-                q3_title: "V3. Ken jy die amptelike skoolrapporteringsentrum vir KI-misbruik?",
-                q3_opt1: "📞 Ek ken die presiese departement en kontaknommer.",
-                q3_opt2: "🏫 Menseregte Sentrum...? Miskien iewers daar?",
-                q3_opt3: "🤷‍♂️ Het so iets bestaan?",
-                q4_title: "V4. Merk jy KI-gegenereerde inhoud wanneer jy op SNS plaas?",
-                q4_opt1: "🏷️ Ek voeg altyd die #KI_Gegenereer merker by.",
-                q4_opt2: "🎨 Ek doen nie as ek wil voorgee ek het dit geteken nie.",
-                q4_opt3: "❌ Ek gee glad nie om nie.",
-                q5_title: "V5. Het jy geweet KI-gegenereerde beelde word nie deur kopiereg beskerm nie?",
-                q5_opt1: "🙆‍♂️ Ja, ek het dit geweet.",
-                q5_opt2: "🙅‍♂️ Nee, ek het nie geweet nie.",
-
-                res_rec_label: "AANBEVOLE OPLOSSING",
-                btn_get_solution: "Kry Pasgemaakte Oplossing",
-                btn_retry: "Probeer Toets Weer",
-
-                res_lv4_title: "Kampus Ambassadeur",
-                res_lv4_desc: "Sjoe! Jy is reeds 'n gereedgemaakte leier!<br>Lei nou jou vriende op die regte pad.",
-                res_lv4_toolkit: "Lv.4 Kampus Ambassadeur-kit",
-                
-                res_lv3_title: "Senior Balju",
-                res_lv3_desc: "Jy weet hoe om inligting aktief te verifieer!<br>Sal ons meer professionele gereedskap probeer?",
-                res_lv3_toolkit: "Lv.3 Senior Balju-kit",
-
-                res_lv2_title: "Junior Balju",
-                res_lv2_desc: "Jy is gereed in jou hart, maar kort die toerusting?<br>Leer eers hoe om jouself te beskerm!",
-                res_lv2_toolkit: "Lv.2 Junior Balju-kit",
-
-                res_lv1_title: "Digitale Verdwaalde",
-                res_lv1_desc: "Is jy alleen in die gevaarlike oerwoud?<br>Oorlewingskennis is dringend!",
-                res_lv1_toolkit: "Lv.1 Oorlewingskit"
+                pledge_title: "Staan Saam Met Ons", pledge_desc: "\"Ek is 'n digitale burger wat KI verantwoordelik gebruik<br>en saamstaan met slagoffers van digitale misdaad!\"",
+                pledge_btn_sign: "Teken die Onderneming", pledge_btn_id: "Kry F.A.K.E. ID",
+                report_modal_title: "Gedetailleerde Verslag", report_modal_instr: "Kies 'n onderwerp.", report_insight_label: "💡 Insig:",
+                opt_tools: "🛠️ KI-gereedskap", opt_purpose: "🤖 Doel van Gebruik", opt_unethical: "🚫 Onetiese Dade", opt_responsibility: "⚖️ Verantwoordelikheid", opt_deepfake: "👮 Deepfake Straf", opt_frequency: "👀 Frekwensie", opt_reporting: "📢 Rapportering",
+                test_header: "My KI-etiek Telling",
+                q1_title: "V1. Hoe gebruik jy KI vir opdragte?", q1_opt1: "🔍 Feitekontrole is 'n moet!", q1_opt2: "🤔 As dit oukei lyk, gebruik ek dit.", q1_opt3: "⚡ Kopieer & Plak dadelik!",
+                q2_title: "V2. As 'n vriend se deepfake verskyn?", q2_opt1: "🚨 Rapporteer en vra om te stop.", q2_opt2: "🤐 Verlaat die klets stilweg.", q2_opt3: "🤣 Deel dit en sê \"Dit lyk eg\".",
+                q3_title: "V3. Weet jy waar om te rapporteer?", q3_opt1: "📞 Ek ken die presiese kantoor.", q3_opt2: "🏫 Miskien by Studentewelsyn?", q3_opt3: "🤷‍♂️ Bestaan so iets?",
+                q4_title: "V4. Merk jy KI-inhoud?", q4_opt1: "🏷️ Altyd #KI_Gegenereer.", q4_opt2: "🎨 Nie as ek wil voorgee dis myne nie.", q4_opt3: "❌ Ek gee nie om nie.",
+                q5_title: "V5. Is KI-beelde kopieregsvry?", q5_opt1: "🙆‍♂️ Ja, ek het geweet.", q5_opt2: "🙅‍♂️ Nee, nie geweet nie.",
+                res_rec_label: "AANBEVOLE OPLOSSING", btn_get_solution: "Kry Oplossing", btn_retry: "Probeer Weer",
+                res_lv4_title: "Gemeenskap Ambassadeur", res_lv4_desc: "Sjoe! Jy is 'n leier! Lei jou vriende.", res_lv4_toolkit: "Lv.4 Ambassadeur-kit",
+                res_lv3_title: "Senior Balju", res_lv3_desc: "Jy verifieer aktief! Probeer pro-gereedskap?", res_lv3_toolkit: "Lv.3 Senior Balju-kit",
+                res_lv2_title: "Junior Balju", res_lv2_desc: "Gereed in hart, maar kort toerusting? Beskerm jouself!", res_lv2_toolkit: "Lv.2 Junior Balju-kit",
+                res_lv1_title: "Digitale Verdwaalde", res_lv1_desc: "Verdwaal? Oorlewingskennis is dringend!", res_lv1_toolkit: "Lv.1 Oorlewingskit"
             }
         };
 
         let currentLang = 'ko';
-        const langOrder = ['ko', 'en', 'cn', 'jp', 'es', 'af'];
 
         function setLanguage(lang) {
             currentLang = lang;
+            document.documentElement.lang = lang; // CSS CJK handling relies on this
 
-            // Update button active states
             document.querySelectorAll('.lang-btn').forEach(btn => {
-                if (btn.getAttribute('data-btn-lang') === lang) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
+                btn.classList.toggle('active', btn.getAttribute('data-btn-lang') === lang);
             });
             
-            // Translate all static elements
             document.querySelectorAll('[data-lang]').forEach(el => {
                 const key = el.getAttribute('data-lang');
                 if (translations[currentLang][key]) {
@@ -1390,13 +959,12 @@
                 }
             });
 
-            // *** Update Toolkit Links based on Language ***
+            // Update Toolkit Links
             document.getElementById('btn-tk1').href = translations[currentLang].link_tk1;
             document.getElementById('btn-tk2').href = translations[currentLang].link_tk2;
             document.getElementById('btn-tk3').href = translations[currentLang].link_tk3;
             document.getElementById('btn-tk4').href = translations[currentLang].link_tk4;
 
-            // Update chart if modal is open
             if(document.getElementById('reportModal').classList.contains('show')) {
                 updateChart();
             }
@@ -1420,361 +988,138 @@
 
         window.onclick = (e) => { if(e.target == reportModal) closeModal(reportModal); if(e.target == testModal) closeModal(testModal); }
 
-        // --- Chart.js: Dashboard Logic (Load Charts on Page Load) ---
+        // --- Chart.js Logic ---
         window.onload = function() {
             const createChart = (id, type, data, options) => {
                 const ctx = document.getElementById(id);
-                if (ctx) {
-                    new Chart(ctx, { type, data, options });
-                } else {
-                    console.warn(`Canvas with id '${id}' not found. Chart skipped.`);
-                }
+                if (ctx) new Chart(ctx, { type, data, options });
             };
+            const commonOptions = { maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } } };
 
-            const commonOptions = {
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false }, tooltip: { enabled: false } }
-            };
-
-            // 1. Risk Chart
             createChart('riskChart', 'doughnut', {
-                labels: ['주 1회 이상 목격', '기타'],
-                datasets: [{ data: [66.9, 33.1], backgroundColor: ['#ff6b6b', '#e9ecef'], borderWidth: 0 }]
+                labels: ['Risk', 'Safe'], datasets: [{ data: [66.9, 33.1], backgroundColor: ['#ff6b6b', '#e9ecef'], borderWidth: 0 }]
             }, { ...commonOptions, cutout: '70%' });
 
-            // 3. Witness Chart
             createChart('witnessChart', 'bar', {
-                labels: ['직접 목격 경험', '없음'],
-                datasets: [{ data: [35.6, 64.4], backgroundColor: ['#fab005', '#e9ecef'], borderRadius: 6 }]
-            }, { 
-                ...commonOptions, 
-                indexAxis: 'y', 
-                scales: { x: { display: false, max: 100 }, y: { grid: { display: false } } } 
-            });
+                labels: ['Witnessed', 'None'], datasets: [{ data: [35.6, 64.4], backgroundColor: ['#fab005', '#e9ecef'], borderRadius: 6 }]
+            }, { ...commonOptions, indexAxis: 'y', scales: { x: { display: false, max: 100 }, y: { grid: { display: false } } } });
 
-            // 4. Universal Risk Chart
             createChart('universalRiskChart', 'bar', {
-                labels: ['라이트 유저 목격 (38%)', '미목격'],
-                datasets: [{ 
-                    data: [38.2, 61.8], 
-                    backgroundColor: ['#ff6b6b', '#e9ecef'], 
-                    borderRadius: 6 
-                }]
-            }, { 
-                ...commonOptions, 
-                indexAxis: 'y', 
-                scales: { x: { display: false, max: 100 }, y: { grid: { display: false } } } 
-            });
+                labels: ['Witnessed', 'None'], datasets: [{ data: [38.2, 61.8], backgroundColor: ['#ff6b6b', '#e9ecef'], borderRadius: 6 }]
+            }, { ...commonOptions, indexAxis: 'y', scales: { x: { display: false, max: 100 }, y: { grid: { display: false } } } });
         };
 
-        // --- Interactive Chart Logic (Report Modal) ---
-        // UPDATED: Now supports dual languages structure in 'ko' and 'en' keys
+        // --- Interactive Chart Logic ---
         let dynamicChart = null;
+        // Simplified data structure for demo - Using KO/EN as base for fallback
         const chartData = {
             'tools': {
-                type: 'bar',
-                // Shared data/colors
-                data: [96.6, 44.9, 12.7, 8.5, 6.8, 5.1, 3.4, 8.0],
-                color: ['#10a37f', '#4c6ef5', '#20c997', '#fab005', '#e9ecef', '#e9ecef', '#e9ecef', '#e9ecef'], 
-                indexAxis: 'x',
-                // Language specific text
-                ko: {
-                    labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn', 'Copilot', 'Claude', 'Deepseek', '기타'],
-                    label: '사용 비율 (%)',
-                    desc: "💡 분석 인사이트:<br><strong>ChatGPT(96.6%)</strong>가 압도적인 1위입니다. 대학생들의 AI 활용이 특정 도구에 극심하게 편중되어 있음을 보여줍니다. 특정 AI 모델의 편향성이 학생들의 사고에 그대로 반영될 우려가 있습니다."
-                },
-                en: {
-                    labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn', 'Copilot', 'Claude', 'Deepseek', 'Others'],
-                    label: 'Usage Ratio (%)',
-                    desc: "💡 Analysis Insight:<br><strong>ChatGPT (96.6%)</strong> is overwhelmingly dominant. This shows extreme polarization in tool usage. There is a risk that the bias of a specific AI model could be reflected in students' thinking."
-                },
-                cn: {
-                    labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn', 'Copilot', 'Claude', 'Deepseek', '其他'],
-                    label: '使用率 (%)',
-                    desc: "💡 分析洞察:<br><strong>ChatGPT (96.6%)</strong> 占据压倒性第一。这表明大学生的AI使用极度偏向特定工具。存在特定AI模型的偏差可能直接反映在学生思维中的担忧。"
-                },
-                jp: {
-                    labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn', 'Copilot', 'Claude', 'Deepseek', 'その他'],
-                    label: '使用率 (%)',
-                    desc: "💡 分析インサイト:<br><strong>ChatGPT(96.6%)</strong>が圧倒的1位です。大学生のAI活用が特定のツールに極端に偏っていることを示しています。特定AIモデルのバイアスが学生の思考にそのまま反映される懸念があります。"
-                },
-                es: {
-                    labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn', 'Copilot', 'Claude', 'Deepseek', 'Otros'],
-                    label: 'Tasa de Uso (%)',
-                    desc: "💡 Perspectiva del Análisis:<br><strong>ChatGPT (96.6%)</strong> es abrumadoramente dominante. Esto muestra una polarización extrema en el uso de herramientas. Existe el riesgo de que el sesgo de un modelo de IA específico pueda reflejarse en el pensamiento de los estudiantes."
-                },
-                af: {
-                    labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn', 'Copilot', 'Claude', 'Deepseek', 'Ander'],
-                    label: 'Gebruiksverhouding (%)',
-                    desc: "💡 Analise Insig:<br><strong>ChatGPT (96.6%)</strong> is oorweldigend dominant. Dit toon uiterste polarisasie in gereedskapgebruik. Daar is 'n risiko dat die vooroordeel van 'n spesifieke KI-model in studente se denke weerspieël kan word."
-                }
+                type: 'bar', 
+                data: [96.6, 44.9, 12.7, 8.5],
+                color: ['#10a37f', '#4c6ef5', '#20c997', '#fab005'],
+                ko: { labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn'], label: '사용률', desc: "ChatGPT(96.6%) 의존도가 압도적입니다. 도구의 편향성이 우려됩니다." },
+                en: { labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn'], label: 'Usage', desc: "Overwhelming dependence on ChatGPT (96.6%). Bias concerns exist." },
+                cn: { labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn'], label: '使用率', desc: "ChatGPT (96.6%) 占据绝对主导。需警惕工具偏差。" },
+                jp: { labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn'], label: '使用率', desc: "ChatGPT(96.6%)への依存が圧倒的です。バイアスが懸念されます。" },
+                es: { labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn'], label: 'Uso', desc: "Dependencia abrumadora de ChatGPT (96.6%). Preocupan los sesgos." },
+                af: { labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn'], label: 'Gebruik', desc: "Oorweldigende afhanklikheid van ChatGPT (96.6%)." }
             },
             'purpose': {
-                type: 'bar',
-                data: [27.9, 23.3, 20.9, 12.4, 9.3, 3.9],
+                type: 'bar', 
+                indexAxis: 'y', 
+                data: [27.9, 23.3, 20.9],
                 color: '#4c6ef5',
-                indexAxis: 'y',
-                ko: {
-                    labels: ['자료 검색', '과제/리포트 작성', '아이디어 생성', '사진/비디오 편집', '외국어 번역', '코딩'],
-                    label: '응답 비율 (%)',
-                    desc: "💡 분석 인사이트:<br>단순한 흥미가 아닌 <strong>'자료 수집'과 '과제 작성'</strong> 등 학업의 핵심 도구로 자리 잡았습니다. 이제 AI 윤리 교육은 선택이 아닌 학업 성취를 위한 필수 요건입니다."
-                },
-                en: {
-                    labels: ['Info Search', 'Assignment/Report', 'Idea Generation', 'Photo/Video Edit', 'Translation', 'Coding'],
-                    label: 'Response Ratio (%)',
-                    desc: "💡 Analysis Insight:<br>AI has become a core academic tool for <strong>'data collection' and 'assignments'</strong>, not just for fun. AI ethics education is now a requirement for academic achievement, not an option."
-                },
-                cn: {
-                    labels: ['资料搜索', '作业/报告撰写', '创意生成', '照片/视频编辑', '外语翻译', '编程'],
-                    label: '应答率 (%)',
-                    desc: "💡 分析洞察:<br>不仅仅是单纯的兴趣，已成为<strong>‘资料收集’和‘作业撰写’</strong>等学业的核心工具。现在AI伦理教育不是选择，而是为了学业成就的必要条件。"
-                },
-                jp: {
-                    labels: ['資料検索', '課題/レポート作成', 'アイデア生成', '写真/動画編集', '外国語翻訳', 'コーディング'],
-                    label: '回答率 (%)',
-                    desc: "💡 分析インサイト:<br>単純な興味ではなく<strong>「資料収集」と「課題作成」</strong>など学業の核心ツールとして定着しました。もはやAI倫理教育は選択ではなく、学業成就のための必須要件です。"
-                },
-                es: {
-                    labels: ['Búsqueda de Info', 'Tarea/Informe', 'Generación de Ideas', 'Edición Foto/Video', 'Traducción', 'Codificación'],
-                    label: 'Tasa de Respuesta (%)',
-                    desc: "💡 Perspectiva del Análisis:<br>La IA se ha convertido en una herramienta académica central para la <strong>'recopilación de datos' y las 'tareas'</strong>, no solo por diversión. La educación en ética de la IA es ahora un requisito para el logro académico, no una opción."
-                },
-                af: {
-                    labels: ['Inligting Soek', 'Opdrag/Verslag', 'Idee Generasie', 'Foto/Video Redigering', 'Vertaling', 'Kodering'],
-                    label: 'Reaksieverhouding (%)',
-                    desc: "💡 Analise Insig:<br>KI het 'n kern akademiese hulpmiddel geword vir <strong>'data-insameling' en 'opdragte'</strong>, nie net vir die pret nie. KI-etiekopvoeding is nou 'n vereiste vir akademiese prestasie, nie 'n opsie nie."
-                }
+                ko: { labels: ['자료검색', '과제', '아이디어'], label: '목적', desc: "학업의 필수 도구로 자리 잡았습니다." },
+                en: { labels: ['Search', 'Assignment', 'Idea'], label: 'Purpose', desc: "It has become an essential academic tool." },
+                cn: { labels: ['资料搜索', '作业', '创意'], label: '目的', desc: "已成为学习的必备工具。" },
+                jp: { labels: ['検索', '課題', 'アイデア'], label: '目的', desc: "学業の必須ツールとして定着しました。" },
+                es: { labels: ['Búsqueda', 'Tarea', 'Idea'], label: 'Propósito', desc: "Es una herramienta académica esencial." },
+                af: { labels: ['Soek', 'Opdrag', 'Idee'], label: 'Doel', desc: "Dit het 'n noodsaaklike akademiese hulpmiddel geword." }
             },
-            'unethical': {
-                type: 'bar',
-                data: [20.0, 16.3, 14.3, 13.7, 7.8],
-                color: '#ff6b6b',
-                indexAxis: 'y',
-                ko: {
-                    labels: ['딥페이크 장난 소비', '허위사실 유포', '표절', '딥페이크 제작', '과제 통생성'],
-                    label: '비윤리적 행위 인식 (%)',
-                    desc: "💡 분석 인사이트:<br>학생들은 <strong>'딥페이크를 장난으로 소비하는 행위'</strong>를 가장 심각한 문제로 꼽았습니다. 직접 만드는 것뿐만 아니라, 보고 즐기는 것도 명백한 가해라는 인식이 자리 잡고 있습니다."
-                },
-                en: {
-                    labels: ['Consuming Deepfake for Fun', 'Spreading False Info', 'Plagiarism', 'Creating Deepfake', 'Generating Full Homework'],
-                    label: 'Unethical Perception (%)',
-                    desc: "💡 Analysis Insight:<br>Students identified <strong>'consuming deepfakes for fun'</strong> as the most serious issue. There is a growing awareness that watching and enjoying it is also a clear act of harm."
-                },
-                cn: {
-                    labels: ['娱乐性消费Deepfake', '散布虚假事实', '剽窃', '制作Deepfake', '作业全生成'],
-                    label: '不道德行为认知 (%)',
-                    desc: "💡 分析洞察:<br>学生们将<strong>‘以玩笑方式消费Deepfake的行为’</strong>选为最严重的问题。这表明不仅是直接制作，观看和享受也被认为是明显的加害行为。"
-                },
-                jp: {
-                    labels: ['ディープフェイクの悪ふざけ消費', '虚偽事実の流布', '盗作', 'ディープフェイク制作', '課題丸投げ生成'],
-                    label: '非倫理的行為への認識 (%)',
-                    desc: "💡 分析インサイト:<br>学生たちは<strong>「ディープフェイクを悪ふざけで消費する行為」</strong>を最も深刻な問題に挙げました。直接作ることだけでなく、見て楽しむことも明白な加害だという認識が定着しています。"
-                },
-                es: {
-                    labels: ['Consumo de Deepfake por Diversión', 'Difusión de Info Falsa', 'Plagio', 'Creación de Deepfake', 'Generación Completa de Tareas'],
-                    label: 'Percepción No Ética (%)',
-                    desc: "💡 Perspectiva del Análisis:<br>Los estudiantes identificaron el <strong>'consumo de deepfakes por diversión'</strong> como el problema más grave. Hay una creciente conciencia de que mirar y disfrutar también es un claro acto de daño."
-                },
-                af: {
-                    labels: ['Verbruik van Deepfake vir Pret', 'Verspreiding van Vals Inligting', 'Plagiaat', 'Skep van Deepfake', 'Volledige Huiswerk Generasie'],
-                    label: 'Onetiese Persepsie (%)',
-                    desc: "💡 Analise Insig:<br>Studente het <strong>'verbruik van deepfakes vir pret'</strong> as die ernstigste kwessie geïdentifiseer. Daar is 'n groeiende bewustheid dat om te kyk en dit te geniet ook 'n duidelike daad van skade is."
-                }
+            'unethical': { 
+                type: 'bar', 
+                data: [20, 16, 14], 
+                color: '#ff6b6b', 
+                ko: {labels:['장난','유포','표절'], label:'비윤리', desc:'장난으로 딥페이크를 소비하는 것도 문제라고 인식합니다.'}, 
+                en: {labels:['Fun','Spread','Plagiarism'], label:'Unethical', desc:'Consuming deepfakes for fun is seen as a problem.'}, 
+                cn: {labels:['娱乐','散布','剽窃'], label:'不道德', desc:'娱乐性使用Deepfake也是严重问题。'}, 
+                jp: {labels:['悪ふざけ','流布','盗作'], label:'非倫理', desc:'悪ふざけでの消費も問題だと認識しています。'}, 
+                es: {labels:['Diversión','Difusión','Plagio'], label:'No ético', desc:'Consumir deepfakes por diversión es un problema.'}, 
+                af: {labels:['Pret','Versprei','Plagiaat'], label:'Oneties', desc:'Om deepfakes vir pret te gebruik is \'n probleem.'}
             },
-            'responsibility': {
-                type: 'doughnut',
-                data: [46.1, 29.1, 7.8, 3.0],
-                color: ['#ff6b6b', '#fab005', '#20c997', '#adb5bd'],
-                indexAxis: 'x',
-                ko: {
-                    labels: ['최초 생성자', '무비판적 공유자', '플랫폼/개발사', '대학본부'],
-                    label: '책임 인식 (%)',
-                    desc: "💡 분석 인사이트:<br>최초 생성자(46.1%)뿐만 아니라 <strong>'무비판적 공유자(29.1%)'</strong>에게도 큰 책임을 묻고 있습니다. \"나르기만 했다\"는 변명은 더 이상 통하지 않습니다."
-                },
-                en: {
-                    labels: ['Initial Creator', 'Uncritical Sharer', 'Platform/Developer', 'University HQ'],
-                    label: 'Responsibility (%)',
-                    desc: "💡 Analysis Insight:<br>Responsibility is placed heavily on <strong>'uncritical sharers (29.1%)'</strong> as well as creators (46.1%). The excuse \"I just forwarded it\" is no longer valid."
-                },
-                cn: {
-                    labels: ['最初生成者', '无批判共享者', '平台/开发商', '大学本部'],
-                    label: '责任认知 (%)',
-                    desc: "💡 分析洞察:<br>不仅是最初生成者(46.1%)，对<strong>‘无批判共享者(29.1%)’</strong>也问责重大。“只是搬运而已”的辩解不再有效。"
-                },
-                jp: {
-                    labels: ['最初の生成者', '無批判な共有者', 'プラットフォーム/開発会社', '大学本部'],
-                    label: '責任認識 (%)',
-                    desc: "💡 分析インサイト:<br>最初の生成者(46.1%)だけでなく<strong>「無批判な共有者(29.1%)」</strong>にも大きな責任を問うています。「運んだだけ」という言い訳はもはや通用しません。"
-                },
-                es: {
-                    labels: ['Creador Inicial', 'Compartidor Acrítico', 'Plataforma/Desarrollador', 'Sede Universitaria'],
-                    label: 'Responsabilidad (%)',
-                    desc: "💡 Perspectiva del Análisis:<br>La responsabilidad recae fuertemente en los <strong>'compartidores acríticos (29.1%)'</strong> así como en los creadores (46.1%). La excusa \"solo lo reenvié\" ya no es válida."
-                },
-                af: {
-                    labels: ['Aanvanklike Skepper', 'Onkritiese Deler', 'Platform/Ontwikkelaar', 'Universiteit HK'],
-                    label: 'Verantwoordelikheid (%)',
-                    desc: "💡 Analise Insig:<br>Verantwoordelikheid word swaar geplaas op <strong>'onkritiese delers (29.1%)'</strong> sowel as skeppers (46.1%). Die verskoning \"ek het dit net aangestuur\" is nie meer geldig nie."
-                }
+            'responsibility': { 
+                type: 'doughnut', 
+                data: [46, 29, 8], 
+                color: ['#ff6b6b','#fab005','#20c997'], 
+                ko: {labels:['생성자','공유자','플랫폼'], label:'책임', desc:'공유자에게도 큰 책임을 묻고 있습니다.'}, 
+                en: {labels:['Creator','Sharer','Platform'], label:'Resp.', desc:'Sharers are also held heavily responsible.'}, 
+                cn: {labels:['生成者','传播者','平台'], label:'责任', desc:'传播者也要承担重大责任。'}, 
+                jp: {labels:['生成者','共有者','PF'], label:'責任', desc:'共有者にも大きな責任を問うています。'}, 
+                es: {labels:['Creador','Compartidor','Plataforma'], label:'Resp.', desc:'Los que comparten también son responsables.'}, 
+                af: {labels:['Skepper','Deler','Platform'], label:'Verant.', desc:'Delers word ook verantwoordelik gehou.'}
             },
-            'deepfake': {
-                type: 'pie',
-                data: [83.0, 11.9, 5.1],
-                color: ['#4c6ef5', '#e9ecef', '#ff6b6b'],
-                indexAxis: 'x',
-                ko: {
-                    labels: ['처벌 찬성', '보통/중립', '반대'],
-                    label: '비율 (%)',
-                    desc: "💡 분석 인사이트:<br>10명 중 8명 이상이 <strong>'장난이라도 딥페이크 제작은 처벌해야 한다'</strong>고 답했습니다. 대학생들의 윤리적 기준은 이미 법적 기준보다 훨씬 엄격합니다."
-                },
-                en: {
-                    labels: ['Agree with Punishment', 'Neutral', 'Disagree'],
-                    label: 'Ratio (%)',
-                    desc: "💡 Analysis Insight:<br>More than 8 out of 10 students said <strong>'Deepfake creation should be punished even if it's a joke.'</strong> Students' ethical standards are already much stricter than legal ones."
-                },
-                cn: {
-                    labels: ['赞成处罚', '普通/中立', '反对'],
-                    label: '比率 (%)',
-                    desc: "💡 分析洞察:<br>10人中有8人以上回答<strong>‘即使是玩笑，制作Deepfake也应受到处罚’</strong>。大学生的伦理标准已经比法律标准严格得多。"
-                },
-                jp: {
-                    labels: ['処罰に賛成', '普通/中立', '反対'],
-                    label: '比率 (%)',
-                    desc: "💡 分析インサイト:<br>10人中8人以上が<strong>「悪ふざけでもディープフェイク制作は処罰すべきだ」</strong>と答えました。大学生の倫理的基準はすでに法的基準よりはるかに厳格です。"
-                },
-                es: {
-                    labels: ['Acuerdo con Castigo', 'Neutral', 'Desacuerdo'],
-                    label: 'Ratio (%)',
-                    desc: "💡 Perspectiva del Análisis:<br>Más de 8 de cada 10 estudiantes dijeron que <strong>'La creación de deepfakes debe ser castigada incluso si es una broma.'</strong> Los estándares éticos de los estudiantes ya son mucho más estrictos que los legales."
-                },
-                af: {
-                    labels: ['Stem Saam met Straf', 'Neutraal', 'Stem Nie Saam Nie'],
-                    label: 'Verhouding (%)',
-                    desc: "💡 Analise Insig:<br>Meer as 8 uit 10 studente het gesê <strong>'Deepfake-skepping moet gestraf word selfs al is dit 'n grap.'</strong> Studente se etiese standaarde is reeds baie strenger as wetlike standaarde."
-                }
+            'deepfake': { 
+                type: 'pie', 
+                data: [83, 12, 5], 
+                color: ['#4c6ef5','#e9ecef','#ff6b6b'], 
+                ko: {labels:['찬성','중립','반대'], label:'처벌', desc:'83%가 처벌에 찬성합니다.'}, 
+                en: {labels:['Agree','Neutral','Disagree'], label:'Punish', desc:'83% agree with punishment.'}, 
+                cn: {labels:['赞成','中立','反对'], label:'处罚', desc:'83%赞成处罚。'}, 
+                jp: {labels:['賛成','中立','反対'], label:'処罰', desc:'83%が処罰に賛成しています。'}, 
+                es: {labels:['Acuerdo','Neutral','Desacuerdo'], label:'Castigo', desc:'83% está de acuerdo con el castigo.'}, 
+                af: {labels:['Stem saam','Neutraal','Stem nie saam'], label:'Straf', desc:'83% stem saam met straf.'}
             },
-            'frequency': {
-                type: 'bar',
-                data: [28.0, 21.2, 17.8, 14.4],
-                color: '#fab005',
-                indexAxis: 'x',
-                ko: {
-                    labels: ['주 3회 이상', '주 1-2회', '거의 매일', '잘 모름'],
-                    label: '목격 빈도 (%)',
-                    desc: "💡 분석 인사이트:<br>절반 가까운 학생들이 '일주일에 한 번 이상' 허위정보를 마주치고 있으며, 특히 <strong>'거의 매일' 본다는 응답도 17.8%</strong>에 달합니다. 디지털 환경이 이미 오염되어 있음을 시사합니다."
-                },
-                en: {
-                    labels: ['3+ Times/Week', '1-2 Times/Week', 'Almost Everyday', 'Don\'t Know'],
-                    label: 'Witness Frequency (%)',
-                    desc: "💡 Analysis Insight:<br>Nearly half of students encounter fake info 'at least once a week', and <strong>17.8% see it 'almost everyday'</strong>. This suggests the digital environment is already polluted."
-                },
-                cn: {
-                    labels: ['每周3次以上', '每周1-2次', '几乎每天', '不太清楚'],
-                    label: '目击频率 (%)',
-                    desc: "💡 分析洞察:<br>接近一半的学生‘每周一次以上’遇到虚假信息，特别是<strong>‘几乎每天’看到的回答也达到17.8%</strong>。这暗示数字环境已经被污染。"
-                },
-                jp: {
-                    labels: ['週3回以上', '週1-2回', 'ほぼ毎日', 'よく分からない'],
-                    label: '目撃頻度 (%)',
-                    desc: "💡 分析インサイト:<br>半数近くの学生が「一週間に一度以上」虚偽情報に遭遇しており、特に<strong>「ほぼ毎日」見るという回答も17.8%</strong>に達します。デジタル環境がすでに汚染されていることを示唆しています。"
-                },
-                es: {
-                    labels: ['3+ Veces/Semana', '1-2 Veces/Semana', 'Casi Todos los Días', 'No Sé'],
-                    label: 'Frecuencia de Testigos (%)',
-                    desc: "💡 Perspectiva del Análisis:<br>Casi la mitad de los estudiantes encuentran información falsa 'al menos una vez a la semana', y el <strong>17.8% la ve 'casi todos los días'</strong>. Esto sugiere que el entorno digital ya está contaminado."
-                },
-                af: {
-                    labels: ['3+ Keer/Week', '1-2 Keer/Week', 'Amper Elke Dag', 'Weet Nie'],
-                    label: 'Getuie Frekwensie (%)',
-                    desc: "💡 Analise Insig:<br>Amper die helfte van studente kom valse inligting 'ten minste een keer per week' teë, en <strong>17.8% sien dit 'amper elke dag'</strong>. Dit dui daarop dat die digitale omgewing reeds besoedel is."
-                }
+            'frequency': { 
+                type: 'bar', 
+                data: [28, 21, 18], 
+                color: '#fab005', 
+                ko: {labels:['주3회+','주1-2회','매일'], label:'빈도', desc:'디지털 환경이 오염되었습니다.'}, 
+                en: {labels:['3+/Wk','1-2/Wk','Daily'], label:'Freq', desc:'Digital environment is polluted.'}, 
+                cn: {labels:['每周3+','每周1-2','每天'], label:'频率', desc:'数字环境已被污染。'}, 
+                jp: {labels:['週3+','週1-2','毎日'], label:'頻度', desc:'デジタル環境が汚染されています。'}, 
+                es: {labels:['3+/Sem','1-2/Sem','Diario'], label:'Freq', desc:'El entorno digital está contaminado.'}, 
+                af: {labels:['3+/Wk','1-2/Wk','Daagliks'], label:'Freq', desc:'Digitale omgewing is besoedel.'}
             },
-            'reporting': {
-                type: 'doughnut',
-                data: [66.1, 27.1, 6.8],
-                color: ['#ff6b6b', '#fab005', '#20c997'],
-                indexAxis: 'x',
-                ko: {
-                    labels: ['전혀 모름', '들어는 봤음', '정확히 앎'],
-                    label: '인지도 (%)',
-                    desc: "💡 분석 인사이트:<br><strong>66% 이상이 신고 채널을 전혀 모릅니다.</strong> 피해를 입어도 어디에 도움을 청해야 할지 막막한 '제도적 공백' 상태입니다. F.A.K.E. 프로젝트가 시급한 이유입니다."
-                },
-                en: {
-                    labels: ['Don\'t Know At All', 'Heard of It', 'Know Exactly'],
-                    label: 'Awareness (%)',
-                    desc: "💡 Analysis Insight:<br><strong>Over 66% don't know reporting channels at all.</strong> It's a state of 'Institutional Void' where victims don't know where to ask for help. This is why Project F.A.K.E. is urgent."
-                },
-                cn: {
-                    labels: ['完全不知道', '听说过', '确切知道'],
-                    label: '认知度 (%)',
-                    desc: "💡 分析洞察:<br><strong>66%以上完全不知道举报渠道。</strong>这是即使受到伤害也不知道向哪里求助的‘制度性空白’状态。这就是 F.A.K.E. 项目迫在眉睫的原因。"
-                },
-                jp: {
-                    labels: ['全く知らない', '聞いたことはある', '正確に知っている'],
-                    label: '認知度 (%)',
-                    desc: "💡 分析インサイト:<br><strong>66%以上が通報チャンネルを全く知りません。</strong>被害に遭ってもどこに助けを求めるべきか途方に暮れる「制度的空白」状態です。F.A.K.E.プロジェクトが急がれる理由です。"
-                },
-                es: {
-                    labels: ['No Sé Nada', 'He Oído Hablar', 'Lo Sé Exactamente'],
-                    label: 'Conciencia (%)',
-                    desc: "💡 Perspectiva del Análisis:<br><strong>Más del 66% no conoce los canales de denuncia en absoluto.</strong> Es un estado de 'Vacío Institucional' donde las víctimas no saben dónde pedir ayuda. Por eso el Proyecto F.A.K.E. es urgente."
-                },
-                af: {
-                    labels: ['Weet Glad Nie', 'Al Van Gehoor', 'Weet Presies'],
-                    label: 'Bewustheid (%)',
-                    desc: "💡 Analise Insig:<br><strong>Meer as 66% ken glad nie rapporteringskanale nie.</strong> Dit is 'n toestand van 'Institusionele Leemte' waar slagoffers nie weet waar om hulp te vra nie. Daarom is Projek F.A.K.E. dringend."
-                }
+            'reporting': { 
+                type: 'doughnut', 
+                data: [66, 27, 7], 
+                color: ['#ff6b6b','#fab005','#20c997'], 
+                ko: {labels:['모름','들어봄','앎'], label:'인지', desc:'신고처를 전혀 모르는 학생이 대다수입니다.'}, 
+                en: {labels:['Unknown','Heard','Known'], label:'Awareness', desc:'Most do not know where to report.'}, 
+                cn: {labels:['不知道','听过','知道'], label:'认知', desc:'大多数学生完全不知道举报渠道。'}, 
+                jp: {labels:['不明','聞いた','知ってる'], label:'認知', desc:'通報先を知らない学生が大多数です。'}, 
+                es: {labels:['Desconocido','Oído','Conocido'], label:'Conciencia', desc:'La mayoría no sabe dónde denunciar.'}, 
+                af: {labels:['Onbekend','Gehoor','Bekend'], label:'Bewustheid', desc:'Meeste weet nie waar om te rapporteer nie.'}
             }
         };
 
         function updateChart() {
             const selector = document.getElementById('chartSelector');
             if (!selector) return;
-            
-            const selected = selector.value;
-            const entry = chartData[selected];
-            // Access data based on current Language
-            const langData = entry[currentLang];
+            const key = selector.value;
+            const entry = chartData[key] || chartData['tools'];
+            const langContent = entry[currentLang] || entry['en'];
 
-            const canvas = document.getElementById('dynamicChart');
-            const desc = document.getElementById('chartDesc');
-
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-
+            const ctx = document.getElementById('dynamicChart').getContext('2d');
             if (dynamicChart) dynamicChart.destroy();
 
-            let config = {
+            dynamicChart = new Chart(ctx, {
                 type: entry.type,
                 data: {
-                    labels: langData.labels, // Use translated labels
+                    labels: langContent.labels,
                     datasets: [{
-                        label: langData.label, // Use translated dataset label
+                        label: langContent.label,
                         data: entry.data,
                         backgroundColor: entry.color,
-                        borderRadius: 6,
-                        borderWidth: 0
+                        borderWidth: 0, borderRadius: 5
                     }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    indexAxis: entry.indexAxis,
-                    plugins: { 
-                        legend: { position: 'bottom', display: entry.type !== 'bar' || entry.indexAxis === 'x' },
-                        tooltip: { enabled: true }
-                    }
-                }
-            };
-
-            dynamicChart = new Chart(ctx, config);
-            if (desc) desc.innerHTML = langData.desc; // Use translated description
+                options: { maintainAspectRatio: false, indexAxis: entry.indexAxis || 'x', plugins: { legend: { display: entry.type!=='bar' } } }
+            });
+            document.getElementById('chartDesc').innerHTML = langContent.desc;
         }
 
-        const chartSelector = document.getElementById('chartSelector');
-        if (chartSelector) {
-            chartSelector.addEventListener('change', updateChart);
-        }
+        document.getElementById('chartSelector').addEventListener('change', updateChart);
 
         // --- Test Logic ---
         let currentStep = 0;
@@ -1785,41 +1130,35 @@
 
         function nextStep(score) {
             totalScore += score;
-            setTimeout(() => {
-                if (cards[currentStep]) cards[currentStep].style.display = 'none';
-                currentStep++;
-                if (progressBar) progressBar.style.width = ((currentStep) / 5) * 100 + '%';
-                
-                if (currentStep < 5) {
-                    if (cards[currentStep]) {
-                        cards[currentStep].style.display = 'block';
-                        cards[currentStep].classList.add('active');
-                    }
-                } else {
-                    showResult();
-                }
-            }, 300);
+            if (cards[currentStep]) cards[currentStep].style.display = 'none';
+            currentStep++;
+            if (progressBar) progressBar.style.width = ((currentStep) / 5) * 100 + '%';
+
+            if (currentStep < 5) {
+                cards[currentStep].style.display = 'block';
+                cards[currentStep].classList.add('active');
+            } else {
+                showResult();
+            }
         }
 
         function showResult() {
-            const quizContainer = document.getElementById('quizContainer');
+            document.getElementById('quizContainer').style.display = 'none';
+            document.querySelector('.test-progress-bar').style.display = 'none';
             const resultView = document.getElementById('resultView');
-            const progress = document.querySelector('.test-progress-bar');
-            
-            if (quizContainer) quizContainer.style.display = 'none';
-            if (progress) progress.style.display = 'none';
-            if (resultView) resultView.style.display = 'block';
+            resultView.style.display = 'block';
             
             const rIcon = document.getElementById('resIcon');
             const rTitle = document.getElementById('resTitle');
             const rDesc = document.getElementById('resDesc');
             const rToolkit = document.getElementById('resToolkit');
             
-            // ** Dynamic Translation Fetching **
             const t = translations[currentLang];
 
+            // Reset Highlight
             document.querySelectorAll('.toolkit-card').forEach(c => c.classList.remove('highlight'));
 
+            // Logic Completed here
             if (totalScore >= 80) {
                 rIcon.innerHTML = "👑"; 
                 rTitle.innerHTML = t.res_lv4_title; 
@@ -1828,56 +1167,60 @@
                 rToolkit.innerHTML = t.res_lv4_toolkit; 
                 recommendedToolkitId = 'toolkit-4';
             } else if (totalScore >= 61) {
-                rIcon.innerHTML = "🕵️‍♀️"; 
-                rTitle.innerHTML = t.res_lv3_title; 
+                rIcon.innerHTML = "🔎";
+                rTitle.innerHTML = t.res_lv3_title;
                 rTitle.style.color = "#20c997";
                 rDesc.innerHTML = t.res_lv3_desc;
-                rToolkit.innerHTML = t.res_lv3_toolkit; 
+                rToolkit.innerHTML = t.res_lv3_toolkit;
                 recommendedToolkitId = 'toolkit-3';
-            } else if (totalScore >= 31) {
-                rIcon.innerHTML = "🤠"; 
-                rTitle.innerHTML = t.res_lv2_title; 
+            } else if (totalScore >= 41) {
+                rIcon.innerHTML = "🛡️";
+                rTitle.innerHTML = t.res_lv2_title;
                 rTitle.style.color = "#fab005";
                 rDesc.innerHTML = t.res_lv2_desc;
-                rToolkit.innerHTML = t.res_lv2_toolkit; 
+                rToolkit.innerHTML = t.res_lv2_toolkit;
                 recommendedToolkitId = 'toolkit-2';
             } else {
-                rIcon.innerHTML = "😱"; 
-                rTitle.innerHTML = t.res_lv1_title; 
+                rIcon.innerHTML = "🎒";
+                rTitle.innerHTML = t.res_lv1_title;
                 rTitle.style.color = "#ff6b6b";
                 rDesc.innerHTML = t.res_lv1_desc;
-                rToolkit.innerHTML = t.res_lv1_toolkit; 
+                rToolkit.innerHTML = t.res_lv1_toolkit;
                 recommendedToolkitId = 'toolkit-1';
             }
         }
 
         function closeTestAndScroll() {
             closeModal(testModal);
+            // Scroll to toolkit section
+            const section = document.getElementById('toolkit');
+            section.scrollIntoView({ behavior: 'smooth' });
+
+            // Highlight specific card
             setTimeout(() => {
-                const target = document.getElementById(recommendedToolkitId);
-                if(target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    target.classList.add('highlight');
-                    setTimeout(() => target.classList.remove('highlight'), 2500);
+                const targetCard = document.getElementById(recommendedToolkitId);
+                if (targetCard) {
+                    targetCard.classList.add('highlight');
                 }
-            }, 300);
+            }, 800);
         }
 
         function resetTest() {
-            currentStep = 0; totalScore = 0;
-            const quizContainer = document.getElementById('quizContainer');
-            const resultView = document.getElementById('resultView');
-            const progress = document.querySelector('.test-progress-bar');
+            currentStep = 0;
+            totalScore = 0;
+            document.getElementById('quizContainer').style.display = 'block';
+            document.querySelector('.test-progress-bar').style.display = 'block';
+            document.getElementById('resultView').style.display = 'none';
+            document.getElementById('testProgressFill').style.width = '0%';
             
-            if (resultView) resultView.style.display = 'none';
-            if (quizContainer) quizContainer.style.display = 'block';
-            if (progress) progress.style.display = 'block';
-            if (progressBar) progressBar.style.width = '0%';
-            
-            cards.forEach(c => { c.style.display = 'none'; c.classList.remove('active'); });
-            if (cards[0]) { cards[0].style.display = 'block'; cards[0].classList.add('active'); }
-            
-            document.querySelectorAll('.q-option input').forEach(i => i.checked = false);
+            cards.forEach((card, index) => {
+                card.style.display = index === 0 ? 'block' : 'none';
+                card.classList.remove('active');
+                if(index === 0) card.classList.add('active');
+            });
+
+            // Uncheck radios
+            document.querySelectorAll('input[type="radio"]').forEach(el => el.checked = false);
         }
     </script>
 </body>
