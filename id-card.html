@@ -128,7 +128,6 @@
             "아시아학과": { code: "244", eng: "Dept. of Asian Studies" },
             "글로벌한국학과": { code: "244", eng: "Dept. of Asian Studies" },
             "약학과": { code: "145", eng: "Dept. of Pharmacy" },
-            "약과학과": { code: "146", eng: "Dept. of Pharmaceutical Science" },
             "연극영화학과": { code: "246", eng: "Dept. of Theatre and Film" },
             "영어영문학과": { code: "147", eng: "Dept. of English Language & Literature" },
             "우주과학과": { code: "248", eng: "Dept. of Space Science" },
@@ -144,7 +143,6 @@
             "의류디자인학과": { code: "256", eng: "Dept. of Fashion Design" },
             "의상학과": { code: "157", eng: "Dept. of Clothing and Textiles" },
             "의예과": { code: "158", eng: "Premedical Course (Medicine)" },
-            "의학과": { code: "158", eng: "Dept. of Medicine" },
             "인공지능학과": { code: "259", eng: "Dept. of Artificial Intelligence" },
             "일본어학과": { code: "260", eng: "Dept. of Japanese Language" },
             "자유전공학부": { code: "261", eng: "Div. of Free Major Studies" },
@@ -167,9 +165,8 @@
             "프랑스어학과": { code: "277", eng: "Dept. of French Language" },
             "한국어학과": { code: "278", eng: "Dept. of Korean Language" },
             "한국화과": { code: "179", eng: "Dept. of Korean Painting" },
-            "한약학과": { code: "180", eng: "Dept. of Korean Pharmacy" },
+            "한약학과": { code: "180", eng: "Dept. of Herbal Pharmacology" },
             "한의예과": { code: "181", eng: "Pre-Korean Medicine Course" },
-            "한의학과": { code: "183",eng: "Dept. of Korean Medicine" },
             "행정학과": { code: "182", eng: "Dept. of Public Administration" },
             "화학공학과": { code: "283", eng: "Dept. of Chemical Engineering" },
             "화학과": { code: "184", eng: "Dept. of Chemistry" },
@@ -177,8 +174,7 @@
             "환경학및환경공학과": { code: "286", eng: "Dept. of Env. Science & Eng." },
             "회계세무학과": { code: "187", eng: "Dept. of Accounting and Taxation" },
             "회화과": { code: "188", eng: "Dept. of Painting" },
-            "Florida State University": { code: "850", eng: "Florida State University" },
-            "University of Maryland, College Park": { code: "301", eng: "University of Maryland, College Park" }
+            "Florida State University": { code: "850", eng: "Florida State University" }
         };
 
         // Icons
@@ -504,17 +500,13 @@
                 drawRoundRect(ctx, margin, 140, width - (margin*2), height - 140 - margin, 30);
                 ctx.fill();
 
-                // 3. Header: F.A.K.E Text REMOVED and REPLACED with FRONT LOGO logic
-                
-                // Front Logo REMOVED - User requested to delete the top-left logo (which was the rotated front logo)
-                
                 // 3-1. Back Logo (MOVED from Top Right to Top Left)
                 if (backLogo) {
                     try {
                         const logo = await loadImage(backLogo);
                         // Using user requested logic for sizing
                         const maxW = 330; 
-                        const maxH = 100; // Limit height 
+                        const maxH = 330; // UPDATED to 330 to match front logo size logic
                         const aspect = logo.width / logo.height;
                         
                         let dw = maxW; 
@@ -522,10 +514,6 @@
                         if (dh > maxH) { dh = maxH; dw = maxH * aspect; }
 
                         // Positioning at top LEFT to align with the start of the white box/lines
-                        // "Cleanly aligned with white shape and line"
-                        // White shape starts at x=25 (margin)
-                        // Lines start at x=60 (startX)
-                        // Aligning with the line (x=60) usually looks best for text alignment
                         const logoX = 60; 
                         const logoY = 30; // Top padding
                         
