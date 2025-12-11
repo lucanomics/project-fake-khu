@@ -359,8 +359,8 @@
         <div class="lang-group">
             <button onclick="setLanguage('ko')" class="lang-btn active" data-btn-lang="ko">KO</button>
             <button onclick="setLanguage('en')" class="lang-btn" data-btn-lang="en">EN</button>
-            <button onclick="setLanguage('zh')" class="lang-btn" data-btn-lang="zh">ZH</button>
-            <button onclick="setLanguage('ja')" class="lang-btn" data-btn-lang="ja">JA</button>
+            <button onclick="setLanguage('cn')" class="lang-btn" data-btn-lang="cn">CN</button>
+            <button onclick="setLanguage('jp')" class="lang-btn" data-btn-lang="jp">JP</button>
             <button onclick="setLanguage('es')" class="lang-btn" data-btn-lang="es">ES</button>
         </div>
     </header>
@@ -885,7 +885,7 @@
                 res_lv1_desc: "Are you alone in the dangerous jungle?<br>Survival knowledge is urgent!",
                 res_lv1_toolkit: "Lv.1 Survival Toolkit"
             },
-            zh: {
+            cn: {
                 // Link Data (Chinese - linking to English for now)
                 link_tk1: "https://docs.google.com/document/d/1feLm0awxVFzE3NZtJk8tfAfkF_-5lj4TsYDVB8GrR2Q/edit?usp=sharing",
                 link_tk2: "https://docs.google.com/document/d/1PmiMVFr3x8biYGdPuqmhlR-UOPc4NnXDmVkFCy0pH1g/edit?usp=sharing",
@@ -995,7 +995,7 @@
                 res_lv1_desc: "您独自一人在危险的丛林中吗？<br>生存所需的必要知识刻不容缓！",
                 res_lv1_toolkit: "Lv.1 生存工具包"
             },
-            ja: {
+            jp: {
                 // Link Data (Japanese - linking to English for now)
                 link_tk1: "https://docs.google.com/document/d/1feLm0awxVFzE3NZtJk8tfAfkF_-5lj4TsYDVB8GrR2Q/edit?usp=sharing",
                 link_tk2: "https://docs.google.com/document/d/1PmiMVFr3x8biYGdPuqmhlR-UOPc4NnXDmVkFCy0pH1g/edit?usp=sharing",
@@ -1218,7 +1218,7 @@
         };
 
         let currentLang = 'ko';
-        const langOrder = ['ko', 'en', 'zh', 'ja', 'es'];
+        const langOrder = ['ko', 'en', 'cn', 'jp', 'es'];
 
         function setLanguage(lang) {
             currentLang = lang;
@@ -1338,12 +1338,12 @@
                     label: 'Usage Ratio (%)',
                     desc: "💡 Analysis Insight:<br><strong>ChatGPT (96.6%)</strong> is overwhelmingly dominant. This shows extreme polarization in tool usage. There is a risk that the bias of a specific AI model could be reflected in students' thinking."
                 },
-                zh: {
+                cn: {
                     labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn', 'Copilot', 'Claude', 'Deepseek', '其他'],
                     label: '使用率 (%)',
                     desc: "💡 分析洞察:<br><strong>ChatGPT (96.6%)</strong> 占据压倒性第一。这表明大学生的AI使用极度偏向特定工具。存在特定AI模型的偏差可能直接反映在学生思维中的担忧。"
                 },
-                ja: {
+                jp: {
                     labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn', 'Copilot', 'Claude', 'Deepseek', 'その他'],
                     label: '使用率 (%)',
                     desc: "💡 分析インサイト:<br><strong>ChatGPT(96.6%)</strong>が圧倒的1位です。大学生のAI活用が特定のツールに極端に偏っていることを示しています。特定AIモデルのバイアスが学生の思考にそのまま反映される懸念があります。"
@@ -1369,12 +1369,12 @@
                     label: 'Response Ratio (%)',
                     desc: "💡 Analysis Insight:<br>AI has become a core academic tool for <strong>'data collection' and 'assignments'</strong>, not just for fun. AI ethics education is now a requirement for academic achievement, not an option."
                 },
-                zh: {
+                cn: {
                     labels: ['资料搜索', '作业/报告撰写', '创意生成', '照片/视频编辑', '外语翻译', '编程'],
                     label: '应答率 (%)',
                     desc: "💡 分析洞察:<br>不仅仅是单纯的兴趣，已成为<strong>‘资料收集’和‘作业撰写’</strong>等学业的核心工具。现在AI伦理教育不是选择，而是为了学业成就的必要条件。"
                 },
-                ja: {
+                jp: {
                     labels: ['資料検索', '課題/レポート作成', 'アイデア生成', '写真/動画編集', '外国語翻訳', 'コーディング'],
                     label: '回答率 (%)',
                     desc: "💡 分析インサイト:<br>単純な興味ではなく<strong>「資料収集」と「課題作成」</strong>など学業の核心ツールとして定着しました。もはやAI倫理教育は選択ではなく、学業成就のための必須要件です。"
@@ -1400,12 +1400,12 @@
                     label: 'Unethical Perception (%)',
                     desc: "💡 Analysis Insight:<br>Students identified <strong>'consuming deepfakes for fun'</strong> as the most serious issue. There is a growing awareness that watching and enjoying it is also a clear act of harm."
                 },
-                zh: {
+                cn: {
                     labels: ['娱乐性消费Deepfake', '散布虚假事实', '剽窃', '制作Deepfake', '作业全生成'],
                     label: '不道德行为认知 (%)',
                     desc: "💡 分析洞察:<br>学生们将<strong>‘以玩笑方式消费Deepfake的行为’</strong>选为最严重的问题。这表明不仅是直接制作，观看和享受也被认为是明显的加害行为。"
                 },
-                ja: {
+                jp: {
                     labels: ['ディープフェイクの悪ふざけ消費', '虚偽事実の流布', '盗作', 'ディープフェイク制作', '課題丸投げ生成'],
                     label: '非倫理的行為への認識 (%)',
                     desc: "💡 分析インサイト:<br>学生たちは<strong>「ディープフェイクを悪ふざけで消費する行為」</strong>を最も深刻な問題に挙げました。直接作ることだけでなく、見て楽しむことも明白な加害だという認識が定着しています。"
@@ -1431,12 +1431,12 @@
                     label: 'Responsibility (%)',
                     desc: "💡 Analysis Insight:<br>Responsibility is placed heavily on <strong>'uncritical sharers (29.1%)'</strong> as well as creators (46.1%). The excuse \"I just forwarded it\" is no longer valid."
                 },
-                zh: {
+                cn: {
                     labels: ['最初生成者', '无批判共享者', '平台/开发商', '大学本部'],
                     label: '责任认知 (%)',
                     desc: "💡 分析洞察:<br>不仅是最初生成者(46.1%)，对<strong>‘无批判共享者(29.1%)’</strong>也问责重大。“只是搬运而已”的辩解不再有效。"
                 },
-                ja: {
+                jp: {
                     labels: ['最初の生成者', '無批判な共有者', 'プラットフォーム/開発会社', '大学本部'],
                     label: '責任認識 (%)',
                     desc: "💡 分析インサイト:<br>最初の生成者(46.1%)だけでなく<strong>「無批判な共有者(29.1%)」</strong>にも大きな責任を問うています。「運んだだけ」という言い訳はもはや通用しません。"
@@ -1462,12 +1462,12 @@
                     label: 'Ratio (%)',
                     desc: "💡 Analysis Insight:<br>More than 8 out of 10 students said <strong>'Deepfake creation should be punished even if it's a joke.'</strong> Students' ethical standards are already much stricter than legal ones."
                 },
-                zh: {
+                cn: {
                     labels: ['赞成处罚', '普通/中立', '反对'],
                     label: '比率 (%)',
                     desc: "💡 分析洞察:<br>10人中有8人以上回答<strong>‘即使是玩笑，制作Deepfake也应受到处罚’</strong>。大学生的伦理标准已经比法律标准严格得多。"
                 },
-                ja: {
+                jp: {
                     labels: ['処罰に賛成', '普通/中立', '反対'],
                     label: '比率 (%)',
                     desc: "💡 分析インサイト:<br>10人中8人以上が<strong>「悪ふざけでもディープフェイク制作は処罰すべきだ」</strong>と答えました。大学生の倫理的基準はすでに法的基準よりはるかに厳格です。"
@@ -1493,12 +1493,12 @@
                     label: 'Witness Frequency (%)',
                     desc: "💡 Analysis Insight:<br>Nearly half of students encounter fake info 'at least once a week', and <strong>17.8% see it 'almost everyday'</strong>. This suggests the digital environment is already polluted."
                 },
-                zh: {
+                cn: {
                     labels: ['每周3次以上', '每周1-2次', '几乎每天', '不太清楚'],
                     label: '目击频率 (%)',
                     desc: "💡 分析洞察:<br>接近一半的学生‘每周一次以上’遇到虚假信息，特别是<strong>‘几乎每天’看到的回答也达到17.8%</strong>。这暗示数字环境已经被污染。"
                 },
-                ja: {
+                jp: {
                     labels: ['週3回以上', '週1-2回', 'ほぼ毎日', 'よく分からない'],
                     label: '目撃頻度 (%)',
                     desc: "💡 分析インサイト:<br>半数近くの学生が「一週間に一度以上」虚偽情報に遭遇しており、特に<strong>「ほぼ毎日」見るという回答も17.8%</strong>に達します。デジタル環境がすでに汚染されていることを示唆しています。"
@@ -1524,12 +1524,12 @@
                     label: 'Awareness (%)',
                     desc: "💡 Analysis Insight:<br><strong>Over 66% don't know reporting channels at all.</strong> It's a state of 'Institutional Void' where victims don't know where to ask for help. This is why Project F.A.K.E. is urgent."
                 },
-                zh: {
+                cn: {
                     labels: ['完全不知道', '听说过', '确切知道'],
                     label: '认知度 (%)',
                     desc: "💡 分析洞察:<br><strong>66%以上完全不知道举报渠道。</strong>这是即使受到伤害也不知道向哪里求助的‘制度性空白’状态。这就是 F.A.K.E. 项目迫在眉睫的原因。"
                 },
-                ja: {
+                jp: {
                     labels: ['全く知らない', '聞いたことはある', '正確に知っている'],
                     label: '認知度 (%)',
                     desc: "💡 分析インサイト:<br><strong>66%以上が通報チャンネルを全く知りません。</strong>被害に遭ってもどこに助けを求めるべきか途方に暮れる「制度的空白」状態です。F.A.K.E.プロジェクトが急がれる理由です。"
