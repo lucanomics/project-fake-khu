@@ -63,20 +63,28 @@
             align-items: center;
             z-index: 1000;
             border-bottom: 1px solid rgba(0,0,0,0.05);
+            flex-wrap: wrap; /* 화면이 좁을 때 줄바꿈 허용 */
         }
 
         .logo {
             font-size: 1.8rem;
             color: var(--primary);
             letter-spacing: -0.5px;
+            flex-shrink: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem; /* 기본 간격 */
         }
 
         .nav-links a {
-            margin-left: 2rem;
             font-weight: 600;
             font-size: 1rem;
             color: var(--dark);
             cursor: pointer;
+            white-space: nowrap; /* 텍스트 줄바꿈 방지 */
         }
         .nav-links a:hover { color: var(--primary); }
 
@@ -86,6 +94,7 @@
             display: flex;
             gap: 5px;
             z-index: 2000;
+            flex-shrink: 0;
         }
 
         .lang-btn {
@@ -129,6 +138,7 @@
             margin-bottom: 1.5rem;
             color: var(--dark);
             word-break: keep-all;
+            word-wrap: break-word; /* 긴 단어 줄바꿈 허용 */
         }
 
         .hero p {
@@ -325,13 +335,36 @@
         .recommend-toolkit { font-size: 1.3rem; font-weight: 700; color: var(--dark); font-family: var(--font-title); }
 
         /* Responsive */
+        @media (max-width: 1200px) {
+            header { padding: 1rem 3%; }
+            .nav-links { gap: 1.2rem; }
+            .nav-links a { font-size: 0.9rem; }
+            .hero h1 { font-size: 3.2rem; }
+            .bento-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
         @media (max-width: 1024px) {
+            header { flex-direction: row; justify-content: space-between; }
+            .nav-links { display: none; /* 모바일/태블릿에서는 메뉴 숨김 (간소화) 또는 햄버거 메뉴 필요할 수 있음. 여기서는 일단 간격 조정 */ }
+            /* 중간 사이즈(태블릿 가로/작은 랩탑)에서 메뉴가 너무 길면... */
+            .nav-links { display: flex; gap: 1rem; }
+            .nav-links a { font-size: 0.85rem; }
+            
             .bento-grid { grid-template-columns: repeat(2, 1fr); }
             .col-span-1, .col-span-2 { grid-column: span 1; }
             .toolkit-grid { grid-template-columns: repeat(2, 1fr); }
         }
+        
+        @media (max-width: 850px) {
+            /* 좁은 랩탑/태블릿 환경에서 메뉴 레이아웃 변경 */
+            header { flex-wrap: wrap; gap: 10px; justify-content: center; }
+            .logo { width: 100%; text-align: center; margin-bottom: 0.5rem; }
+            .nav-links { width: auto; justify-content: center; margin-bottom: 0.5rem; }
+            .lang-group { margin-left: 0; }
+        }
+
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.8rem; }
+            .hero h1 { font-size: 2.5rem; }
             .hero-btns { flex-direction: column; }
             .bento-grid, .toolkit-grid { grid-template-columns: 1fr; }
             .col-span-2 { grid-column: span 1; }
@@ -339,6 +372,12 @@
             /* 모바일에서는 차트 높이 재조정 */
             .chart-wrapper { height: 220px; }
             .bento-grid { grid-auto-rows: auto; } /* 모바일은 자동 높이 */
+            
+            /* 모바일 헤더 */
+            header { padding: 0.8rem 5%; flex-direction: column; gap: 10px; }
+            .logo { margin-bottom: 0; }
+            .nav-links { gap: 1rem; flex-wrap: wrap; justify-content: center; }
+            .lang-group { width: 100%; justify-content: center; }
         }
     </style>
 </head>
@@ -362,6 +401,7 @@
             <button onclick="setLanguage('cn')" class="lang-btn" data-btn-lang="cn">CN</button>
             <button onclick="setLanguage('jp')" class="lang-btn" data-btn-lang="jp">JP</button>
             <button onclick="setLanguage('es')" class="lang-btn" data-btn-lang="es">ES</button>
+            <button onclick="setLanguage('af')" class="lang-btn" data-btn-lang="af">AF</button>
         </div>
     </header>
 
@@ -1214,11 +1254,121 @@
                 res_lv1_title: "Extraviado Digital",
                 res_lv1_desc: "¿Estás solo en la peligrosa jungla?<br>¡El conocimiento de supervivencia es urgente!",
                 res_lv1_toolkit: "Lv.1 Kit de Supervivencia"
+            },
+            af: {
+                // Link Data (Afrikaans - linking to English for now)
+                link_tk1: "https://docs.google.com/document/d/1feLm0awxVFzE3NZtJk8tfAfkF_-5lj4TsYDVB8GrR2Q/edit?usp=sharing",
+                link_tk2: "https://docs.google.com/document/d/1PmiMVFr3x8biYGdPuqmhlR-UOPc4NnXDmVkFCy0pH1g/edit?usp=sharing",
+                link_tk3: "https://docs.google.com/document/d/1J3PC4-QIea6I9oIUyC6J53Ip1sxAe3NBxFH__4SIREc/edit?usp=sharing",
+                link_tk4: "https://docs.google.com/document/d/17BR0HkAEQLQl8aEUpoUEkjycUMVlFtb9pwUCvrSUosg/edit?usp=sharing",
+
+                menu_test: "Selfdiagnose",
+                menu_toolkit: "Gereedskapstel",
+                menu_pledge: "Onderneem",
+                hero_title: "Geverifieerde Waarheid & Veilige Tegnologie,<br>Saam Open Ons die Regte KI-era.",
+                hero_desc: "Projek F.A.K.E.: 'n KI-geletterdheidsinisiatief vir 'n Veiliger Digitale Kampus.",
+                hero_btn: "Begin My KI-etiek Selfdiagnose",
+
+                stats_title: "Realiteit in Data",
+                stats_subtitle: "Opname van 118 universiteitstudente in Nov 2025. (Tydperk: 11.01~11.14)",
+                stat_risk_label: "Risiko Blootstelling",
+                stat_risk_main: "Weeklikse Getuie",
+                stat_risk_desc: "2 uit 3 studente sien weekliks vals inligting. Die skade is nie meer iemand anders se probleem nie.",
+                stat_void_label: "Veiligheidsnet Bewustheid",
+                stat_void_main: "\"Weet Nie Waar<br>om te Rapporteer nie\"",
+                stat_void_desc: "Die stelsel bestaan, maar dit is ontkoppel van ons daaglikse lewens. Ons is almal in 'n 'blinde kol'.",
+                stat_witness_label: "Direkte Getuie",
+                stat_witness_desc: "35.6% het onetiese dade soos fopnuus of deepfakes direk aanskou. Dit is nader as wat jy dink.",
+                stat_light_label: "Ligte Gebruiker Risiko",
+                stat_light_title: "⚠️ Geen Veilige Sone",
+                stat_light_desc: "Selfs 'Ligte Gebruikers' (<2h/dag) is nie veilig nie—38% het skadelike inhoud gesien. Kort gebruik waarborg nie veiligheid nie.",
+                btn_full_report: "📊 Sien Volledige Opnameverslag",
+
+                toolkit_title: "F.A.K.E. Gereedskap-inventaris",
+                toolkit_subtitle: "Rus jouself toe met die regte gereedskap om die digitale wêreld veilig te navigeer!",
+                tk1_title: "Lv.1 Oorlewingskit",
+                tk1_desc: "Noodsaaklike oorlewingskit om in die gevaarlike KI-oerwoud te oorleef.",
+                tk1_item1: "Basiese Terminologie PDF",
+                tk1_item2: "Noodkontaklys",
+                tk2_title: "Lv.2 Junior Balju-kit",
+                tk2_desc: "Verdedigingstel om jou privaatheid en dié van jou kennisse te beskerm.",
+                tk2_item1: "SNS Privaatheidsgids",
+                tk2_item2: "Watermerk Generator Skakel",
+                tk2_item3: "Vee KI-kletsgeskiedenis Permanent Uit",
+                tk3_title: "Lv.3 Senior Balju-kit",
+                tk3_desc: "Deskundige toerusting om leuens deur te steek en die waarheid te verifieer.",
+                tk3_item1: "Deepfake Opsporing KI-gereedskap",
+                tk3_item2: "Feitekontrole Kontrolelys",
+                tk3_item3: "Verifikasiegids",
+                tk4_title: "Lv.4 Kampus Ambassadeur-kit",
+                tk4_desc: "Aktiwiteitspakket vir leiers wat die kampuskultuur verander.",
+                tk4_item1: "10-min Opvoedkundige PPT vir Vriende",
+                tk4_item2: "Amptelike Ambassadeur Kenteken",
+                btn_download: "Aflaai",
+
+                pledge_title: "Staan Saam Met Ons",
+                pledge_desc: "\"Ek is 'n digitale burger wat optree: gebruik KI verantwoordelik, bou sterker gemeenskappe, en staan saam met slagoffers van digitale misdaad.\"",
+                pledge_btn_sign: "Teken die Onderneming",
+                pledge_btn_id: "Kry Jou F.A.K.E. ID",
+
+                // --- Report Modal (Static) ---
+                report_modal_title: "Data Gedetailleerde Analise Verslag",
+                report_modal_instr: "Kies 'n onderwerp om te verken.",
+                report_insight_label: "💡 Analise Insig:",
+                opt_tools: "🛠️ KI-gereedskap Gebruiksverhouding",
+                opt_purpose: "🤖 Doel van KI-gebruik",
+                opt_unethical: "🚫 Persepsie van Onetiese Dade",
+                opt_responsibility: "⚖️ Persepsie van Verantwoordelikheid",
+                opt_deepfake: "👮 Ooreenkoms oor Deepfake Straf",
+                opt_frequency: "👀 Frekwensie van Vals Inligting Getuie",
+                opt_reporting: "📢 Bewustheid van Rapporteringskanale",
+
+                // --- Test Modal ---
+                test_header: "My KI-etiek Telling (Self-Check)",
+                q1_title: "V1. Hoe gebruik jy KI-antwoorde vir opdragte?",
+                q1_opt1: "🔍 Feitekontrole is 'n moet! Verifieer met betroubare bronne.",
+                q1_opt2: "🤔 As dit oukei lyk, gebruik ek dit net.",
+                q1_opt3: "⚡ Kopieer & Plak in 1 sekonde!",
+                q2_title: "V2. As 'n vriend se deepfake-foto in 'n groepklets verskyn?",
+                q2_opt1: "🚨 Rapporteer onmiddellik en vra om te stop met deel.",
+                q2_opt2: "🤐 Dit voel verkeerd, maar ek verlaat net die klets stilweg.",
+                q2_opt3: "🤣 Ek deel dit in ander kletse en sê \"Dit lyk eg\".",
+                q3_title: "V3. Ken jy die amptelike skoolrapporteringsentrum vir KI-misbruik?",
+                q3_opt1: "📞 Ek ken die presiese departement en kontaknommer.",
+                q3_opt2: "🏫 Menseregte Sentrum...? Miskien iewers daar?",
+                q3_opt3: "🤷‍♂️ Het so iets bestaan?",
+                q4_title: "V4. Merk jy KI-gegenereerde inhoud wanneer jy op SNS plaas?",
+                q4_opt1: "🏷️ Ek voeg altyd die #KI_Gegenereer merker by.",
+                q4_opt2: "🎨 Ek doen nie as ek wil voorgee ek het dit geteken nie.",
+                q4_opt3: "❌ Ek gee glad nie om nie.",
+                q5_title: "V5. Het jy geweet KI-gegenereerde beelde word nie deur kopiereg beskerm nie?",
+                q5_opt1: "🙆‍♂️ Ja, ek het dit geweet.",
+                q5_opt2: "🙅‍♂️ Nee, ek het nie geweet nie.",
+
+                res_rec_label: "AANBEVOLE OPLOSSING",
+                btn_get_solution: "Kry Pasgemaakte Oplossing",
+                btn_retry: "Probeer Toets Weer",
+
+                res_lv4_title: "Kampus Ambassadeur",
+                res_lv4_desc: "Sjoe! Jy is reeds 'n gereedgemaakte leier!<br>Lei nou jou vriende op die regte pad.",
+                res_lv4_toolkit: "Lv.4 Kampus Ambassadeur-kit",
+                
+                res_lv3_title: "Senior Balju",
+                res_lv3_desc: "Jy weet hoe om inligting aktief te verifieer!<br>Sal ons meer professionele gereedskap probeer?",
+                res_lv3_toolkit: "Lv.3 Senior Balju-kit",
+
+                res_lv2_title: "Junior Balju",
+                res_lv2_desc: "Jy is gereed in jou hart, maar kort die toerusting?<br>Leer eers hoe om jouself te beskerm!",
+                res_lv2_toolkit: "Lv.2 Junior Balju-kit",
+
+                res_lv1_title: "Digitale Verdwaalde",
+                res_lv1_desc: "Is jy alleen in die gevaarlike oerwoud?<br>Oorlewingskennis is dringend!",
+                res_lv1_toolkit: "Lv.1 Oorlewingskit"
             }
         };
 
         let currentLang = 'ko';
-        const langOrder = ['ko', 'en', 'cn', 'jp', 'es'];
+        const langOrder = ['ko', 'en', 'cn', 'jp', 'es', 'af'];
 
         function setLanguage(lang) {
             currentLang = lang;
@@ -1352,6 +1502,11 @@
                     labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn', 'Copilot', 'Claude', 'Deepseek', 'Otros'],
                     label: 'Tasa de Uso (%)',
                     desc: "💡 Perspectiva del Análisis:<br><strong>ChatGPT (96.6%)</strong> es abrumadoramente dominante. Esto muestra una polarización extrema en el uso de herramientas. Existe el riesgo de que el sesgo de un modelo de IA específico pueda reflejarse en el pensamiento de los estudiantes."
+                },
+                af: {
+                    labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn', 'Copilot', 'Claude', 'Deepseek', 'Ander'],
+                    label: 'Gebruiksverhouding (%)',
+                    desc: "💡 Analise Insig:<br><strong>ChatGPT (96.6%)</strong> is oorweldigend dominant. Dit toon uiterste polarisasie in gereedskapgebruik. Daar is 'n risiko dat die vooroordeel van 'n spesifieke KI-model in studente se denke weerspieël kan word."
                 }
             },
             'purpose': {
@@ -1383,6 +1538,11 @@
                     labels: ['Búsqueda de Info', 'Tarea/Informe', 'Generación de Ideas', 'Edición Foto/Video', 'Traducción', 'Codificación'],
                     label: 'Tasa de Respuesta (%)',
                     desc: "💡 Perspectiva del Análisis:<br>La IA se ha convertido en una herramienta académica central para la <strong>'recopilación de datos' y las 'tareas'</strong>, no solo por diversión. La educación en ética de la IA es ahora un requisito para el logro académico, no una opción."
+                },
+                af: {
+                    labels: ['Inligting Soek', 'Opdrag/Verslag', 'Idee Generasie', 'Foto/Video Redigering', 'Vertaling', 'Kodering'],
+                    label: 'Reaksieverhouding (%)',
+                    desc: "💡 Analise Insig:<br>KI het 'n kern akademiese hulpmiddel geword vir <strong>'data-insameling' en 'opdragte'</strong>, nie net vir die pret nie. KI-etiekopvoeding is nou 'n vereiste vir akademiese prestasie, nie 'n opsie nie."
                 }
             },
             'unethical': {
@@ -1414,6 +1574,11 @@
                     labels: ['Consumo de Deepfake por Diversión', 'Difusión de Info Falsa', 'Plagio', 'Creación de Deepfake', 'Generación Completa de Tareas'],
                     label: 'Percepción No Ética (%)',
                     desc: "💡 Perspectiva del Análisis:<br>Los estudiantes identificaron el <strong>'consumo de deepfakes por diversión'</strong> como el problema más grave. Hay una creciente conciencia de que mirar y disfrutar también es un claro acto de daño."
+                },
+                af: {
+                    labels: ['Verbruik van Deepfake vir Pret', 'Verspreiding van Vals Inligting', 'Plagiaat', 'Skep van Deepfake', 'Volledige Huiswerk Generasie'],
+                    label: 'Onetiese Persepsie (%)',
+                    desc: "💡 Analise Insig:<br>Studente het <strong>'verbruik van deepfakes vir pret'</strong> as die ernstigste kwessie geïdentifiseer. Daar is 'n groeiende bewustheid dat om te kyk en dit te geniet ook 'n duidelike daad van skade is."
                 }
             },
             'responsibility': {
@@ -1445,6 +1610,11 @@
                     labels: ['Creador Inicial', 'Compartidor Acrítico', 'Plataforma/Desarrollador', 'Sede Universitaria'],
                     label: 'Responsabilidad (%)',
                     desc: "💡 Perspectiva del Análisis:<br>La responsabilidad recae fuertemente en los <strong>'compartidores acríticos (29.1%)'</strong> así como en los creadores (46.1%). La excusa \"solo lo reenvié\" ya no es válida."
+                },
+                af: {
+                    labels: ['Aanvanklike Skepper', 'Onkritiese Deler', 'Platform/Ontwikkelaar', 'Universiteit HK'],
+                    label: 'Verantwoordelikheid (%)',
+                    desc: "💡 Analise Insig:<br>Verantwoordelikheid word swaar geplaas op <strong>'onkritiese delers (29.1%)'</strong> sowel as skeppers (46.1%). Die verskoning \"ek het dit net aangestuur\" is nie meer geldig nie."
                 }
             },
             'deepfake': {
@@ -1476,6 +1646,11 @@
                     labels: ['Acuerdo con Castigo', 'Neutral', 'Desacuerdo'],
                     label: 'Ratio (%)',
                     desc: "💡 Perspectiva del Análisis:<br>Más de 8 de cada 10 estudiantes dijeron que <strong>'La creación de deepfakes debe ser castigada incluso si es una broma.'</strong> Los estándares éticos de los estudiantes ya son mucho más estrictos que los legales."
+                },
+                af: {
+                    labels: ['Stem Saam met Straf', 'Neutraal', 'Stem Nie Saam Nie'],
+                    label: 'Verhouding (%)',
+                    desc: "💡 Analise Insig:<br>Meer as 8 uit 10 studente het gesê <strong>'Deepfake-skepping moet gestraf word selfs al is dit 'n grap.'</strong> Studente se etiese standaarde is reeds baie strenger as wetlike standaarde."
                 }
             },
             'frequency': {
@@ -1507,6 +1682,11 @@
                     labels: ['3+ Veces/Semana', '1-2 Veces/Semana', 'Casi Todos los Días', 'No Sé'],
                     label: 'Frecuencia de Testigos (%)',
                     desc: "💡 Perspectiva del Análisis:<br>Casi la mitad de los estudiantes encuentran información falsa 'al menos una vez a la semana', y el <strong>17.8% la ve 'casi todos los días'</strong>. Esto sugiere que el entorno digital ya está contaminado."
+                },
+                af: {
+                    labels: ['3+ Keer/Week', '1-2 Keer/Week', 'Amper Elke Dag', 'Weet Nie'],
+                    label: 'Getuie Frekwensie (%)',
+                    desc: "💡 Analise Insig:<br>Amper die helfte van studente kom valse inligting 'ten minste een keer per week' teë, en <strong>17.8% sien dit 'amper elke dag'</strong>. Dit dui daarop dat die digitale omgewing reeds besoedel is."
                 }
             },
             'reporting': {
@@ -1538,6 +1718,11 @@
                     labels: ['No Sé Nada', 'He Oído Hablar', 'Lo Sé Exactamente'],
                     label: 'Conciencia (%)',
                     desc: "💡 Perspectiva del Análisis:<br><strong>Más del 66% no conoce los canales de denuncia en absoluto.</strong> Es un estado de 'Vacío Institucional' donde las víctimas no saben dónde pedir ayuda. Por eso el Proyecto F.A.K.E. es urgente."
+                },
+                af: {
+                    labels: ['Weet Glad Nie', 'Al Van Gehoor', 'Weet Presies'],
+                    label: 'Bewustheid (%)',
+                    desc: "💡 Analise Insig:<br><strong>Meer as 66% ken glad nie rapporteringskanale nie.</strong> Dit is 'n toestand van 'Institusionele Leemte' waar slagoffers nie weet waar om hulp te vra nie. Daarom is Projek F.A.K.E. dringend."
                 }
             }
         };
