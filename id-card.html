@@ -515,14 +515,46 @@
                         let dh = maxW / aspect;
                         if (dh > maxH) { dh = maxH; dw = maxH * aspect; }
 
-                        // Positioning at top right for Back Side
-                        // Calculate X to align to right with padding
-                        // We use a safe padding of 40 from right edge
-                        const logoX = width - dw - 40; 
-                        const logoY = 30; // Top padding
+                        // [MODIFIED] Place at Top Left (x=80, y=80) and Rotate -90 degrees
+                        ctx.save();
+                        // 1. Move origin to where we want the center of the logo to be
+                        // Ideally, we want the logo to be centered at roughly x=80, y=80 (Top Left)
+                        ctx.translate(80, 80); 
                         
-                        ctx.drawImage(logo, logoX, logoY, dw, dh);
+                        // 2. Rotate -90 degrees (Counter Clockwise)
+                        ctx.rotate(-Math.PI / 2);
+                        
+                        // 3. Scale down a bit to fit the header neatly (Header height ~140px)
+                        // If we use full 330px width, it will be massive. Let's scale it to fit neatly in header.
+                        // Assuming neat fit means max dimension around 100-120px.
+                        const neatScale = 120 / Math.max(dw, dh); 
+                        const finalW = dw * neatScale;
+                        const finalH = dh * neatScale;
+
+                        // 4. Draw centered at the new origin
+                        ctx.drawImage(logo, -finalW/2, -finalH/2, finalW, finalH);
+                        
+                        ctx.restore();
+
                     } catch(e) { console.warn("Front Logo draw on back failed"); }
+                }
+
+                // 3-1. Back Logo (Existing Right Side Logo)
+                if (backLogo) {
+                    try {
+                        const logo = await loadImage(backLogo);
+                        const logoW = 300; 
+                        const logoH = 100; 
+                        const aspect = logo.width / logo.height;
+                        let drawW = logoW;
+                        let drawH = logoW / aspect;
+                        if (drawH > logoH) {
+                            drawH = logoH;
+                            drawW = logoH * aspect;
+                        }
+                        // Adjust position to prevent overlapping if front logo is wide
+                        ctx.drawImage(logo, width - drawW - 40, 30, drawW, drawH);
+                    } catch(e) { console.warn("Back Logo draw failed"); }
                 }
 
                 // 4. Content Text
