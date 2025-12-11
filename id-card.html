@@ -521,7 +521,7 @@
                     ctx.lineTo(width - 60, currentY + 10);
                     ctx.stroke();
 
-                    currentY += 60;
+                    const textOffset = label === 'NAME' ? 100 : 60; currentY += textOffset;;
                     ctx.fillStyle = "#333333";
                     
                     let fontSize = maxFontSize;
@@ -566,7 +566,7 @@
                           }
                         ctx.fillText(value, startX, currentY);
                     }
-                    currentY += 120;
+                    const nextFieldOffset = label === 'NAME' ? 80 : 120;     currentY += nextFieldOffset;
                 };
 
                 // Draw fields
