@@ -360,6 +360,7 @@
             <button onclick="setLanguage('ko')" class="lang-btn active" data-btn-lang="ko">KO</button>
             <button onclick="setLanguage('en')" class="lang-btn" data-btn-lang="en">EN</button>
             <button onclick="setLanguage('zh')" class="lang-btn" data-btn-lang="zh">ZH</button>
+            <button onclick="setLanguage('ja')" class="lang-btn" data-btn-lang="ja">JA</button>
         </div>
     </header>
 
@@ -992,11 +993,121 @@
                 res_lv1_title: "数字迷途者",
                 res_lv1_desc: "您独自一人在危险的丛林中吗？<br>生存所需的必要知识刻不容缓！",
                 res_lv1_toolkit: "Lv.1 生存工具包"
+            },
+            ja: {
+                // Link Data (Japanese - linking to English for now)
+                link_tk1: "https://docs.google.com/document/d/1feLm0awxVFzE3NZtJk8tfAfkF_-5lj4TsYDVB8GrR2Q/edit?usp=sharing",
+                link_tk2: "https://docs.google.com/document/d/1PmiMVFr3x8biYGdPuqmhlR-UOPc4NnXDmVkFCy0pH1g/edit?usp=sharing",
+                link_tk3: "https://docs.google.com/document/d/1J3PC4-QIea6I9oIUyC6J53Ip1sxAe3NBxFH__4SIREc/edit?usp=sharing",
+                link_tk4: "https://docs.google.com/document/d/17BR0HkAEQLQl8aEUpoUEkjycUMVlFtb9pwUCvrSUosg/edit?usp=sharing",
+
+                menu_test: "診断する",
+                menu_toolkit: "ツールキット",
+                menu_pledge: "連帯する",
+                hero_title: "検証された真実と安全な技術、<br>私たちが共に開く正しいAI時代。",
+                hero_desc: "安全なデジタルキャンパスのための大学生AIリテラシープロジェクト F.A.K.E.、今始まります。",
+                hero_btn: "AI使用タイプを診断する",
+
+                stats_title: "データで見る現実",
+                stats_subtitle: "2025年11月、大学生118名の声を調査しました。(調査期間: 11.01~11.14)",
+                stat_risk_label: "リスク露出度",
+                stat_risk_main: "週1回以上目撃",
+                stat_risk_desc: "3人に2人は毎週虚偽情報を目撃しています。虚偽情報による被害はもはや他人事ではありません。",
+                stat_void_label: "安全網への認識",
+                stat_void_main: "\"通報先を<br>全く知りません\"",
+                stat_void_desc: "システムはありますが、日常とは繋がっていません。私たちは皆「死角」に置かれています。",
+                stat_witness_label: "直接目撃経験",
+                stat_witness_desc: "フェイクニュースやディープフェイクなどの非倫理的行為を直接目撃した経験も35.6%に上ります。思ったより身近にあります。",
+                stat_light_label: "ライトユーザーのリスク",
+                stat_light_title: "⚠️ 安全地帯はない",
+                stat_light_desc: "1日2時間未満の「ライトユーザー」でさえ、38%が有害コンテンツを目撃しました。使用時間が短いからといって安全ではありません。",
+                btn_full_report: "📊 調査結果の詳細を見る",
+
+                toolkit_title: "F.A.K.E. ツールキット倉庫",
+                toolkit_subtitle: "レベルに合った装備を整えて、デジタル世界を安全に航海しましょう！",
+                tk1_title: "Lv.1 サバイバルキット",
+                tk1_desc: "危険なAIジャングルで生き残るための必須生存キットです。",
+                tk1_item1: "わかりやすいAI用語集 PDF",
+                tk1_item2: "緊急時の連絡先リスト",
+                tk2_title: "Lv.2 保安官見習いキット",
+                tk2_desc: "自分と知人の情報を安全に守る防具セットです。",
+                tk2_item1: "SNS非公開設定ガイド",
+                tk2_item2: "ウォーターマーク生成リンク",
+                tk2_item3: "AI会話履歴の完全削除法",
+                tk3_title: "Lv.3 保安官深化キット",
+                tk3_desc: "虚偽情報を見抜いて検証する専門家の装備です。",
+                tk3_item1: "ディープフェイク検知AIまとめ",
+                tk3_item2: "ファクトチェックリスト",
+                tk3_item3: "真偽判別ガイド",
+                tk4_title: "Lv.4 キャンパスアンバサダーキット",
+                tk4_desc: "キャンパスの文化を変えるリーダーのための活動パッケージです。",
+                tk4_item1: "友人のための10分教育PPT",
+                tk4_item2: "公式アンバサダー認証バッジ",
+                btn_download: "ダウンロード",
+
+                pledge_title: "共に連帯してください",
+                pledge_desc: "\"私はAIを安全に使用し、キャンパスと共同体を守り、<br>デジタル犯罪の被害者と連帯する行動するデジタル市民です！\"",
+                pledge_btn_sign: "署名して参加する",
+                pledge_btn_id: "F.A.K.E. IDを発行する",
+
+                // --- Report Modal (Static) ---
+                report_modal_title: "データ詳細分析レポート",
+                report_modal_instr: "気になるトピックを選択してください。",
+                report_insight_label: "💡 分析インサイト:",
+                opt_tools: "🛠️ AIツール使用比率",
+                opt_purpose: "🤖 AI使用目的",
+                opt_unethical: "🚫 非倫理的行為への認識",
+                opt_responsibility: "⚖️ 責任の所在への認識",
+                opt_deepfake: "👮 ディープフェイク処罰への同意",
+                opt_frequency: "👀 虚偽情報の目撃頻度",
+                opt_reporting: "📢 通報チャンネルの認知度",
+
+                // --- Test Modal ---
+                test_header: "私のAI倫理スコア診断 (Self-Check)",
+                q1_title: "Q1. 課題をする時、AIの回答をどう活用しますか？",
+                q1_opt1: "🔍 ファクトチェックは必須！信頼できるソースでクロスチェックします。",
+                q1_opt2: "🤔 もっともらしければ、とりあえず使います。",
+                q1_opt3: "⚡ コピペで1秒カット！",
+                q2_title: "Q2. 友人のディープフェイク写真がグループチャットに上がってきたら？",
+                q2_opt1: "🚨 即座に通報し、友人たちに共有中止を要請します。",
+                q2_opt2: "🤐 モヤモヤしますが、静かにチャットを抜けます。",
+                q2_opt3: "🤣 「これ本物みたい」と言って他の部屋に共有します。",
+                q3_title: "Q3. 学内の公式なAI悪用通報先を知っていますか？",
+                q3_opt1: "📞 正確な部署名と連絡先を知っています。",
+                q3_opt2: "🏫 人権センター...？どこかにあったような...？",
+                q3_opt3: "🤷‍♂️ そんなものありましたか？",
+                q4_title: "Q4. AI生成物をSNSに投稿する際、表記をしますか？",
+                q4_opt1: "🏷️ #AI生成 タグを必ず付けます。",
+                q4_opt2: "🎨 自分が描いたふりをしたい時は付けません。",
+                q4_opt3: "❌ 全く気にしません。",
+                q5_title: "Q5. AIが作った画像は著作権法上保護されないという事実を知っていましたか？",
+                q5_opt1: "🙆‍♂️ はい、知っていました。",
+                q5_opt2: "🙅‍♂️ いいえ、知りませんでした。",
+
+                res_rec_label: "おすすめソリューション",
+                btn_get_solution: "カスタマイズされたソリューションを受け取る",
+                btn_retry: "テストをやり直す",
+
+                res_lv4_title: "キャンパスアンバサダー",
+                res_lv4_desc: "わあ！あなたはすでに準備万端のリーダーです！<br>これからは友人を正しい道へ導いてください。",
+                res_lv4_toolkit: "Lv.4 キャンパスアンバサダーキット",
+
+                res_lv3_title: "キャンパス保安官",
+                res_lv3_desc: "能動的に情報を検証することができますね！<br>もう少し専門的なツールを使ってみませんか？",
+                res_lv3_toolkit: "Lv.3 保安官深化キット",
+
+                res_lv2_title: "保安官見習い",
+                res_lv2_desc: "心構えはできていますが、装備が不足していますか？<br>自分と知人を守る方法から学びましょう！",
+                res_lv2_toolkit: "Lv.2 保安官見習いキット",
+
+                res_lv1_title: "デジタル迷子",
+                res_lv1_desc: "危険なジャングルの中に一人でいますか？<br>生存のための必須知識が急務です！",
+                res_lv1_toolkit: "Lv.1 サバイバルキット"
             }
         };
 
         let currentLang = 'ko';
-        const langOrder = ['ko', 'en', 'zh'];
+        const langOrder = ['ko', 'en', 'zh', 'ja'];
 
         function setLanguage(lang) {
             currentLang = lang;
@@ -1120,6 +1231,11 @@
                     labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn', 'Copilot', 'Claude', 'Deepseek', '其他'],
                     label: '使用率 (%)',
                     desc: "💡 分析洞察:<br><strong>ChatGPT (96.6%)</strong> 占据压倒性第一。这表明大学生的AI使用极度偏向特定工具。存在特定AI模型的偏差可能直接反映在学生思维中的担忧。"
+                },
+                ja: {
+                    labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn', 'Copilot', 'Claude', 'Deepseek', 'その他'],
+                    label: '使用率 (%)',
+                    desc: "💡 分析インサイト:<br><strong>ChatGPT(96.6%)</strong>が圧倒的1位です。大学生のAI活用が特定のツールに極端に偏っていることを示しています。特定AIモデルのバイアスが学生の思考にそのまま反映される懸念があります。"
                 }
             },
             'purpose': {
@@ -1141,6 +1257,11 @@
                     labels: ['资料搜索', '作业/报告撰写', '创意生成', '照片/视频编辑', '外语翻译', '编程'],
                     label: '应答率 (%)',
                     desc: "💡 分析洞察:<br>不仅仅是单纯的兴趣，已成为<strong>‘资料收集’和‘作业撰写’</strong>等学业的核心工具。现在AI伦理教育不是选择，而是为了学业成就的必要条件。"
+                },
+                ja: {
+                    labels: ['資料検索', '課題/レポート作成', 'アイデア生成', '写真/動画編集', '外国語翻訳', 'コーディング'],
+                    label: '回答率 (%)',
+                    desc: "💡 分析インサイト:<br>単純な興味ではなく<strong>「資料収集」と「課題作成」</strong>など学業の核心ツールとして定着しました。もはやAI倫理教育は選択ではなく、学業成就のための必須要件です。"
                 }
             },
             'unethical': {
@@ -1162,6 +1283,11 @@
                     labels: ['娱乐性消费Deepfake', '散布虚假事实', '剽窃', '制作Deepfake', '作业全生成'],
                     label: '不道德行为认知 (%)',
                     desc: "💡 分析洞察:<br>学生们将<strong>‘以玩笑方式消费Deepfake的行为’</strong>选为最严重的问题。这表明不仅是直接制作，观看和享受也被认为是明显的加害行为。"
+                },
+                ja: {
+                    labels: ['ディープフェイクの悪ふざけ消費', '虚偽事実の流布', '盗作', 'ディープフェイク制作', '課題丸投げ生成'],
+                    label: '非倫理的行為への認識 (%)',
+                    desc: "💡 分析インサイト:<br>学生たちは<strong>「ディープフェイクを悪ふざけで消費する行為」</strong>を最も深刻な問題に挙げました。直接作ることだけでなく、見て楽しむことも明白な加害だという認識が定着しています。"
                 }
             },
             'responsibility': {
@@ -1183,6 +1309,11 @@
                     labels: ['最初生成者', '无批判共享者', '平台/开发商', '大学本部'],
                     label: '责任认知 (%)',
                     desc: "💡 分析洞察:<br>不仅是最初生成者(46.1%)，对<strong>‘无批判共享者(29.1%)’</strong>也问责重大。“只是搬运而已”的辩解不再有效。"
+                },
+                ja: {
+                    labels: ['最初の生成者', '無批判な共有者', 'プラットフォーム/開発会社', '大学本部'],
+                    label: '責任認識 (%)',
+                    desc: "💡 分析インサイト:<br>最初の生成者(46.1%)だけでなく<strong>「無批判な共有者(29.1%)」</strong>にも大きな責任を問うています。「運んだだけ」という言い訳はもはや通用しません。"
                 }
             },
             'deepfake': {
@@ -1204,6 +1335,11 @@
                     labels: ['赞成处罚', '普通/中立', '反对'],
                     label: '比率 (%)',
                     desc: "💡 分析洞察:<br>10人中有8人以上回答<strong>‘即使是玩笑，制作Deepfake也应受到处罚’</strong>。大学生的伦理标准已经比法律标准严格得多。"
+                },
+                ja: {
+                    labels: ['処罰に賛成', '普通/中立', '反対'],
+                    label: '比率 (%)',
+                    desc: "💡 分析インサイト:<br>10人中8人以上が<strong>「悪ふざけでもディープフェイク制作は処罰すべきだ」</strong>と答えました。大学生の倫理的基準はすでに法的基準よりはるかに厳格です。"
                 }
             },
             'frequency': {
@@ -1225,6 +1361,11 @@
                     labels: ['每周3次以上', '每周1-2次', '几乎每天', '不太清楚'],
                     label: '目击频率 (%)',
                     desc: "💡 分析洞察:<br>接近一半的学生‘每周一次以上’遇到虚假信息，特别是<strong>‘几乎每天’看到的回答也达到17.8%</strong>。这暗示数字环境已经被污染。"
+                },
+                ja: {
+                    labels: ['週3回以上', '週1-2回', 'ほぼ毎日', 'よく分からない'],
+                    label: '目撃頻度 (%)',
+                    desc: "💡 分析インサイト:<br>半数近くの学生が「一週間に一度以上」虚偽情報に遭遇しており、特に<strong>「ほぼ毎日」見るという回答も17.8%</strong>に達します。デジタル環境がすでに汚染されていることを示唆しています。"
                 }
             },
             'reporting': {
@@ -1246,6 +1387,11 @@
                     labels: ['完全不知道', '听说过', '确切知道'],
                     label: '认知度 (%)',
                     desc: "💡 分析洞察:<br><strong>66%以上完全不知道举报渠道。</strong>这是即使受到伤害也不知道向哪里求助的‘制度性空白’状态。这就是 F.A.K.E. 项目迫在眉睫的原因。"
+                },
+                ja: {
+                    labels: ['全く知らない', '聞いたことはある', '正確に知っている'],
+                    label: '認知度 (%)',
+                    desc: "💡 分析インサイト:<br><strong>66%以上が通報チャンネルを全く知りません。</strong>被害に遭ってもどこに助けを求めるべきか途方に暮れる「制度的空白」状態です。F.A.K.E.プロジェクトが急がれる理由です。"
                 }
             }
         };
