@@ -542,9 +542,9 @@
                 <h3 class="toolkit-title" data-lang="tk2_title">Lv.2 보안관 꿈나무 툴킷</h3>
                 <p class="toolkit-desc" data-lang="tk2_desc">나와 지인의 정보를 안전하게 보호하는 방어구 세트예요.</p>
                 <ul class="toolkit-list">
-                    <li data-lang="tk2_item1">SNS 비공개 설정 가이드</li>
-                    <li data-lang="tk2_item2">워터마크 생성기 링크</li>
-                    <li data-lang="tk2_item3">AI 대화 기록 완전 삭제법</li>
+                    <li data-lang="tk2_item1">AI 비공개 설정 가이드</li>
+                    <li data-lang="tk2_item2">AI 대화 기록 완전 삭제법</li>
+                    <li data-lang="tk2_item3">기초프롬프트 작성법</li>
                 </ul>
                 <a id="btn-tk2" href="#" target="_blank" class="btn-download">
                     <i class="fas fa-download"></i> <span data-lang="btn_download">다운로드</span>
@@ -572,9 +572,9 @@
                 <h3 class="toolkit-title" data-lang="tk4_title">Lv.4 캠퍼스 앰버서더 툴킷</h3>
                 <p class="toolkit-desc" data-lang="tk4_desc">AI를 활용해 캠퍼스를 지켜나가는 리더를 위한 활동 패키지예요.</p>
                 <ul class="toolkit-list">
-                    <li data-lang="tk4_item1">완벽한 프롬프트 작성의 5대 원칙</li>
-                    <li data-lang="tk4_item2">친구들을 위한 토론 주제 아이디어</li>
-                    <li data-lang="tk4_item3">앰버서더 공식 인증 배지</li>
+                    <li data-lang="tk4_item1">완벽한 프롬프트 작성법</li>
+                    <li data-lang="tk4_item2">캠퍼스 내 AI 사용 프롬프트 가이드</li>
+                    <li data-lang="tk4_item3">피해자 지원 및 연대 가이드</li>
                 </ul>
                 <a id="btn-tk4" href="#" target="_blank" class="btn-download">
                     <i class="fas fa-download"></i> <span data-lang="btn_download">다운로드</span>
@@ -703,6 +703,13 @@
     </div>
 
     <script>
+        // --- Global Chart Instances ---
+        let staticChart1 = null;
+        let staticChart2 = null;
+        let staticChart3 = null;
+        let dynamicChart = null;
+        let currentLang = 'ko';
+
         // --- Language Translation Logic ---
         const translations = {
             ko: {
@@ -728,11 +735,11 @@
                 tk1_title: "Lv.1 서바이벌 툴킷", tk1_desc: "위험한 AI 정글에서 살아남기 위한 필수 생존 키트예요.",
                 tk1_item1: "쉬운 말로 풀어쓴 AI 용어 사전", tk1_item2: "긴급 상황 시 연락할 비상 연락망",
                 tk2_title: "Lv.2 보안관 꿈나무 툴킷", tk2_desc: "나와 지인의 정보를 안전하게 보호하는 방어구 세트예요.",
-                tk2_item1: "SNS 비공개 설정 가이드", tk2_item2: "워터마크 생성기 링크", tk2_item3: "AI 대화 기록 완전 삭제법",
+                tk2_item1: "AI 비공개 설정 가이드", tk2_item2: "AI 대화 기록 완전 삭제법", tk2_item3: "기초프롬프트 작성법",
                 tk3_title: "Lv.3 보안관 심화 툴킷", tk3_desc: "거짓 정보를 꿰뚫어보고 검증하는 전문가 장비예요.",
                 tk3_item1: "AI로 출처 확인하는 법", tk3_item2: "학술 자료 기반 정보 검증 팁", tk3_item3: "텍스트/이미지 진위 판별하기",
                 tk4_title: "Lv.4 캠퍼스 앰버서더 툴킷", tk4_desc: "AI를 활용해 캠퍼스를 지켜나가는 리더를 위한 패키지예요.",
-                tk4_item1: "완벽한 프롬프트 작성의 5대 원칙", tk4_item2: "친구들을 위한 토론 주제 아이디어", tk4_item3: "앰버서더 공식 인증 배지",
+                tk4_item1: "완벽한 프롬프트 작성법", tk4_item2: "캠퍼스 내 AI 사용 프롬프트 가이드", tk4_item3: "피해자 지원 및 연대 가이드",
                 btn_download: "다운로드",
                 pledge_title: "함께 연대해 주세요",
                 pledge_desc: "\"나는 AI를 안전하게 사용하고, 캠퍼스와 공동체를 가꾸며,<br>디지털 범죄 피해자와 연대하는 행동하는 디지털 시민입니다!\"",
@@ -753,13 +760,15 @@
                 res_lv2_title: "보안관 꿈나무", res_lv2_desc: "마음은 준비됐는데, 장비가 부족하군요?<br>나와 지인을 지키는 법부터 배워요!", res_lv2_toolkit: "Lv.2 보안관 꿈나무 툴킷",
                 res_lv1_title: "디지털 미아", res_lv1_desc: "위험한 정글 속에 혼자 계시나요?<br>생존을 위한 필수 지식이 시급해요!", res_lv1_toolkit: "Lv.1 서바이벌 툴킷",
                 
-                chart_desc_tools: "Fact: 전체 응답자의 96.6%(114명)가 ChatGPT를 사용한다고 답했고, Gemini 44.9%, Perplexity 12.7%, wrtn 8.5%, Copilot 6.8%, Claude 5.1% 순으로 나타났습니다. Insight: 실제 학내 AI 생태계는 '여러 모델'이 공존하는 구조라기보다 ChatGPT 중심의 단일 플랫폼에 가깝습니다. 교육·가이드라인 설계 시 ChatGPT의 강점과 한계(할루시네이션, 인용 방식 등)를 기준축으로 삼는 것이 효율적입니다. 동시에 다양한 모델을 병렬로 활용하는 '도구 포트폴리오' 역량은 아직 충분히 형성되지 않았다는 점도 드러납니다.",
-                chart_desc_purpose: "Fact: (복수 응답 기준) '과제 및 보고서 작성'이 89.8%(106명)로 1위, '외국어 번역' 66.1%, '아이디어 생성 및 브레인스토밍' 55.1%로 나타났습니다. Insight: AI 활용의 1차적 동기는 '학업 성취'입니다. 특히 과제 작성 의존도가 90%에 육박한다는 것은, 향후 표절, AI 대필, 출처 없는 인용 등 학사 윤리 문제가 학내 핵심 이슈가 될 것임을 예고합니다. 동시에, AI가 학습 효율을 높이는 강력한 도구이기도 하다는 점에서, '금지'가 아니라 '투명한 사용과 책임'을 어떻게 설계할지가 관건입니다.",
-                chart_desc_unethical: "Fact: 가장 심각한 비윤리적 행위로는 '동의 없는 딥페이크 성적 콘텐츠 제작'이 91.5%, '딥페이크를 장난으로 소비·공유'가 87.3%로 압도적이었습니다. 반면 '출처 없는 AI 정보 사용(표절)'은 65.3%, 'AI가 작성한 과제물 제출'은 76.3%로 상대적으로 낮았습니다. Insight: 학생들은 '학문적 부정행위'보다 타인의 인격권·성적 자기결정권을 침해하는 행위를 훨씬 더 중대하게 인식하고 있습니다. 규범 감각의 중심이 '성적 피해'와 '인권 침해'에 강하게 맞춰져 있다는 뜻이며, AI 윤리 교육도 추상적인 표절 담론보다 디지털 성범죄, 인격권 침해 사례를 중심축으로 설계할 필요가 있습니다.",
-                chart_desc_responsibility: "Fact: AI 오용의 책임 주체로 '악용한 최초 생성자'를 선택한 비율이 89.8%로 압도적이었고, '유포·공유한 이용자'는 44.7%, '플랫폼 개발사'는 10.2%에 그쳤습니다. Insight: 응답자들은 구조나 시스템보다는 '개인의 도덕적 해이'를 문제의 핵심으로 보고 있습니다. 이는 규제·정책 논의가 플랫폼 책임, 알고리즘 투명성에만 머물 경우, 실제 학내 구성원의 인식과 괴리가 발생할 수 있음을 의미합니다. 학생들의 체감에 맞추려면 개인 책임(징계, 교육)과 플랫폼 책임(기술적 차단, 신고 시스템)을 함께 설계하는 이중 프레임이 필요합니다.",
-                chart_desc_deepfake: "Fact: 'AI를 이용한 허위 정보 확산이 신뢰를 훼손한다'는 문항에 85.6%가 동의(그렇다+매우 그렇다)했고, '동의 없는 딥페이크 제작은 호기심이라도 처벌받아야 한다'는 문항에는 96.6%가 동의했습니다. Insight: 딥페이크와 허위 정보에 대한 윤리적 판단 기준은 매우 명확하며, 특히 딥페이크에 대해서는 사실상 '무관용 원칙'에 가까운 합의가 형성되어 있습니다. 이는 대학 차원에서 강력한 징계 규정과 신고·보호 프로토콜을 마련하더라도 학생들의 반발 가능성이 상대적으로 낮다는 것을 의미하며, 제도 정비의 정당성 근거로 활용될 수 있습니다.",
-                chart_desc_frequency: "Fact: 전체 응답자의 22.9%(27명)가 AI 관련 비윤리적이거나 부정적인 행위를 목격하거나 경험했다고 답했습니다. 추가 교차 분석에서는 '하루 6시간 이상' 사용하는 헤비 유저 그룹의 66.7%가 부적절 행위를 목격했다고 응답해, 사용 시간이 적은 집단보다 훨씬 높은 비율을 보였습니다. Insight: AI에 많이 노출될수록 딥페이크, 허위 정보, 비윤리적 활용을 마주칠 확률도 구조적으로 높아집니다. 단순히 '사용 시간을 줄이라'는 메시지가 아니라, 고빈도 사용자일수록 더 정교한 리터러시 교육과 피해·신고 절차 안내가 필요하다는 점을 보여 줍니다.",
-                chart_desc_reporting: "Fact: 대학 내 공식 신고 채널에 대해 '전혀 알지 못한다'는 응답이 66.1%(78명), '들어본 적 있다' 27.1%(32명), '알고 있다'는 응답은 6.8%(8명)에 그쳤습니다. 한편 딥페이크 처벌 동의율은 96.6%에 달했습니다. Insight: 학생들의 윤리 의식과 처벌 필요성에 대한 인식은 매우 높은데, 막상 문제가 발생했을 때 '어디로, 어떻게' 도움을 요청할지는 거의 공유되어 있지 않습니다. 개인의 도덕성과 분노는 충분하지만, 이를 제도로 연결하는 경로가 끊겨 있는 상태입니다. 현 시점에서 가장 시급한 개입 지점은 새로운 규범 선언이 아니라, 구체적인 신고 채널 신설·정비와 공격적인 홍보, 그리고 단계별 대응 프로토콜 구축입니다."
+                chart_desc_tools: "<b>[Fact]</b> 전체 응답자의 96.6%(114명)가 ChatGPT를 사용한다고 답했고, Gemini 44.9%, Perplexity 12.7%, wrtn 8.5%, Copilot 6.8%, Claude 5.1% 순으로 나타났습니다.<br><br><b>[Insight]</b> 실제 학내 AI 생태계는 '여러 모델'이 공존하는 구조라기보다 ChatGPT 중심의 단일 플랫폼에 가깝습니다. 교육·가이드라인 설계 시 ChatGPT의 강점과 한계(할루시네이션, 인용 방식 등)를 기준축으로 삼는 것이 효율적입니다. 동시에 다양한 모델을 병렬로 활용하는 '도구 포트폴리오' 역량은 아직 충분히 형성되지 않았다는 점도 드러납니다.",
+                chart_desc_purpose: "<b>[Fact]</b> (복수 응답 기준) '과제 및 보고서 작성'이 89.8%(106명)로 1위, '외국어 번역' 66.1%, '아이디어 생성 및 브레인스토밍' 55.1%로 나타났습니다.<br><br><b>[Insight]</b> AI 활용의 1차적 동기는 '학업 성취'입니다. 특히 과제 작성 의존도가 90%에 육박한다는 것은, 향후 표절, AI 대필, 출처 없는 인용 등 학사 윤리 문제가 학내 핵심 이슈가 될 것임을 예고합니다. 동시에, AI가 학습 효율을 높이는 강력한 도구이기도 하다는 점에서, '금지'가 아니라 '투명한 사용과 책임'을 어떻게 설계할지가 관건입니다.",
+                chart_desc_unethical: "<b>[Fact]</b> 가장 심각한 비윤리적 행위로는 '동의 없는 딥페이크 성적 콘텐츠 제작'이 91.5%, '딥페이크를 장난으로 소비·공유'가 87.3%로 압도적이었습니다. 반면 '출처 없는 AI 정보 사용(표절)'은 65.3%, 'AI가 작성한 과제물 제출'은 76.3%로 상대적으로 낮았습니다.<br><br><b>[Insight]</b> 학생들은 '학문적 부정행위'보다 타인의 인격권·성적 자기결정권을 침해하는 행위를 훨씬 더 중대하게 인식하고 있습니다. 규범 감각의 중심이 '성적 피해'와 '인권 침해'에 강하게 맞춰져 있다는 뜻이며, AI 윤리 교육도 추상적인 표절 담론보다 디지털 성범죄, 인격권 침해 사례를 중심축으로 설계할 필요가 있습니다.",
+                chart_desc_responsibility: "<b>[Fact]</b> AI 오용의 책임 주체로 '악용한 최초 생성자'를 선택한 비율이 89.8%로 압도적이었고, '유포·공유한 이용자'는 44.7%, '플랫폼 개발사'는 10.2%에 그쳤습니다.<br><br><b>[Insight]</b> 응답자들은 구조나 시스템보다는 '개인의 도덕적 해이'를 문제의 핵심으로 보고 있습니다. 이는 규제·정책 논의가 플랫폼 책임, 알고리즘 투명성에만 머물 경우, 실제 학내 구성원의 인식과 괴리가 발생할 수 있음을 의미합니다. 학생들의 체감에 맞추려면 개인 책임(징계, 교육)과 플랫폼 책임(기술적 차단, 신고 시스템)을 함께 설계하는 이중 프레임이 필요합니다.",
+                chart_desc_deepfake: "<b>[Fact]</b> 'AI를 이용한 허위 정보 확산이 신뢰를 훼손한다'는 문항에 85.6%가 동의(그렇다+매우 그렇다)했고, '동의 없는 딥페이크 제작은 호기심이라도 처벌받아야 한다'는 문항에는 96.6%가 동의했습니다.<br><br><b>[Insight]</b> 딥페이크와 허위 정보에 대한 윤리적 판단 기준은 매우 명확하며, 특히 딥페이크에 대해서는 사실상 '무관용 원칙'에 가까운 합의가 형성되어 있습니다. 이는 대학 차원에서 강력한 징계 규정과 신고·보호 프로토콜을 마련하더라도 학생들의 반발 가능성이 상대적으로 낮다는 것을 의미하며, 제도 정비의 정당성 근거로 활용될 수 있습니다.",
+                chart_desc_frequency: "<b>[Fact]</b> 전체 응답자의 22.9%(27명)가 AI 관련 비윤리적이거나 부정적인 행위를 목격하거나 경험했다고 답했습니다. 추가 교차 분석에서는 '하루 6시간 이상' 사용하는 헤비 유저 그룹의 66.7%가 부적절 행위를 목격했다고 응답해, 사용 시간이 적은 집단보다 훨씬 높은 비율을 보였습니다.<br><br><b>[Insight]</b> AI에 많이 노출될수록 딥페이크, 허위 정보, 비윤리적 활용을 마주칠 확률도 구조적으로 높아집니다. 단순히 '사용 시간을 줄이라'는 메시지가 아니라, 고빈도 사용자일수록 더 정교한 리터러시 교육과 피해·신고 절차 안내가 필요하다는 점을 보여 줍니다.",
+                chart_desc_reporting: "<b>[Fact]</b> 대학 내 공식 신고 채널에 대해 '전혀 알지 못한다'는 응답이 66.1%(78명), '들어본 적 있다' 27.1%(32명), '알고 있다'는 응답은 6.8%(8명)에 그쳤습니다. 한편 딥페이크 처벌 동의율은 96.6%에 달했습니다.<br><br><b>[Insight]</b> 학생들의 윤리 의식과 처벌 필요성에 대한 인식은 매우 높은데, 막상 문제가 발생했을 때 '어디로, 어떻게' 도움을 요청할지는 거의 공유되어 있지 않습니다. 개인의 도덕성과 분노는 충분하지만, 이를 제도로 연결하는 경로가 끊겨 있는 상태입니다. 현 시점에서 가장 시급한 개입 지점은 새로운 규범 선언이 아니라, 구체적인 신고 채널 신설·정비와 공격적인 홍보, 그리고 단계별 대응 프로토콜 구축입니다.",
+                
+                s_label_witness: "목격함", s_label_safe: "안전함", s_label_none: "없음", s_label_creator: "제작자", s_label_platform: "플랫폼"
             },
             en: {
                 link_tk1: "https://docs.google.com/document/d/1feLm0awxVFzE3NZtJk8tfAfkF_-5lj4TsYDVB8GrR2Q/edit?usp=sharing",
@@ -778,9 +787,11 @@
                 btn_full_report: "📊 View Full Survey Report",
                 toolkit_title: "F.A.K.E. Toolkit Inventory", toolkit_subtitle: "Equip yourself to navigate the digital world safely!",
                 tk1_title: "Lv.1 Survival Toolkit", tk1_desc: "Essential kit to survive in the dangerous AI jungle.", tk1_item1: "Basic Terminology PDF", tk1_item2: "Emergency Contact List",
-                tk2_title: "Lv.2 Junior Sheriff Toolkit", tk2_desc: "Defense set to protect you and your friends' privacy.", tk2_item1: "SNS Privacy Guide", tk2_item2: "Watermark Generator", tk2_item3: "Delete AI Chat History",
+                tk2_title: "Lv.2 Junior Sheriff Toolkit", tk2_desc: "Defense set to protect you and your friends' privacy.", 
+                tk2_item1: "AI Privacy Settings Guide", tk2_item2: "How to Delete AI Chat History", tk2_item3: "Basic Prompt Writing Guide",
                 tk3_title: "Lv.3 Senior Sheriff Toolkit", tk3_desc: "Expert gear to verify truth and pierce through lies.", tk3_item1: "Deepfake Detection Tools", tk3_item2: "Fact-Check Checklist", tk3_item3: "Verification Guide",
-                tk4_title: "Lv.4 Campus Ambassador Toolkit", tk4_desc: "Package for leaders changing campus culture.", tk4_item1: "5 Rules for Perfect Prompts", tk4_item2: "Debate Topics for Friends", tk4_item3: "Official Ambassador Badge",
+                tk4_title: "Lv.4 Campus Ambassador Toolkit", tk4_desc: "Package for leaders changing campus culture.", 
+                tk4_item1: "Perfect Prompt Writing Method", tk4_item2: "Campus AI Usage Prompt Guide", tk4_item3: "Victim Support & Solidarity Guide",
                 btn_download: "Download",
                 pledge_title: "Stand With Us", pledge_desc: "\"I act responsibly with AI, build stronger communities,<br>and stand with digital crime victims!\"",
                 pledge_btn_sign: "Sign the Pledge", pledge_btn_id: "Get F.A.K.E. ID",
@@ -798,13 +809,15 @@
                 res_lv2_title: "Junior Sheriff", res_lv2_desc: "Ready at heart, but need gear? Protect yourself first!", res_lv2_toolkit: "Lv.2 Junior Sheriff Toolkit",
                 res_lv1_title: "Digital Stray", res_lv1_desc: "Lost in the jungle? Survival knowledge is urgent!", res_lv1_toolkit: "Lv.1 Survival Toolkit",
 
-                chart_desc_tools: "Fact: 96.6% of respondents (114 students) use ChatGPT, followed by Gemini (44.9%), Perplexity (12.7%), wrtn (8.5%), Copilot (6.8%), and Claude (5.1%). Insight: The campus AI ecosystem is effectively built around a single tool, ChatGPT. Any training or guidelines should therefore take ChatGPT's strengths and limits (hallucinations, citation issues, etc.) as the baseline, while also pushing students to build a more diverse 'tool portfolio' instead of relying on one model only.",
-                chart_desc_purpose: "Fact: (Multiple response) 89.8% (106 students) use AI for writing assignments and reports, 66.1% for translation, and 55.1% for idea generation and brainstorming. Insight: The primary driver of AI use is academic performance. With almost 90% relying on AI for writing, issues such as plagiarism, ghostwriting, and uncited AI-generated content are guaranteed to become central topics in academic integrity policy. AI is already embedded in how students study; the real question is whether they are taught to use it transparently and ethically, rather than in a purely instrumental way.",
-                chart_desc_unethical: "Fact: The most serious unethical behaviors identified were 'creating non-consensual deepfake sexual content' (91.5%) and 'consuming or sharing deepfakes as a joke' (87.3%). In contrast, 'using AI information without citing sources (plagiarism)' scored 65.3% and 'submitting AI-generated assignments' 76.3%. Insight: Students perceive violations of personality rights and sexual autonomy as more serious than purely academic violations. Their moral radar is strongly tuned to digital sexual violence and dignity harm. This suggests that AI ethics education should not stay at the level of abstract plagiarism talk, but center concrete cases of deepfake crimes and rights violations.",
-                chart_desc_responsibility: "Fact: 89.8% of respondents place primary responsibility for AI abuse on 'the original creator who misused the tool'. 44.7% point to 'those who share or spread the content', while only 10.2% see 'platform developers' as mainly responsible. Insight: For students, the core problem is individual moral failure, not system design. If campus discussions focus only on platform accountability and algorithmic transparency, they may miss how students actually frame the issue. A more realistic approach is a dual one: combine individual-level sanctions and education with platform-level safeguards, reporting tools, and content moderation.",
-                chart_desc_deepfake: "Fact: 85.6% agreed that 'AI-driven disinformation undermines trust', and 96.6% agreed that 'creating non-consensual deepfakes should be punished even if it was done out of curiosity'. Insight: Ethical boundaries around deepfakes and disinformation are extremely clear for students; in practice there is near-consensus for a zero-tolerance stance on deepfake sexual content. This provides strong legitimacy for universities to introduce strict sanctions and detailed protection protocols without facing major pushback from the student body.",
-                chart_desc_frequency: "Fact: 22.9% of respondents (27 students) have witnessed or experienced unethical or problematic AI use. Cross-analysis shows that among '6+ hours per day' heavy users, 66.7% reported witnessing such behavior, a much higher rate than among lighter users. Insight: The more intensively someone uses AI, the more likely they are to encounter deepfakes, disinformation, and other misuse. This is not just about telling students to 'use AI less', but about offering high-frequency users more advanced literacy training and clear guidance on how to react, report, and protect themselves when they inevitably face harmful content.",
-                chart_desc_reporting: "Fact: 66.1% of respondents said they 'do not know at all' about any official reporting channel on campus, 27.1% had 'heard of something', and only 6.8% said they 'clearly know' where to report. At the same time, 96.6% support punishment for non-consensual deepfakes. Insight: Students have strong ethical awareness and a clear sense that deepfakes should be punished, but almost no shared knowledge of where and how to ask for help. Individual morality and outrage exist, yet the institutional pathway is missing. Right now, the most urgent intervention is not another abstract code of conduct, but the creation (or repair) and aggressive promotion of concrete reporting channels and step-by-step response protocols."
+                chart_desc_tools: "<b>[Fact]</b> 96.6% of respondents (114 students) use ChatGPT, followed by Gemini (44.9%), Perplexity (12.7%), wrtn (8.5%), Copilot (6.8%), and Claude (5.1%).<br><br><b>[Insight]</b> The campus AI ecosystem is effectively built around a single tool, ChatGPT. Any training or guidelines should therefore take ChatGPT's strengths and limits (hallucinations, citation issues, etc.) as the baseline, while also pushing students to build a more diverse 'tool portfolio' instead of relying on one model only.",
+                chart_desc_purpose: "<b>[Fact]</b> (Multiple response) 89.8% (106 students) use AI for writing assignments and reports, 66.1% for translation, and 55.1% for idea generation and brainstorming.<br><br><b>[Insight]</b> The primary driver of AI use is academic performance. With almost 90% relying on AI for writing, issues such as plagiarism, ghostwriting, and uncited AI-generated content are guaranteed to become central topics in academic integrity policy. AI is already embedded in how students study; the real question is whether they are taught to use it transparently and ethically, rather than in a purely instrumental way.",
+                chart_desc_unethical: "<b>[Fact]</b> The most serious unethical behaviors identified were 'creating non-consensual deepfake sexual content' (91.5%) and 'consuming or sharing deepfakes as a joke' (87.3%). In contrast, 'using AI information without citing sources (plagiarism)' scored 65.3% and 'submitting AI-generated assignments' 76.3%.<br><br><b>[Insight]</b> Students perceive violations of personality rights and sexual autonomy as more serious than purely academic violations. Their moral radar is strongly tuned to digital sexual violence and dignity harm. This suggests that AI ethics education should not stay at the level of abstract plagiarism talk, but center concrete cases of deepfake crimes and rights violations.",
+                chart_desc_responsibility: "<b>[Fact]</b> 89.8% of respondents place primary responsibility for AI abuse on 'the original creator who misused the tool'. 44.7% point to 'those who share or spread the content', while only 10.2% see 'platform developers' as mainly responsible.<br><br><b>[Insight]</b> For students, the core problem is individual moral failure, not system design. If campus discussions focus only on platform accountability and algorithmic transparency, they may miss how students actually frame the issue. A more realistic approach is a dual one: combine individual-level sanctions and education with platform-level safeguards, reporting tools, and content moderation.",
+                chart_desc_deepfake: "<b>[Fact]</b> 85.6% agreed that 'AI-driven disinformation undermines trust', and 96.6% agreed that 'creating non-consensual deepfakes should be punished even if it was done out of curiosity'.<br><br><b>[Insight]</b> Ethical boundaries around deepfakes and disinformation are extremely clear for students; in practice there is near-consensus for a zero-tolerance stance on deepfake sexual content. This provides strong legitimacy for universities to introduce strict sanctions and detailed protection protocols without facing major pushback from the student body.",
+                chart_desc_frequency: "<b>[Fact]</b> 22.9% of respondents (27 students) have witnessed or experienced unethical or problematic AI use. Cross-analysis shows that among '6+ hours per day' heavy users, 66.7% reported witnessing such behavior, a much higher rate than among lighter users.<br><br><b>[Insight]</b> The more intensively someone uses AI, the more likely they are to encounter deepfakes, disinformation, and other misuse. This is not just about telling students to 'use AI less', but about offering high-frequency users more advanced literacy training and clear guidance on how to react, report, and protect themselves when they inevitably face harmful content.",
+                chart_desc_reporting: "<b>[Fact]</b> 66.1% of respondents said they 'do not know at all' about any official reporting channel on campus, 27.1% had 'heard of something', and only 6.8% said they 'clearly know' where to report. At the same time, 96.6% support punishment for non-consensual deepfakes.<br><br><b>[Insight]</b> Students have strong ethical awareness and a clear sense that deepfakes should be punished, but almost no shared knowledge of where and how to ask for help. Individual morality and outrage exist, yet the institutional pathway is missing. Right now, the most urgent intervention is not another abstract code of conduct, but the creation (or repair) and aggressive promotion of concrete reporting channels and step-by-step response protocols.",
+                
+                s_label_witness: "Witnessed", s_label_safe: "Safe", s_label_none: "None", s_label_creator: "Creator", s_label_platform: "Platform"
             },
             cn: {
                 link_tk1: "https://docs.google.com/document/d/1feLm0awxVFzE3NZtJk8tfAfkF_-5lj4TsYDVB8GrR2Q/edit?usp=sharing",
@@ -823,9 +836,11 @@
                 btn_full_report: "📊 查看完整报告",
                 toolkit_title: "F.A.K.E. 装备库", toolkit_subtitle: "带上适合你的装备，在数字世界安全探险吧！",
                 tk1_title: "Lv.1 求生工具包", tk1_desc: "在危险的AI丛林里活下来的必备套装！", tk1_item1: "超易懂的AI术语词典", tk1_item2: "紧急联络通讯录",
-                tk2_title: "Lv.2 新手警长工具包", tk2_desc: "保护我和朋友隐私的防御装备。", tk2_item1: "SNS私密设置指南", tk2_item2: "水印生成器", tk2_item3: "彻底删除AI对话记录",
+                tk2_title: "Lv.2 新手警长工具包", tk2_desc: "保护我和朋友隐私的防御装备。", 
+                tk2_item1: "AI 隐私设置指南", tk2_item2: "AI 对话记录彻底删除法", tk2_item3: "基础提示词(Prompt)编写法",
                 tk3_title: "Lv.3 资深警长工具包", tk3_desc: "看穿谎言、查证真相的专家装备。", tk3_item1: "Deepfake检测神器", tk3_item2: "事实核查清单", tk3_item3: "真伪鉴别指南",
-                tk4_title: "Lv.4 校园大使工具包", tk4_desc: "改变校园文化的领袖专用包。", tk4_item1: "完美提示词的5大原则", tk4_item2: "给朋友们的讨论话题", tk4_item3: "官方大使认证徽章",
+                tk4_title: "Lv.4 校园大使工具包", tk4_desc: "改变校园文化的领袖专用包。", 
+                tk4_item1: "完美提示词编写法", tk4_item2: "校园 AI 使用提示词指南", tk4_item3: "受害者支持与连带指南",
                 btn_download: "Get! (下载)",
                 pledge_title: "请和我们在一起", pledge_desc: "“我承诺安全使用AI，守护我们的校园社区，<br>并与数字犯罪受害者站在一起！”",
                 pledge_btn_sign: "签名支持", pledge_btn_id: "领取 F.A.K.E. ID",
@@ -843,13 +858,15 @@
                 res_lv2_title: "新手警长", res_lv2_desc: "有心想做，但缺装备？<br>先学会怎么保护自己吧！", res_lv2_toolkit: "Lv.2 新手警长工具包",
                 res_lv1_title: "数字迷路人", res_lv1_desc: "在危险的丛林里迷路了吗？<br>你需要赶紧补充生存知识！", res_lv1_toolkit: "Lv.1 求生工具包",
 
-                chart_desc_tools: "Fact：96.6%（114人）的受访者表示使用 ChatGPT，其次是 Gemini 44.9%、Perplexity 12.7%、wrtn 8.5%、Copilot 6.8%、Claude 5.1%。Insight：校园里的“AI 生态”几乎可以理解为 ChatGPT 一家独大。今后的教学和指引可以以 ChatGPT 的功能与局限（幻觉、引用方式等）为基准，但同时也需要有意识地训练学生使用多种模型，避免把所有任务都交给同一个工具。",
-                chart_desc_purpose: "Fact：（多选）89.8% 的同学（106人）用 AI 写作业或报告，66.1% 用来翻译外语，55.1% 用来发想点子或头脑风暴。Insight：学生使用 AI 的首要动机是“拿到更好的学业表现”。将近 90% 在写作时依赖 AI，这几乎可以预告：抄袭、AI 代写、未标注 AI 内容，将会成为学术诚信讨论的核心议题。同时，AI 也确实在帮助他们更有效率地学习，关键在于：学校能否教会他们“公开、负责任地使用”，而不是偷偷依赖。",
-                chart_desc_unethical: "Fact：被认为最严重的不当行为是“未经同意制作色情 Deepfake 内容”（91.5%）以及“把 Deepfake 当玩笑看、顺手转发”（87.3%）。相比之下，“不标注来源、直接使用 AI 内容（抄袭）”是 65.3%，“提交 AI 生成的作业”是 76.3%。Insight：同学们认为，侵犯他人人格权、性自主权的行为，比单纯的学术违规严重得多。也就是说，他们的道德直觉首先指向“数字性暴力”和“人身权利受损”。因此，AI 伦理教育如果只停留在抄袭、引用格式，很难打动学生；更有效的切入点是通过具体的 Deepfake 案例、受害者处境来展开。",
-                chart_desc_responsibility: "Fact：89.8% 的受访者把责任首先归咎于“恶意使用 AI 的最初生成者”，44.7% 认为“转发、扩散的人”也应负责，只有 10.2% 认为“平台开发公司”是主要责任方。Insight：在他们眼中，问题的核心是个人的道德滑坡，而不是系统设计本身。如果只谈平台责任、算法透明，同学们可能会觉得“不关自己事”。更现实的做法，是把“个人责任（处分、教育）”和“平台责任（技术拦截、举报入口）”结合起来，形成双轨机制。",
-                chart_desc_deepfake: "Fact：85.6% 的受访者同意“利用 AI 散布虚假信息会破坏信任”，96.6% 同意“即使只是出于好奇，未经同意制作 Deepfake 也应该受到惩罚”。Insight：在 Deepfake 和虚假信息的问题上，学生的伦理立场非常明确，尤其是对性相关的 Deepfake，几乎形成了“零容忍”的共识。这为学校制定更严格的处罚规则、建立完善的保护和支援流程，提供了很强的正当性基础。",
-                chart_desc_frequency: "Fact：22.9% 的受访者（27人）表示自己目睹或经历过与 AI 相关的不当行为。交叉分析发现，在“每天使用 6 小时以上”的重度用户中，有 66.7% 目睹过这类行为，远高于轻度用户。Insight：AI 使用越频繁，接触到 Deepfake、虚假信息和其他滥用行为的几率就越高。与其简单地说“少用一点 AI”，不如针对高频用户提供更深入的素养教育，并清楚告知他们在遇到问题时可以如何举报、如何自保。",
-                chart_desc_reporting: "Fact：关于校内的官方举报渠道，66.1% 的同学回答“完全不知道”，27.1% 只“听说过”，只有 6.8% 表示“清楚知道在哪里、怎么举报”。与此同时，支持惩罚非自愿 Deepfake 的比例却高达 96.6%。Insight：学生的伦理意识和“应该处罚”的共识都很强，但一旦真的发生问题，他们几乎不知道该找谁、怎么求助。个人的良知和愤怒已经存在，但连到制度的路径是断的。此刻最紧迫的工作不是再写一份抽象守则，而是：建立（或修补）具体的举报渠道，大力宣传，并设计清晰的分步骤响应流程。"
+                chart_desc_tools: "<b>[Fact]</b> 96.6%（114人）的受访者表示使用 ChatGPT，其次是 Gemini 44.9%、Perplexity 12.7%、wrtn 8.5%、Copilot 6.8%、Claude 5.1%。<br><br><b>[Insight]</b> 校园里的“AI 生态”几乎可以理解为 ChatGPT 一家独大。今后的教学和指引可以以 ChatGPT 的功能与局限（幻觉、引用方式等）为基准，但同时也需要有意识地训练学生使用多种模型，避免把所有任务都交给同一个工具。",
+                chart_desc_purpose: "<b>[Fact]</b> （多选）89.8% 的同学（106人）用 AI 写作业或报告，66.1% 用来翻译外语，55.1% 用来发想点子或头脑风暴。<br><br><b>[Insight]</b> 学生使用 AI 的首要动机是“拿到更好的学业表现”。将近 90% 在写作时依赖 AI，这几乎可以预告：抄袭、AI 代写、未标注 AI 内容，将会成为学术诚信讨论的核心议题。同时，AI 也确实在帮助他们更有效率地学习，关键在于：学校能否教会他们“公开、负责任地使用”，而不是偷偷依赖。",
+                chart_desc_unethical: "<b>[Fact]</b> 被认为最严重的不当行为是“未经同意制作色情 Deepfake 内容”（91.5%）以及“把 Deepfake 当玩笑看、顺手转发”（87.3%）。相比之下，“不标注来源、直接使用 AI 内容（抄袭）”是 65.3%，“提交 AI 生成的作业”是 76.3%。<br><br><b>[Insight]</b> 同学们认为，侵犯他人人格权、性自主权的行为，比单纯的学术违规严重得多。也就是说，他们的道德直觉首先指向“数字性暴力”和“人身权利受损”。因此，AI 伦理教育如果只停留在抄袭、引用格式，很难打动学生；更有效的切入点是通过具体的 Deepfake 案例、受害者处境来展开。",
+                chart_desc_responsibility: "<b>[Fact]</b> 89.8% 的受访者把责任首先归咎于“恶意使用 AI 的最初生成者”，44.7% 认为“转发、扩散的人”也应负责，只有 10.2% 认为“平台开发公司”是主要责任方。<br><br><b>[Insight]</b> 在他们眼中，问题的核心是个人的道德滑坡，而不是系统设计本身。如果只谈平台责任、算法透明，同学们可能会觉得“不关自己事”。更现实的做法，是把“个人责任（处分、教育）”和“平台责任（技术拦截、举报入口）”结合起来，形成双轨机制。",
+                chart_desc_deepfake: "<b>[Fact]</b> 85.6% 的受访者同意“利用 AI 散布虚假信息会破坏信任”，96.6% 同意“即使只是出于好奇，未经同意制作 Deepfake 也应该受到惩罚”。<br><br><b>[Insight]</b> 在 Deepfake 和虚假信息的问题上，学生的伦理立场非常明确，尤其是对性相关的 Deepfake，几乎形成了“零容忍”的共识。这为学校制定更严格的处罚规则、建立完善的保护和支援流程，提供了很强的正当性基础。",
+                chart_desc_frequency: "<b>[Fact]</b> 22.9% 的受访者（27人）表示自己目睹或经历过与 AI 相关的不当行为。交叉分析发现，在“每天使用 6 小时以上”的重度用户中，有 66.7% 目睹过这类行为，远高于轻度用户。<br><br><b>[Insight]</b> AI 使用越频繁，接触到 Deepfake、虚假信息和其他滥用行为的几率就越高。与其简单地说“少用一点 AI”，不如针对高频用户提供更深入的素养教育，并清楚告知他们在遇到问题时可以如何举报、如何自保。",
+                chart_desc_reporting: "<b>[Fact]</b> 关于校内的官方举报渠道，66.1% 的同学回答“完全不知道”，27.1% 只“听说过”，只有 6.8% 表示“清楚知道在哪里、怎么举报”。与此同时，支持惩罚非自愿 Deepfake 的比例却高达 96.6%。<br><br><b>[Insight]</b> 学生的伦理意识和“应该处罚”的共识都很强，但一旦真的发生问题，他们几乎不知道该找谁、怎么求助。个人的良知和愤怒已经存在，但连到制度的路径是断的。此刻最紧迫的工作不是再写一份抽象守则，而是：建立（或修补）具体的举报渠道，大力宣传，并设计清晰的分步骤响应流程。",
+                
+                s_label_witness: "目击", s_label_safe: "安全", s_label_none: "无", s_label_creator: "制作人", s_label_platform: "平台"
             },
             jp: {
                 link_tk1: "https://docs.google.com/document/d/1feLm0awxVFzE3NZtJk8tfAfkF_-5lj4TsYDVB8GrR2Q/edit?usp=sharing",
@@ -868,9 +885,11 @@
                 btn_full_report: "📊 詳細レポートを見る",
                 toolkit_title: "F.A.K.E. アイテム倉庫", toolkit_subtitle: "レベルに合った装備を整えて、デジタル世界を安全に冒険しよう！",
                 tk1_title: "Lv.1 サバイバルキット", tk1_desc: "危険なAIジャングルで生き残るための必須アイテムだよ！", tk1_item1: "やさしいAI用語集", tk1_item2: "緊急連絡先リスト",
-                tk2_title: "Lv.2 見習いポリスキット", tk2_desc: "自分と友達の情報を守るための防具セットです。", tk2_item1: "SNS非公開設定ガイド", tk2_item2: "透かし(Watermark)作成機", tk2_item3: "AI会話履歴の完全削除法",
+                tk2_title: "Lv.2 見習いポリスキット", tk2_desc: "自分と友達の情報を守るための防具セットです。", 
+                tk2_item1: "AI非公開設定ガイド", tk2_item2: "AI会話履歴の完全削除法", tk2_item3: "基礎プロンプト作成法",
                 tk3_title: "Lv.3 ベテランポリスキット", tk3_desc: "嘘を見抜いて真実を突き止める専門家の装備です。", tk3_item1: "ディープフェイク検知ツール", tk3_item2: "ファクトチェックリスト", tk3_item3: "真偽判別ガイド",
-                tk4_title: "Lv.4 キャンパスアンバサダー", tk4_desc: "キャンパスの文化を変えるリーダーのためのパッケージ。", tk4_item1: "完璧なプロンプトの5原則", tk4_item2: "友達と話せる討論テーマ", tk4_item3: "公式アンバサダーバッジ",
+                tk4_title: "Lv.4 キャンパスアンバサダー", tk4_desc: "キャンパスの文化を変えるリーダーのためのパッケージ。", 
+                tk4_item1: "完璧なプロンプト作成法", tk4_item2: "キャンパス内AI利用プロンプトガイド", tk4_item3: "被害者支援・連帯ガイド",
                 btn_download: "Get! (ダウンロード)",
                 pledge_title: "一緒に連帯してください", pledge_desc: "「私はAIを正しく使い、キャンパスを守り、<br>デジタル犯罪の被害者と連帯するデジタル市民です！」",
                 pledge_btn_sign: "署名して参加", pledge_btn_id: "F.A.K.E. IDを発行",
@@ -888,13 +907,15 @@
                 res_lv2_title: "見習いポリス", res_lv2_desc: "やる気はあるけど装備が足りないかも？<br>まずは身を守る方法から学ぼう🛡️", res_lv2_toolkit: "Lv.2 見習いポリスキット",
                 res_lv1_title: "デジタル迷子", res_lv1_desc: "危険なジャングルで迷っちゃった？<br>生き残るための知識が急務だよ！🆘", res_lv1_toolkit: "Lv.1 サバイバルキット",
 
-                chart_desc_tools: "Fact：回答者の96.6％（114人）がChatGPTを利用しており、次いでGemini 44.9％、Perplexity 12.7％、wrtn 8.5％、Copilot 6.8％、Claude 5.1％となりました。Insight：キャンパスのAIエコシステムは「複数のツールを使い分ける」というより、ほぼChatGPT一強の構図になっています。今後の教育やガイドラインは、ChatGPTの強みと限界（ハルシネーション、出典表記など）を軸に設計しつつ、複数モデルを組み合わせて使うトレーニングも意識的に組み込む必要があります。",
-                chart_desc_purpose: "Fact：（複数回答）AIの主な利用目的は「課題・レポート作成」が89.8％（106人）でトップ、「外国語翻訳」が66.1％、「アイデア出し・ブレインストーミング」が55.1％でした。Insight：学生がAIを使う一番の動機は、学業成績の向上です。約9割が課題作成でAIに依存しているという事実は、今後、盗作やAI丸投げ、AI生成物の無断使用といった問題が、学術倫理の中心テーマになることを示唆しています。同時に、AIは学習効率を高める強力なツールでもあるため、「禁止」ではなく、透明性と倫理性をどう担保するかが重要な課題になります。",
-                chart_desc_unethical: "Fact：最も深刻だと認識されている行為は「同意のないディープフェイク性的コンテンツの制作」（91.5％）と「ディープフェイクを冗談として消費・共有すること」（87.3％）でした。一方、「出典を示さずAI情報を使用する（盗作）」は65.3％、「AIが作成した課題を提出する」は76.3％と、相対的に低い数値でした。Insight：学生たちは、純粋な学問的な不正よりも、人格権や性的自己決定権を侵害する行為を、はるかに重大な問題として捉えています。つまり、彼らの倫理感覚の中心は、デジタル性暴力や人権侵害にあります。AI倫理教育も、抽象的な盗作論ではなく、具体的なディープフェイク犯罪や被害事例を軸に組み立てる方が現実的です。",
-                chart_desc_responsibility: "Fact：AI悪用の責任主体として「最初に悪用した生成者」を挙げた割合が89.8％と圧倒的で、「拡散・共有した利用者」は44.7％、「プラットフォーム開発会社」は10.2％にとどまりました。Insight：学生にとって問題のコアは、システムよりも個人のモラルの欠如にあります。もし議論がプラットフォーム責任やアルゴリズム透明性だけに偏ると、当事者意識とのズレが生じかねません。個人レベルの責任（処分、教育）と、プラットフォームレベルの責任（技術的ブロック、通報窓口）をセットで設計する二重フレームが現実的です。",
-                chart_desc_deepfake: "Fact：「AIによる偽情報の拡散は信頼を損なう」という文に85.6％が同意し、「同意のないディープフェイク制作は、好奇心からであっても処罰されるべきだ」という文には96.6％が同意しました。Insight：ディープフェイクや偽情報に対する倫理的な線引きは非常に明確であり、特に性的ディープフェイクに関しては、ほぼゼロトレランスに近いコンセンサスが形成されています。これは、大学が厳しい制裁規定や被害者保護のプロトコルを整備する際の、強力な正当化根拠となります。",
-                chart_desc_frequency: "Fact：全体の22.9％（27人）が、AIに関連する不適切または否定的な行為を目撃・経験したと回答しました。さらに、1日6時間以上AIを使うヘビーユーザーのうち、66.7％がこうした行為を目撃したと回答しており、利用時間が短い層と比べて明らかに高い傾向が見られます。Insight：AIに触れる時間が長くなるほど、ディープフェイクや偽情報などのリスクにも頻繁にさらされることになります。「あまり使うな」と言うだけでは不十分であり、ヘビーユーザーほど高度なリテラシー教育や、被害・通報手続きに関する具体的な案内が必要だということです。",
-                chart_desc_reporting: "Fact：学内の公式な通報窓口について「全く知らない」と答えた学生が66.1％、「聞いたことはある」が27.1％、「具体的に知っている」は6.8％にとどまりました。一方で、非同意ディープフェイクの処罰に賛成する割合は96.6％に達しています。Insight：倫理意識や「処罰すべきだ」という感覚は十分に共有されているにもかかわらず、いざ問題が起きたときにどこに、どう相談すべきかについての共通認識はほぼありません。個人の良心と怒りはあっても、それを制度につなぐルートが切れている状態です。今もっとも急がれるのは、新たな宣言文ではなく、具体的な通報窓口の整備と周知、そして段階的な対応プロトコルの構築です。"
+                chart_desc_tools: "<b>[Fact]</b> 回答者の96.6％（114人）がChatGPTを利用しており、次いでGemini 44.9％、Perplexity 12.7％、wrtn 8.5％、Copilot 6.8％、Claude 5.1％となりました。<br><br><b>[Insight]</b> キャンパスのAIエコシステムは「複数のツールを使い分ける」というより、ほぼChatGPT一強の構図になっています。今後の教育やガイドラインは、ChatGPTの強みと限界（ハルシネーション、出典表記など）を軸に設計しつつ、複数モデルを組み合わせて使うトレーニングも意識的に組み込む必要があります。",
+                chart_desc_purpose: "<b>[Fact]</b> （複数回答）AIの主な利用目的は「課題・レポート作成」が89.8％（106人）でトップ、「外国語翻訳」が66.1％、「アイデア出し・ブレインストーミング」が55.1％でした。<br><br><b>[Insight]</b> 学生がAIを使う一番の動機は、学業成績の向上です。約9割が課題作成でAIに依存しているという事実は、今後、盗作やAI丸投げ、AI生成物の無断使用といった問題が、学術倫理の中心テーマになることを示唆しています。同時に、AIは学習効率を高める強力なツールでもあるため、「禁止」ではなく、透明性と倫理性をどう担保するかが重要な課題になります。",
+                chart_desc_unethical: "<b>[Fact]</b> 最も深刻だと認識されている行為は「同意のないディープフェイク性的コンテンツの制作」（91.5％）と「ディープフェイクを冗談として消費・共有すること」（87.3％）でした。一方、「出典を示さずAI情報を使用する（盗作）」は65.3％、「AIが作成した課題を提出する」は76.3％と、相対的に低い数値でした。<br><br><b>[Insight]</b> 学生たちは、純粋な学問的な不正よりも、人格権や性的自己決定権を侵害する行為を、はるかに重大な問題として捉えています。つまり、彼らの倫理感覚の中心は、デジタル性暴力や人権侵害にあります。AI倫理教育も、抽象的な盗作論ではなく、具体的なディープフェイク犯罪や被害事例を軸に組み立てる方が現実的です。",
+                chart_desc_responsibility: "<b>[Fact]</b> AI悪用の責任主体として「最初に悪用した生成者」を挙げた割合が89.8％と圧倒的で、「拡散・共有した利用者」は44.7％、「プラットフォーム開発会社」は10.2％にとどまりました。<br><br><b>[Insight]</b> 学生にとって問題のコアは、システムよりも個人のモラルの欠如にあります。もし議論がプラットフォーム責任やアルゴリズム透明性だけに偏ると、当事者意識とのズレが生じかねません。個人レベルの責任（処分、教育）と、プラットフォームレベルの責任（技術的ブロック、通報窓口）をセットで設計する二重フレームが現実的です。",
+                chart_desc_deepfake: "<b>[Fact]</b> 「AIによる偽情報の拡散は信頼を損なう」という文に85.6％が同意し、「同意のないディープフェイク制作は、好奇心からであっても処罰されるべきだ」という文には96.6％が同意しました。<br><br><b>[Insight]</b> ディープフェイクや偽情報に対する倫理的な線引きは非常に明確であり、特に性的ディープフェイクに関しては、ほぼゼロトレランスに近いコンセンサスが形成されています。これは、大学が厳しい制裁規定や被害者保護のプロトコルを整備する際の、強力な正当化根拠となります。",
+                chart_desc_frequency: "<b>[Fact]</b> 全体の22.9％（27人）が、AIに関連する不適切または否定的な行為を目撃・経験したと回答しました。さらに、1日6時間以上AIを使うヘビーユーザーのうち、66.7％がこうした行為を目撃したと回答しており、利用時間が短い層と比べて明らかに高い傾向が見られます。<br><br><b>[Insight]</b> AIに触れる時間が長くなるほど、ディープフェイクや偽情報などのリスクにも頻繁にさらされることになります。「あまり使うな」と言うだけでは不十分であり、ヘビーユーザーほど高度なリテラシー教育や、被害・通報手続きに関する具体的な案内が必要だということです。",
+                chart_desc_reporting: "<b>[Fact]</b> 学内の公式な通報窓口について「全く知らない」と答えた学生が66.1％、「聞いたことはある」が27.1％、「具体的に知っている」は6.8％にとどまりました。一方で、非同意ディープフェイクの処罰に賛成する割合は96.6％に達しています。<br><br><b>[Insight]</b> 倫理意識や「処罰すべきだ」という感覚は十分に共有されているにもかかわらず、いざ問題が起きたときにどこに、どう相談すべきかについての共通認識はほぼありません。個人の良心と怒りはあっても、それを制度につなぐルートが切れている状態です。今もっとも急がれるのは、新たな宣言文ではなく、具体的な通報窓口の整備と周知、そして段階的な対応プロトコルの構築です。",
+                
+                s_label_witness: "目撃", s_label_safe: "安全", s_label_none: "なし", s_label_creator: "製作者", s_label_platform: "PF"
             },
             es: {
                 link_tk1: "https://docs.google.com/document/d/1feLm0awxVFzE3NZtJk8tfAfkF_-5lj4TsYDVB8GrR2Q/edit?usp=sharing",
@@ -913,9 +934,11 @@
                 btn_full_report: "📊 Ver Informe Completo",
                 toolkit_title: "Inventario F.A.K.E.", toolkit_subtitle: "¡Equípate para navegar seguro por el mundo digital!",
                 tk1_title: "Lv.1 Kit de Supervivencia", tk1_desc: "Kit esencial para la jungla de la IA.", tk1_item1: "Glosario Básico", tk1_item2: "Contactos de Emergencia",
-                tk2_title: "Lv.2 Kit de Sheriff Junior", tk2_desc: "Defensa para tu privacidad y la de tus amigos.", tk2_item1: "Guía de Privacidad en RRSS", tk2_item2: "Generador de Marcas de Agua", tk2_item3: "Borrar Historial de Chat",
+                tk2_title: "Lv.2 Kit de Sheriff Junior", tk2_desc: "Defensa para tu privacidad y la de tus amigos.", 
+                tk2_item1: "Guía de configuración de privacidad de IA", tk2_item2: "Cómo borrar el historial de chat de IA", tk2_item3: "Guía básica de redacción de prompts",
                 tk3_title: "Lv.3 Kit de Sheriff Senior", tk3_desc: "Equipo experto para verificar la verdad.", tk3_item1: "Detector de Deepfakes", tk3_item2: "Lista de Verificación", tk3_item3: "Guía de Autenticidad",
-                tk4_title: "Lv.4 Kit de Embajador", tk4_desc: "Para líderes que cambian la cultura del campus.", tk4_item1: "5 Reglas de Prompts", tk4_item2: "Temas de Debate", tk4_item3: "Insignia Oficial",
+                tk4_title: "Lv.4 Kit de Embajador", tk4_desc: "Para líderes que cambian la cultura del campus.", 
+                tk4_item1: "Método de redacción de prompts perfectos", tk4_item2: "Guía de prompts para uso de IA en el campus", tk4_item3: "Guía de apoyo y solidaridad con las víctimas",
                 btn_download: "Descargar",
                 pledge_title: "Únete a Nosotros", pledge_desc: "\"¡Soy un ciudadano digital que usa la IA responsablemente<br>y apoya a las víctimas de delitos digitales!\"",
                 pledge_btn_sign: "Firmar el Compromiso", pledge_btn_id: "Obtener ID F.A.K.E.",
@@ -933,13 +956,15 @@
                 res_lv2_title: "Sheriff Junior", res_lv2_desc: "¿Listo de corazón pero sin equipo? ¡Protégete primero!", res_lv2_toolkit: "Lv.2 Kit de Sheriff Junior",
                 res_lv1_title: "Extraviado Digital", res_lv1_desc: "¿Perdido en la jungla? ¡Necesitas saber sobrevivir!", res_lv1_toolkit: "Lv.1 Kit de Supervivencia",
 
-                chart_desc_tools: "Hecho: El 96.6% de las personas encuestadas (114 estudiantes) utiliza ChatGPT; le siguen Gemini (44.9%), Perplexity (12.7%), wrtn (8.5%), Copilot (6.8%) y Claude (5.1%). Insight: El ecosistema de IA en el campus, en la práctica, gira alrededor de una sola herramienta: ChatGPT. Por eso, la formación y las guías deberían tomar las fortalezas y límites de ChatGPT (alucinaciones, citación, etc.) como punto de partida, pero a la vez empujar a los estudiantes a construir un portafolio de herramientas más diverso en lugar de depender de un único modelo.",
-                chart_desc_purpose: "Hecho: (Respuesta múltiple) El 89.8% (106 estudiantes) usa IA para tareas y reportes escritos, el 66.1% para traducción y el 55.1% para generar ideas o hacer lluvia de ideas. Insight: El motor principal del uso de IA es el rendimiento académico. Con casi un 90% dependiendo de la IA para escribir, temas como plagio, trabajos escritos íntegramente por IA y contenido generado sin citar se volverán inevitables en las políticas de integridad académica. La IA ya está integrada en los hábitos de estudio; la cuestión es si se enseña a usarla de forma transparente y ética, y no solo como un atajo.",
-                chart_desc_unethical: "Hecho: Las conductas consideradas más graves fueron “crear contenido sexual deepfake sin consentimiento” (91.5%) y “consumir o compartir deepfakes como si fueran una broma” (87.3%). En cambio, “usar información de IA sin citar la fuente (plagio)” obtuvo 65.3% y “entregar trabajos generados por IA” 76.3%. Insight: El estudiantado percibe como más graves las violaciones a los derechos de la personalidad y la autonomía sexual que las violaciones puramente académicas. Su brújula moral está muy orientada hacia la violencia sexual digital y el daño a la dignidad. Esto sugiere que la educación en ética de IA debe centrarse en casos concretos de deepfakes y vulneración de derechos, y no solo en discusiones abstractas sobre plagio.",
-                chart_desc_responsibility: "Hecho: El 89.8% de las personas encuestadas atribuye la responsabilidad principal al “creador original que abusó de la IA”. Un 44.7% señala a “quienes comparten o difunden el contenido” y solo un 10.2% a “las empresas desarrolladoras de la plataforma”. Insight: Para el estudiantado, el problema central es el fallo moral individual, no tanto el diseño del sistema. Si las discusiones se centran únicamente en la responsabilidad de las plataformas o la transparencia algorítmica, se corre el riesgo de desconectarse de cómo la comunidad realmente entiende el problema. Un enfoque más realista combina sanciones y educación a nivel individual con salvaguardas y herramientas de denuncia a nivel de plataforma.",
-                chart_desc_deepfake: "Hecho: El 85.6% está de acuerdo en que “la desinformación impulsada por IA destruye la confianza”, y el 96.6% en que “crear deepfakes sin consentimiento debe ser castigado incluso si se hizo por curiosidad”. Insight: Los límites éticos en torno a los deepfakes y la desinformación son muy claros para el estudiantado; de hecho, hay casi un consenso de tolerancia cero frente a los deepfakes sexuales. Esto da una base sólida para que la universidad adopte sanciones estrictas y protocolos detallados de protección sin esperar una gran resistencia por parte de la comunidad estudiantil.",
-                chart_desc_frequency: "Hecho: El 22.9% de las personas encuestadas (27 estudiantes) ha presenciado o sufrido conductas problemáticas relacionadas con la IA. En el análisis cruzado, entre quienes usan IA más de 6 horas al día, el 66.7% declaró haber sido testigo de este tipo de conductas, mucho más que los usuarios ligeros. Insight: Cuanto más intensivamente se utiliza la IA, más probable es encontrarse con deepfakes, desinformación y otros abusos. No se trata solo de decir “usa menos IA”, sino de ofrecer a las y los usuarios intensivos una formación más avanzada en alfabetización digital y rutas claras para denunciar y protegerse cuando inevitablemente se topen con contenido dañino.",
-                chart_desc_reporting: "Hecho: El 66.1% afirma que “no conoce en absoluto” ningún canal oficial de denuncia en el campus, el 27.1% dice que “ha oído algo” y solo el 6.8% declara que “sabe claramente dónde denunciar”. Al mismo tiempo, el 96.6% apoya castigar los deepfakes sin consentimiento. Insight: La conciencia ética y la idea de que los deepfakes deben castigarse están muy extendidas, pero casi nadie sabe dónde ni cómo pedir ayuda en la práctica. La moral individual y la indignación existen, pero la ruta institucional está rota. Ahora mismo, la intervención más urgente no es otro código abstracto de conducta, sino crear o reforzar canales concretos de denuncia, divulgarlos de forma agresiva y diseñar protocolos de respuesta paso a paso."
+                chart_desc_tools: "<b>[Hecho]</b> El 96.6% de las personas encuestadas (114 estudiantes) utiliza ChatGPT; le siguen Gemini (44.9%), Perplexity (12.7%), wrtn (8.5%), Copilot (6.8%) y Claude (5.1%).<br><br><b>[Insight]</b> El ecosistema de IA en el campus, en la práctica, gira alrededor de una sola herramienta: ChatGPT. Por eso, la formación y las guías deberían tomar las fortalezas y límites de ChatGPT (alucinaciones, citación, etc.) como punto de partida, pero a la vez empujar a los estudiantes a construir un portafolio de herramientas más diverso en lugar de depender de un único modelo.",
+                chart_desc_purpose: "<b>[Hecho]</b> (Respuesta múltiple) El 89.8% (106 estudiantes) usa IA para tareas y reportes escritos, el 66.1% para traducción y el 55.1% para generar ideas o hacer lluvia de ideas.<br><br><b>[Insight]</b> El motor principal del uso de IA es el rendimiento académico. Con casi un 90% dependiendo de la IA para escribir, temas como plagio, trabajos escritos íntegramente por IA y contenido generado sin citar se volverán inevitables en las políticas de integridad académica. La IA ya está integrada en los hábitos de estudio; la cuestión es si se enseña a usarla de forma transparente y ética, y no solo como un atajo.",
+                chart_desc_unethical: "<b>[Hecho]</b> Las conductas consideradas más graves fueron “crear contenido sexual deepfake sin consentimiento” (91.5%) y “consumir o compartir deepfakes como si fueran una broma” (87.3%). En cambio, “usar información de IA sin citar la fuente (plagio)” obtuvo 65.3% y “entregar trabajos generados por IA” 76.3%.<br><br><b>[Insight]</b> El estudiantado percibe como más graves las violaciones a los derechos de la personalidad y la autonomía sexual que las violaciones puramente académicas. Su brújula moral está muy orientada hacia la violencia sexual digital y el daño a la dignidad. Esto sugiere que la educación en ética de IA debe centrarse en casos concretos de deepfakes y vulneración de derechos, y no solo en discusiones abstractas sobre plagio.",
+                chart_desc_responsibility: "<b>[Hecho]</b> El 89.8% de las personas encuestadas atribuye la responsabilidad principal al “creador original que abusó de la IA”. Un 44.7% señala a “quienes comparten o difunden el contenido” y solo un 10.2% a “las empresas desarrolladoras de la plataforma”.<br><br><b>[Insight]</b> Para el estudiantado, el problema central es el fallo moral individual, no tanto el diseño del sistema. Si las discusiones se centran únicamente en la responsabilidad de las plataformas o la transparencia algorítmica, se corre el riesgo de desconectarse de cómo la comunidad realmente entiende el problema. Un enfoque más realista combina sanciones y educación a nivel individual con salvaguardas y herramientas de denuncia a nivel de plataforma.",
+                chart_desc_deepfake: "<b>[Hecho]</b> El 85.6% está de acuerdo en que “la desinformación impulsada por IA destruye la confianza”, y el 96.6% en que “crear deepfakes sin consentimiento debe ser castigado incluso si se hizo por curiosidad”.<br><br><b>[Insight]</b> Los límites éticos en torno a los deepfakes y la desinformación son muy claros para el estudiantado; de hecho, hay casi un consenso de tolerancia cero frente a los deepfakes sexuales. Esto da una base sólida para que la universidad adopte sanciones estrictas y protocolos detallados de protección sin esperar una gran resistencia por parte de la comunidad estudiantil.",
+                chart_desc_frequency: "<b>[Hecho]</b> El 22.9% de las personas encuestadas (27 estudiantes) ha presenciado o sufrido conductas problemáticas relacionadas con la IA. En el análisis cruzado, entre quienes usan IA más de 6 horas al día, el 66.7% declaró haber sido testigo de este tipo de conductas, mucho más que los usuarios ligeros.<br><br><b>[Insight]</b> Cuanto más intensivamente se utiliza la IA, más probable es encontrarse con deepfakes, desinformación y otros abusos. No se trata solo de decir “usa menos IA”, sino de ofrecer a las y los usuarios intensivos una formación más avanzada en alfabetización digital y rutas claras para denunciar y protegerse cuando inevitablemente se topen con contenido dañino.",
+                chart_desc_reporting: "<b>[Hecho]</b> El 66.1% afirma que “no conoce en absoluto” ningún canal oficial de denuncia en el campus, el 27.1% dice que “ha oído algo” y solo el 6.8% declara que “sabe claramente dónde denunciar”. Al mismo tiempo, el 96.6% apoya castigar los deepfakes sin consentimiento.<br><br><b>[Insight]</b> La conciencia ética y la idea de que los deepfakes deben castigarse están muy extendidas, pero casi nadie sabe dónde ni cómo pedir ayuda en la práctica. La moral individual y la indignación existen, pero la ruta institucional está rota. Ahora mismo, la intervención más urgente no es otro código abstracto de conducta, sino crear o reforzar canales concretos de denuncia, divulgarlos de forma agresiva y diseñar protocolos de respuesta paso a paso.",
+                
+                s_label_witness: "Testigo", s_label_safe: "Seguro", s_label_none: "Ninguno", s_label_creator: "Creador", s_label_platform: "Plataforma"
             },
             af: {
                 link_tk1: "https://docs.google.com/document/d/1feLm0awxVFzE3NZtJk8tfAfkF_-5lj4TsYDVB8GrR2Q/edit?usp=sharing",
@@ -958,9 +983,11 @@
                 btn_full_report: "📊 Sien Volledige Verslag",
                 toolkit_title: "F.A.K.E. Inventaris", toolkit_subtitle: "Rus jouself toe om die digitale wêreld veilig te navigeer!",
                 tk1_title: "Lv.1 Oorlewingskit", tk1_desc: "Noodsaaklike kit om in die KI-oerwoud te oorleef.", tk1_item1: "Basiese Terminologie", tk1_item2: "Noodkontaklys",
-                tk2_title: "Lv.2 Junior Balju-kit", tk2_desc: "Verdediging om jou privaatheid te beskerm.", tk2_item1: "Privaatheidsgids", tk2_item2: "Watermerk Generator", tk2_item3: "Vee Kletsgeskiedenis Uit",
+                tk2_title: "Lv.2 Junior Balju-kit", tk2_desc: "Verdediging om jou privaatheid te beskerm.", 
+                tk2_item1: "AI-privaatheidstellingsgids", tk2_item2: "Hoe om AI-kletsgeskiedenis uit te vee", tk2_item3: "Basiese Prompt-skryfgids",
                 tk3_title: "Lv.3 Senior Balju-kit", tk3_desc: "Deskundige toerusting om die waarheid te verifieer.", tk3_item1: "Deepfake Opsporing", tk3_item2: "Feitekontrole Lys", tk3_item3: "Verifikasiegids",
-                tk4_title: "Lv.4 Ambassadeur-kit", tk4_desc: "Pakket vir leiers wat die kultuur verander.", tk4_item1: "5 Reëls vir Prompts", tk4_item2: "Debat Onderwerpe", tk4_item3: "Amptelike Kenteken",
+                tk4_title: "Lv.4 Ambassadeur-kit", tk4_desc: "Pakket vir leiers wat die kultuur verander.", 
+                tk4_item1: "Perfekte Prompt-skryfmetode", tk4_item2: "Kampus AI-gebruik Prompt-gids", tk4_item3: "Slagofferondersteuning en Solidariteitsgids",
                 btn_download: "Aflaai",
                 pledge_title: "Staan Saam Met Ons", pledge_desc: "\"Ek is 'n digitale burger wat KI verantwoordelik gebruik<br>en saamstaan met slagoffers van digitale misdaad!\"",
                 pledge_btn_sign: "Teken die Onderneming", pledge_btn_id: "Kry F.A.K.E. ID",
@@ -978,13 +1005,15 @@
                 res_lv2_title: "Junior Balju", res_lv2_desc: "Gereed in hart, maar kort toerusting? Beskerm jouself!", res_lv2_toolkit: "Lv.2 Junior Balju-kit",
                 res_lv1_title: "Digitale Verdwaalde", res_lv1_desc: "Verdwaal? Oorlewingskennis is dringend!", res_lv1_toolkit: "Lv.1 Oorlewingskit",
 
-                chart_desc_tools: "Feit: 96.6% van respondente (114 studente) gebruik ChatGPT; daarna volg Gemini (44.9%), Perplexity (12.7%), wrtn (8.5%), Copilot (6.8%) en Claude (5.1%). Ingesig: Die kampus se KI-ekosisteem draai in praktyk om een enkele instrument, naamlik ChatGPT. Opleiding en riglyne behoort dus op ChatGPT se sterk- en swakpunte (hallusinasies, bronvermelding, ens.) te bou, maar terselfdertyd studente doelbewus te leer om ’n meer diverse “nutsportefeulje” te gebruik eerder as om op een model vas te klou.",
-                chart_desc_purpose: "Feit: (Meerkeuse) 89.8% (106 studente) gebruik KI vir take en verslae, 66.1% vir vertaling en 55.1% vir idees en “brainstorming”. Ingesig: Die primêre dryfkrag agter KI-gebruik is akademiese prestasie. As byna 90% KI vir skryfwerk gebruik, is dit onvermydelik dat plagiaat, KI-spookskryfwerk en ongeïdentifiseerde KI-inhoud sentrale temas in akademiese integriteitsbeleid gaan word. KI is reeds deel van studente se leergewoontes; die vraag is of hulle geleer word om dit deursigtig en eties te gebruik, nie net as ’n kortpad nie.",
-                chart_desc_unethical: "Feit: Die ernstigste gedrag volgens respondente is “die skep van nie-konsensuele seksuele deepfake-inhoud” (91.5%) en “die verbruik/deel van deepfakes as ’n grappie” (87.3%). Terwyl “die gebruik van KI-inligting sonder bronvermelding (plagiaat)” 65.3% behaal het en “die indien van KI-gegenereerde take” 76.3%. Ingesig: Studente ervaar skendings van persoonlikheidsregte en seksuele selfbeskikking as ernstiger as suiwer akademiese oortredings. Hul morele fokus lê sterk by digitale seksuele geweld en waardigheidsskade. Etiekonderrig oor KI moet dus nie net by abstrakte plagiaat-praatjies bly nie, maar konkrete deepfake-gevalle en slagofferperspektiewe sentraal stel.",
-                chart_desc_responsibility: "Feit: 89.8% van respondente plaas die hoofverantwoordelikheid vir KI-misbruik by “die oorspronklike skepper wat dit kwaadwillig gebruik het”. 44.7% wys na “mense wat dit deel of versprei”, en slegs 10.2% na “platformontwikkelaars”. Ingesig: Vir studente is die kernprobleem individuele morele verval, nie hoofsaaklik stelselontwerp nie. As gesprekke net oor platformaanspreeklikheid en algoritme-deursigtigheid gaan, kan dit van hul belewenis af losraak. ’n Meer realistiese benadering is ’n dubbelspoor: individuele sanksies en opvoeding saam met platformvlak-beskerming, rapporteringsnuts en moderering.",
-                chart_desc_deepfake: "Feit: 85.6% stem saam dat “KI-gedrewe waninligting vertroue ondermyn”, en 96.6% stem saam dat “die skep van nie-konsensuele deepfakes gestraf moet word, selfs al was dit uit nuuskierigheid”. Ingesig: Die etiese grense rondom deepfakes en waninligting is vir studente baie duidelik; in praktyk is daar byna ’n nul-verdraagsaamheidshouding teenoor seksuele deepfakes. Dit gee ’n sterk regverdiging vir universiteite om streng sanksies en beskermingsprotokolle in te stel sonder groot weerstand van die studentegemeenskap.",
-                chart_desc_frequency: "Feit: 22.9% van respondente (27 studente) het onetiese of problematiese KI-gebruik gesien of self ervaar. In kruisonderdele blyk dit dat onder “6+ uur per dag” swaargebruikers, 66.7% sulke gedrag waargeneem het, aansienlik meer as ligte gebruikers. Ingesig: Hoe meer intensief iemand KI gebruik, hoe groter is die kans om deepfakes, waninligting en ander misbruik te teëkom. Dit gaan dus nie net daaroor om te sê “gebruik minder KI” nie, maar om swaargebruikers beter geletterdheid, duidelike riglyne vir reaksie en konkrete rapporteringsroetes te gee wanneer hulle onvermýdelik skadelike inhoud sien.",
-                chart_desc_reporting: "Feit: 66.1% sê hulle “ken glad nie” enige formele rapporteringskanaal op kampus nie, 27.1% het “al daarvan gehoor”, en slegs 6.8% sê hulle weet “presies waar om te rapporteer”. Intussen steun 96.6% die straf van nie-konsensuele deepfakes. Ingesig: Etiese bewuswording en die gevoel dat deepfakes gestraf moet word, is wydverspreid, maar byna niemand weet prakties waar of hoe om hulp te vra nie. Individuele moraliteit en verontwaardiging is daar, maar die institusionele roete is weg. Die dringendste stap nou is nie nog ’n abstrakte gedragskode nie, maar die skep of herstel van konkrete rapporteringskanale, sterk kommunikasie daaroor en gedetailleerde reaksieprotokolle."
+                chart_desc_tools: "<b>[Feit]</b> 96.6% van respondente (114 studente) gebruik ChatGPT; daarna volg Gemini (44.9%), Perplexity (12.7%), wrtn (8.5%), Copilot (6.8%) en Claude (5.1%).<br><br><b>[Ingesig]</b> Die kampus se KI-ekosisteem draai in praktyk om een enkele instrument, naamlik ChatGPT. Opleiding en riglyne behoort dus op ChatGPT se sterk- en swakpunte (hallusinasies, bronvermelding, ens.) te bou, maar terselfdertyd studente doelbewus te leer om ’n meer diverse “nutsportefeulje” te gebruik eerder as om op een model vas te klou.",
+                chart_desc_purpose: "<b>[Feit]</b> (Meerkeuse) 89.8% (106 studente) gebruik KI vir take en verslae, 66.1% vir vertaling en 55.1% vir idees en “brainstorming”.<br><br><b>[Ingesig]</b> Die primêre dryfkrag agter KI-gebruik is akademiese prestasie. As byna 90% KI vir skryfwerk gebruik, is dit onvermydelik dat plagiaat, KI-spookskryfwerk en ongeïdentifiseerde KI-inhoud sentrale temas in akademiese integriteitsbeleid gaan word. KI is reeds deel van studente se leergewoontes; die vraag is of hulle geleer word om dit deursigtig en eties te gebruik, nie net as ’n kortpad nie.",
+                chart_desc_unethical: "<b>[Feit]</b> Die ernstigste gedrag volgens respondente is “die skep van nie-konsensuele seksuele deepfake-inhoud” (91.5%) en “die verbruik/deel van deepfakes as ’n grappie” (87.3%). Terwyl “die gebruik van KI-inligting sonder bronvermelding (plagiaat)” 65.3% behaal het en “die indien van KI-gegenereerde take” 76.3%.<br><br><b>[Ingesig]</b> Studente ervaar skendings van persoonlikheidsregte en seksuele selfbeskikking as ernstiger as suiwer akademiese oortredings. Hul morele fokus lê sterk by digitale seksuele geweld en waardigheidsskade. Etiekonderrig oor KI moet dus nie net by abstrakte plagiaat-praatjies bly nie, maar konkrete deepfake-gevalle en slagofferperspektiewe sentraal stel.",
+                chart_desc_responsibility: "<b>[Feit]</b> 89.8% van respondente plaas die hoofverantwoordelikheid vir KI-misbruik by “die oorspronklike skepper wat dit kwaadwillig gebruik het”. 44.7% wys na “mense wat dit deel of versprei”, en slegs 10.2% na “platformontwikkelaars”.<br><br><b>[Ingesig]</b> Vir studente is die kernprobleem individuele morele verval, nie hoofsaaklik stelselontwerp nie. As gesprekke net oor platformaanspreeklikheid en algoritme-deursigtigheid gaan, kan dit van hul belewenis af losraak. ’n Meer realistiese benadering is ’n dubbelspoor: individuele sanksies en opvoeding saam met platformvlak-beskerming, rapporteringsnuts en moderering.",
+                chart_desc_deepfake: "<b>[Feit]</b> 85.6% stem saam dat “KI-gedrewe waninligting vertroue ondermyn”, en 96.6% stem saam dat “die skep van nie-konsensuele deepfakes gestraf moet word, selfs al was dit uit nuuskierigheid”.<br><br><b>[Ingesig]</b> Die etiese grense rondom deepfakes en waninligting is vir studente baie duidelik; in praktyk is daar byna ’n nul-verdraagsaamheidshouding teenoor seksuele deepfakes. Dit gee ’n sterk regverdiging vir universiteite om streng sanksies en beskermingsprotokolle in te stel sonder groot weerstand van die studentegemeenskap.",
+                chart_desc_frequency: "<b>[Feit]</b> 22.9% van respondente (27 studente) het onetiese of problematiese KI-gebruik gesien of self ervaar. In kruisonderdele blyk dit dat onder “6+ uur per dag” swaargebruikers, 66.7% sulke gedrag waargeneem het, aansienlik meer as ligte gebruikers.<br><br><b>[Ingesig]</b> Hoe meer intensief iemand KI gebruik, hoe groter is die kans om deepfakes, waninligting en ander misbruik te teëkom. Dit gaan dus nie net daaroor om te sê “gebruik minder KI” nie, maar om swaargebruikers beter geletterdheid, duidelike riglyne vir reaksie en konkrete rapporteringsroetes te gee wanneer hulle onvermýdelik skadelike inhoud sien.",
+                chart_desc_reporting: "<b>[Feit]</b> 66.1% sê hulle “ken glad nie” enige formele rapporteringskanaal op kampus nie, 27.1% het “al daarvan gehoor”, en slegs 6.8% sê hulle weet “presies waar om te rapporteer”. Intussen steun 96.6% die straf van nie-konsensuele deepfakes.<br><br><b>[Ingesig]</b> Etiese bewuswording en die gevoel dat deepfakes gestraf moet word, is wydverspreid, maar byna niemand weet prakties waar of hoe om hulp te vra nie. Individuele moraliteit en verontwaardiging is daar, maar die institusionele roete is weg. Die dringendste stap nou is nie nog ’n abstrakte gedragskode nie, maar die skep of herstel van konkrete rapporteringskanale, sterk kommunikasie daaroor en gedetailleerde reaksieprotokolle.",
+                
+                s_label_witness: "Getuie", s_label_safe: "Veilig", s_label_none: "Geen", s_label_creator: "Skepper", s_label_platform: "Platform"
             },
             hi: {
                 link_tk1: "https://docs.google.com/document/d/1feLm0awxVFzE3NZtJk8tfAfkF_-5lj4TsYDVB8GrR2Q/edit?usp=sharing",
@@ -1003,9 +1032,11 @@
                 btn_full_report: "📊 पूर्ण सर्वेक्षण रिपोर्ट देखें",
                 toolkit_title: "F.A.K.E. टूलकिट", toolkit_subtitle: "डिजिटल दुनिया में सुरक्षित रूप से नेविगेट करने के लिए खुद को तैयार करें!",
                 tk1_title: "Lv.1 सर्वाइवल किट", tk1_desc: "खतरनाक AI जंगल में जीवित रहने के लिए आवश्यक किट।", tk1_item1: "बुनियादी शब्दावली PDF", tk1_item2: "आपातकालीन संपर्क सूची",
-                tk2_title: "Lv.2 जूनियर शेरिफ किट", tk2_desc: "अपनी और अपने दोस्तों की गोपनीयता की रक्षा के लिए रक्षा सेट।", tk2_item1: "SNS गोपनीयता गाइड", tk2_item2: "वॉटरमार्क जेनरेटर", tk2_item3: "AI चैट इतिहास हटाएं",
+                tk2_title: "Lv.2 जूनियर शेरिफ किट", tk2_desc: "अपनी और अपने दोस्तों की गोपनीयता की रक्षा के लिए रक्षा सेट।", 
+                tk2_item1: "AI गोपनीयता सेटिंग गाइड", tk2_item2: "AI चैट इतिहास कैसे हटाएं", tk2_item3: "बेसिक प्रॉम्प्ट लेखन गाइड",
                 tk3_title: "Lv.3 सीनियर शेरिफ किट", tk3_desc: "सच्चाई को सत्यापित करने और झूठ को पकड़ने के लिए विशेषज्ञ गियर।", tk3_item1: "डीपफेक डिटेक्शन टूल्स", tk3_item2: "तथ्य-जांच चेकलिस्ट", tk3_item3: "सत्यापन गाइड",
-                tk4_title: "Lv.4 कैंपस एंबेसडर किट", tk4_desc: "कैंपस संस्कृति को बदलने वाले नेताओं के लिए पैकेज।", tk4_item1: "परफेक्ट प्रॉम्प्ट के 5 नियम", tk4_item2: "दोस्तों के लिए बहस के विषय", tk4_item3: "आधिकारिक एंबेसडर बैज",
+                tk4_title: "Lv.4 कैंपस एंबेसडर किट", tk4_desc: "कैंपस संस्कृति को बदलने वाले नेताओं के लिए पैकेज।", 
+                tk4_item1: "परफेक्ट प्रॉम्प्ट लेखन विधि", tk4_item2: "कैंपस AI उपयोग प्रॉम्प्ट गाइड", tk4_item3: "पीड़ित सहायता और एकजुटता गाइड",
                 btn_download: "डाउनलोड",
                 pledge_title: "हमारे साथ खड़े हों", pledge_desc: "\"मैं एक डिजिटल नागरिक हूँ जो जिम्मेदारी से AI का उपयोग करता हूँ,<br>और डिजिटल अपराध पीड़ितों के साथ खड़ा हूँ!\"",
                 pledge_btn_sign: "प्रतिज्ञा पर हस्ताक्षर करें", pledge_btn_id: "F.A.K.E. ID प्राप्त करें",
@@ -1023,17 +1054,17 @@
                 res_lv2_title: "जूनियर शेरिफ", res_lv2_desc: "दिल से तैयार, लेकिन गियर की कमी? पहले अपनी सुरक्षा करें!", res_lv2_toolkit: "Lv.2 जूनियर शेरिफ किट",
                 res_lv1_title: "डिजिटल भटका हुआ", res_lv1_desc: "जंगल में खो गए? अस्तित्व ज्ञान जरूरी है!", res_lv1_toolkit: "Lv.1 सर्वाइवल किट",
 
-                chart_desc_tools: "Fact: 96.6% उत्तरदाताओं (114 छात्र) ने ChatGPT का उपयोग किया, इसके बाद Gemini (44.9%), Perplexity (12.7%), wrtn (8.5%), Copilot (6.8%), और Claude (5.1%) का स्थान है। Insight: कैंपस का AI इकोसिस्टम मुख्य रूप से ChatGPT पर केंद्रित है। इसलिए प्रशिक्षण को ChatGPT की शक्तियों और सीमाओं (मतिभ्रम, उद्धरण मुद्दे, आदि) पर आधारित होना चाहिए, साथ ही छात्रों को केवल एक मॉडल पर निर्भर रहने के बजाय विविध 'टूल पोर्टफोलियो' बनाने के लिए प्रोत्साहित करना चाहिए।",
-                chart_desc_purpose: "Fact: (बहु-विकल्प) 89.8% (106 छात्र) असाइनमेंट और रिपोर्ट लिखने के लिए AI का उपयोग करते हैं, 66.1% अनुवाद के लिए, और 55.1% विचार निर्माण के लिए। Insight: AI के उपयोग का मुख्य कारण शैक्षणिक प्रदर्शन है। लेखन के लिए AI पर लगभग 90% निर्भरता के साथ, साहित्यिक चोरी और बिना उद्धरण के AI सामग्री का उपयोग अकादमिक अखंडता नीति में केंद्रीय विषय बनना तय है। सवाल यह है कि क्या उन्हें इसका पारदर्शी और नैतिक रूप से उपयोग करना सिखाया जा रहा है।",
-                chart_desc_unethical: "Fact: सबसे गंभीर अनैतिक व्यवहार 'बिना सहमति के डीपफेक यौन सामग्री बनाना' (91.5%) और 'मजाक के रूप में डीपफेक का उपभोग या साझा करना' (87.3%) माने गए। इसके विपरीत, 'बिना स्रोत बताए AI जानकारी का उपयोग (साहित्यिक चोरी)' का स्कोर 65.3% था। Insight: छात्र विशुद्ध रूप से शैक्षणिक उल्लंघन की तुलना में व्यक्तित्व अधिकारों और यौन स्वायत्तता के उल्लंघन को अधिक गंभीर मानते हैं। उनका नैतिक रडार डिजिटल यौन हिंसा और सम्मान को होने वाले नुकसान पर केंद्रित है।",
-                chart_desc_responsibility: "Fact: 89.8% उत्तरदाता AI के दुरुपयोग के लिए मुख्य रूप से 'उस मूल निर्माता को जिम्मेदार मानते हैं जिसने टूल का दुरुपयोग किया'। 44.7% 'सामग्री साझा करने या फैलाने वालों' को, जबकि केवल 10.2% 'प्लेटफॉर्म डेवलपर्स' को जिम्मेदार मानते हैं। Insight: छात्रों के लिए, मुख्य समस्या व्यक्तिगत नैतिक विफलता है, न कि सिस्टम डिज़ाइन। एक अधिक यथार्थवादी दृष्टिकोण दोहरा है: व्यक्तिगत स्तर के प्रतिबंधों और शिक्षा को प्लेटफॉर्म-स्तरीय सुरक्षा उपायों के साथ जोड़ना।",
-                chart_desc_deepfake: "Fact: 85.6% इस बात से सहमत हैं कि 'AI-जनित दुष्प्रचार विश्वास को कमजोर करता है', और 96.6% इस बात से सहमत हैं कि 'बिना सहमति के डीपफेक बनाने पर सजा मिलनी चाहिए, भले ही यह जिज्ञासावश किया गया हो'। Insight: डीपफेक और दुष्प्रचार के आसपास की नैतिक सीमाएं छात्रों के लिए बहुत स्पष्ट हैं; व्यवहार में डीपफेक यौन सामग्री पर 'जीरो टॉलरेंस' (शून्य सहिष्णुता) की लगभग आम सहमति है। यह विश्वविद्यालयों को कड़े प्रतिबंध लगाने के लिए मजबूत आधार प्रदान करता है।",
-                chart_desc_frequency: "Fact: 22.9% उत्तरदाताओं (27 छात्र) ने अनैतिक या समस्याग्रस्त AI उपयोग को देखा या अनुभव किया है। क्रॉस-विश्लेषण से पता चलता है कि 'प्रति दिन 6+ घंटे' उपयोग करने वाले भारी उपयोगकर्ताओं में से 66.7% ने ऐसे व्यवहार को देखा। Insight: कोई व्यक्ति जितना अधिक तीव्रता से AI का उपयोग करता है, डीपफेक और दुष्प्रचार का सामना करने की संभावना उतनी ही अधिक होती है। यह भारी उपयोगकर्ताओं को उन्नत साक्षरता प्रशिक्षण और स्पष्ट मार्गदर्शन देने के बारे में है कि जब वे हानिकारक सामग्री का सामना करते हैं तो क्या करें।",
-                chart_desc_reporting: "Fact: 66.1% उत्तरदाताओं ने कहा कि उन्हें कैंपस में किसी भी आधिकारिक रिपोर्टिंग चैनल के बारे में 'बिल्कुल पता नहीं' है, 27.1% ने 'कुछ सुना था', और केवल 6.8% ने कहा कि वे 'स्पष्ट रूप से जानते हैं' कि कहाँ रिपोर्ट करनी है। Insight: छात्रों में मजबूत नैतिक जागरूकता है और वे चाहते हैं कि डीपफेक को दंडित किया जाए, लेकिन मदद के लिए कहाँ और कैसे पूछना है, इसका ज्ञान लगभग शून्य है। सबसे जरूरी हस्तक्षेप ठोस रिपोर्टिंग चैनल बनाना और उनका प्रचार करना है।"
+                chart_desc_tools: "<b>[Fact]</b> 96.6% उत्तरदाताओं (114 छात्र) ने ChatGPT का उपयोग किया, इसके बाद Gemini (44.9%), Perplexity (12.7%), wrtn (8.5%), Copilot (6.8%), और Claude (5.1%) का स्थान है。<br><br><b>[Insight]</b> कैंपस का AI इकोसिस्टम मुख्य रूप से ChatGPT पर केंद्रित है। इसलिए प्रशिक्षण को ChatGPT की शक्तियों और सीमाओं (मतिभ्रम, उद्धरण मुद्दे, आदि) पर आधारित होना चाहिए, साथ ही छात्रों को केवल एक मॉडल पर निर्भर रहने के बजाय विविध 'टूल पोर्टफोलियो' बनाने के लिए प्रोत्साहित करना चाहिए।",
+                chart_desc_purpose: "<b>[Fact]</b> (बहु-विकल्प) 89.8% (106 छात्र) असाइनमेंट और रिपोर्ट लिखने के लिए AI का उपयोग करते हैं, 66.1% अनुवाद के लिए, और 55.1% विचार निर्माण के लिए。<br><br><b>[Insight]</b> AI के उपयोग का मुख्य कारण शैक्षणिक प्रदर्शन है। लेखन के लिए AI पर लगभग 90% निर्भरता के साथ, साहित्यिक चोरी और बिना उद्धरण के AI सामग्री का उपयोग अकादमिक अखंडता नीति में केंद्रीय विषय बनना तय है। सवाल यह है कि क्या उन्हें इसका पारदर्शी और नैतिक रूप से उपयोग करना सिखाया जा रहा है।",
+                chart_desc_unethical: "<b>[Fact]</b> सबसे गंभीर अनैतिक व्यवहार 'बिना सहमति के डीपफेक यौन सामग्री बनाना' (91.5%) और 'मजाक के रूप में डीपफेक का उपभोग या साझा करना' (87.3%) माने गए। इसके विपरीत, 'बिना स्रोत बताए AI जानकारी का उपयोग (साहित्यिक चोरी)' का स्कोर 65.3% था。<br><br><b>[Insight]</b> छात्र विशुद्ध रूप से शैक्षणिक उल्लंघन की तुलना में व्यक्तित्व अधिकारों और यौन स्वायत्तता के उल्लंघन को अधिक गंभीर मानते हैं। उनका नैतिक रडार डिजिटल यौन हिंसा और सम्मान को होने वाले नुकसान पर केंद्रित है।",
+                chart_desc_responsibility: "<b>[Fact]</b> 89.8% उत्तरदाता AI के दुरुपयोग के लिए मुख्य रूप से 'उस मूल निर्माता को जिम्मेदार मानते हैं जिसने टूल का दुरुपयोग किया'। 44.7% 'सामग्री साझा करने या फैलाने वालों' को, जबकि केवल 10.2% 'प्लेटफॉर्म डेवलपर्स' को जिम्मेदार मानते हैं。<br><br><b>[Insight]</b> छात्रों के लिए, मुख्य समस्या व्यक्तिगत नैतिक विफलता है, न कि सिस्टम डिज़ाइन। एक अधिक यथार्थवादी दृष्टिकोण दोहरा है: व्यक्तिगत स्तर के प्रतिबंधों और शिक्षा को प्लेटफॉर्म-स्तरीय सुरक्षा उपायों के साथ जोड़ना।",
+                chart_desc_deepfake: "<b>[Fact]</b> 85.6% इस बात से सहमत हैं कि 'AI-जनित दुष्प्रचार विश्वास को कमजोर करता है', और 96.6% इस बात से सहमत हैं कि 'बिना सहमति के डीपफेक बनाने पर सजा मिलनी चाहिए, भले ही यह जिज्ञासावश किया गया हो'।<br><br><b>[Insight]</b> डीपफेक और दुष्प्रचार के आसपास की नैतिक सीमाएं छात्रों के लिए बहुत स्पष्ट हैं; व्यवहार में डीपफेक यौन सामग्री पर 'जीरो टॉलरेंस' (शून्य सहिष्णुता) की लगभग आम सहमति है। यह विश्वविद्यालयों को कड़े प्रतिबंध लगाने के लिए मजबूत आधार प्रदान करता है।",
+                chart_desc_frequency: "<b>[Fact]</b> 22.9% उत्तरदाताओं (27 छात्र) ने अनैतिक या समस्याग्रस्त AI उपयोग को देखा या अनुभव किया है। क्रॉस-विश्लेषण से पता चलता है कि 'प्रति दिन 6+ घंटे' उपयोग करने वाले भारी उपयोगकर्ताओं में से 66.7% ने ऐसे व्यवहार को देखा。<br><br><b>[Insight]</b> कोई व्यक्ति जितना अधिक तीव्रता से AI का उपयोग करता है, डीपफेक और दुष्प्रचार का सामना करने की संभावना उतनी ही अधिक होती है। यह भारी उपयोगकर्ताओं को उन्नत साक्षरता प्रशिक्षण और स्पष्ट मार्गदर्शन देने के बारे में है कि जब वे हानिकारक सामग्री का सामना करते हैं तो क्या करें।",
+                chart_desc_reporting: "<b>[Fact]</b> 66.1% उत्तरदाताओं ने कहा कि उन्हें कैंपस में किसी भी आधिकारिक रिपोर्टिंग चैनल के बारे में 'बिल्कुल पता नहीं' है, 27.1% ने 'कुछ सुना था', और केवल 6.8% ने कहा कि वे 'स्पष्ट रूप से जानते हैं' कि कहाँ रिपोर्ट करनी है。<br><br><b>[Insight]</b> छात्रों में मजबूत नैतिक जागरूकता है और वे चाहते हैं कि डीपफेक को दंडित किया जाए, लेकिन मदद के लिए कहाँ और कैसे पूछना है, इसका ज्ञान लगभग शून्य है। सबसे जरूरी हस्तक्षेप ठोस रिपोर्टिंग चैनल बनाना और उनका प्रचार करना है।",
+                
+                s_label_witness: "गवाह", s_label_safe: "सुरक्षित", s_label_none: "कोई नहीं", s_label_creator: "निर्माता", s_label_platform: "प्लेटफ़ॉर्म"
             }
         };
-
-        let currentLang = 'ko';
 
         function updateChartDescription(type) {
             const descKey = "chart_desc_" + type;
@@ -1044,6 +1075,26 @@
                 descEl.innerHTML = t[descKey];
             } else {
                 descEl.innerHTML = "";
+            }
+        }
+
+        function updateStaticCharts(lang) {
+            const t = translations[lang];
+            
+            // Risk Chart
+            if (staticChart1) {
+                staticChart1.data.labels = [t.s_label_witness, t.s_label_safe];
+                staticChart1.update();
+            }
+            // Witness Chart
+            if (staticChart2) {
+                staticChart2.data.labels = [t.s_label_witness, t.s_label_none];
+                staticChart2.update();
+            }
+            // Responsibility Chart
+            if (staticChart3) {
+                staticChart3.data.labels = [t.s_label_creator, t.s_label_platform];
+                staticChart3.update();
             }
         }
 
@@ -1067,6 +1118,9 @@
             document.getElementById('btn-tk2').href = translations[currentLang].link_tk2;
             document.getElementById('btn-tk3').href = translations[currentLang].link_tk3;
             document.getElementById('btn-tk4').href = translations[currentLang].link_tk4;
+
+            // Update Static Charts Labels
+            updateStaticCharts(currentLang);
 
             if(document.getElementById('reportModal').classList.contains('show')) {
                 updateChart();
@@ -1106,29 +1160,28 @@
         window.onload = function() {
             const createChart = (id, type, data, options) => {
                 const ctx = document.getElementById(id);
-                if (ctx) new Chart(ctx, { type, data, options });
+                if (ctx) return new Chart(ctx, { type, data, options });
+                return null;
             };
             const commonOptions = { maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } } };
 
             // Risk Chart: Heavy User Witness 66.7% vs Non-Witness 33.3%
-            createChart('riskChart', 'doughnut', {
-                labels: ['Witnessed', 'Safe'], datasets: [{ data: [66.7, 33.3], backgroundColor: ['#ff6b6b', '#e9ecef'], borderWidth: 0 }]
+            staticChart1 = createChart('riskChart', 'doughnut', {
+                labels: ['목격함', '안전함'], datasets: [{ data: [66.7, 33.3], backgroundColor: ['#ff6b6b', '#e9ecef'], borderWidth: 0 }]
             }, { ...commonOptions, cutout: '70%' });
 
             // Witness Chart: Total Witness 22.9% vs Non-Witness 77.1%
-            createChart('witnessChart', 'bar', {
-                labels: ['Witnessed', 'None'], datasets: [{ data: [22.9, 77.1], backgroundColor: ['#fab005', '#e9ecef'], borderRadius: 6 }]
+            staticChart2 = createChart('witnessChart', 'bar', {
+                labels: ['목격함', '없음'], datasets: [{ data: [22.9, 77.1], backgroundColor: ['#fab005', '#e9ecef'], borderRadius: 6 }]
             }, { ...commonOptions, indexAxis: 'y', scales: { x: { display: false, max: 100 }, y: { grid: { display: false } } } });
 
             // Responsibility Chart (Universal Risk Placeholder): Creator 89.8% vs Platform 10.2%
-            createChart('universalRiskChart', 'bar', {
-                labels: ['Creator', 'Platform'], datasets: [{ data: [89.8, 10.2], backgroundColor: ['#ff6b6b', '#e9ecef'], borderRadius: 6 }]
+            staticChart3 = createChart('universalRiskChart', 'bar', {
+                labels: ['제작자', '플랫폼'], datasets: [{ data: [89.8, 10.2], backgroundColor: ['#ff6b6b', '#e9ecef'], borderRadius: 6 }]
             }, { ...commonOptions, indexAxis: 'y', scales: { x: { display: false, max: 100 }, y: { grid: { display: false } } } });
         };
 
         // --- Interactive Chart Logic ---
-        let dynamicChart = null;
-        
         // Detailed Data from "Data_Analysis_Report_Revision.md"
         const chartData = {
             'tools': {
