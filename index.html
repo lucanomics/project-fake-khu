@@ -461,7 +461,8 @@
                     <li data-lang="tk1_item1">쉬운 말로 풀어쓴 AI 용어 사전</li>
                     <li data-lang="tk1_item2">긴급 상황 시 연락할 비상 연락망</li>
                 </ul>
-                <a href="https://docs.google.com/document/d/1pkKRHfcO6w9bk1Rl5u-SeKMVp9czQWCRlFWCxAS8Ivk/edit?usp=sharing" target="_blank" class="btn-download">
+                <!-- Added ID to change href via JS -->
+                <a id="btn-tk1" href="https://docs.google.com/document/d/1pkKRHfcO6w9bk1Rl5u-SeKMVp9czQWCRlFWCxAS8Ivk/edit?usp=sharing" target="_blank" class="btn-download">
                     <i class="fas fa-download"></i> <span data-lang="btn_download">다운로드</span>
                 </a>
             </div>
@@ -476,7 +477,8 @@
                     <li data-lang="tk2_item2">개인정보 가리고 질문하는 마스킹 기법</li>
                     <li data-lang="tk2_item3">AI 대화 기록 완전 삭제하는 법</li>
                 </ul>
-                <a href="https://docs.google.com/document/d/1ieaA36l3-y8e1Lp_W1kl6h93Ct9aCVo3MJLX3pYrXxY/edit?usp=sharing" target="_blank" class="btn-download">
+                <!-- Added ID to change href via JS -->
+                <a id="btn-tk2" href="https://docs.google.com/document/d/1ieaA36l3-y8e1Lp_W1kl6h93Ct9aCVo3MJLX3pYrXxY/edit?usp=sharing" target="_blank" class="btn-download">
                     <i class="fas fa-download"></i> <span data-lang="btn_download">다운로드</span>
                 </a>
             </div>
@@ -491,7 +493,8 @@
                     <li data-lang="tk3_item2">학술 자료 기반 정보 검증 팁</li>
                     <li data-lang="tk3_item3">텍스트/이미지 진위 판별하기</li>
                 </ul>
-                <a href="https://docs.google.com/document/d/1zFOpyoSdUK5l6zFB56-K_LZ1qWgcAlhNCvvjLC13oLs/edit?usp=sharing" target="_blank" class="btn-download">
+                <!-- Added ID to change href via JS -->
+                <a id="btn-tk3" href="https://docs.google.com/document/d/1zFOpyoSdUK5l6zFB56-K_LZ1qWgcAlhNCvvjLC13oLs/edit?usp=sharing" target="_blank" class="btn-download">
                     <i class="fas fa-download"></i> <span data-lang="btn_download">다운로드</span>
                 </a>
             </div>
@@ -506,7 +509,8 @@
                     <li data-lang="tk4_item2">일상 및 교육용 대본 생성 프롬프트 템플릿</li>
                     <li data-lang="tk4_item2">친구들을 위한 토론 주제 아이디어 생성 가이드</li>
                 </ul>
-                <a href="https://docs.google.com/document/d/1qODK23YI3IvpNwDcmNMzEOjIWakZGPlJcnH5N7IVCMU/edit?usp=sharing" target="_blank" class="btn-download">
+                <!-- Added ID to change href via JS -->
+                <a id="btn-tk4" href="https://docs.google.com/document/d/1qODK23YI3IvpNwDcmNMzEOjIWakZGPlJcnH5N7IVCMU/edit?usp=sharing" target="_blank" class="btn-download">
                     <i class="fas fa-download"></i> <span data-lang="btn_download">다운로드</span>
                 </a>
             </div>
@@ -647,6 +651,12 @@
         // --- Language Translation Logic ---
         const translations = {
             ko: {
+                // Link Data (Korean)
+                link_tk1: "https://docs.google.com/document/d/1pkKRHfcO6w9bk1Rl5u-SeKMVp9czQWCRlFWCxAS8Ivk/edit?usp=sharing",
+                link_tk2: "https://docs.google.com/document/d/1ieaA36l3-y8e1Lp_W1kl6h93Ct9aCVo3MJLX3pYrXxY/edit?usp=sharing",
+                link_tk3: "https://docs.google.com/document/d/1zFOpyoSdUK5l6zFB56-K_LZ1qWgcAlhNCvvjLC13oLs/edit?usp=sharing",
+                link_tk4: "https://docs.google.com/document/d/1qODK23YI3IvpNwDcmNMzEOjIWakZGPlJcnH5N7IVCMU/edit?usp=sharing",
+
                 menu_test: "진단하기",
                 menu_toolkit: "툴킷",
                 menu_pledge: "연대하기",
@@ -751,6 +761,12 @@
                 res_lv1_toolkit: "Lv.1 서바이벌 툴킷"
             },
             en: {
+                // Link Data (English)
+                link_tk1: "https://docs.google.com/document/d/1feLm0awxVFzE3NZtJk8tfAfkF_-5lj4TsYDVB8GrR2Q/edit?usp=sharing",
+                link_tk2: "https://docs.google.com/document/d/1PmiMVFr3x8biYGdPuqmhlR-UOPc4NnXDmVkFCy0pH1g/edit?usp=sharing",
+                link_tk3: "https://docs.google.com/document/d/1J3PC4-QIea6I9oIUyC6J53Ip1sxAe3NBxFH__4SIREc/edit?usp=sharing",
+                link_tk4: "https://docs.google.com/document/d/17BR0HkAEQLQl8aEUpoUEkjycUMVlFtb9pwUCvrSUosg/edit?usp=sharing",
+
                 menu_test: "Self-Check",
                 menu_toolkit: "Toolkit",
                 menu_pledge: "Pledge",
@@ -869,6 +885,12 @@
                     el.innerHTML = translations[currentLang][key];
                 }
             });
+
+            // *** NEW: Update Toolkit Links based on Language ***
+            document.getElementById('btn-tk1').href = translations[currentLang].link_tk1;
+            document.getElementById('btn-tk2').href = translations[currentLang].link_tk2;
+            document.getElementById('btn-tk3').href = translations[currentLang].link_tk3;
+            document.getElementById('btn-tk4').href = translations[currentLang].link_tk4;
 
             // Update chart if modal is open
             if(document.getElementById('reportModal').classList.contains('show')) {
