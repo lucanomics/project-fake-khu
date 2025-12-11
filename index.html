@@ -80,6 +80,32 @@
         }
         .nav-links a:hover { color: var(--primary); }
 
+        /* --- Language Buttons --- */
+        .lang-group {
+            margin-left: auto;
+            display: flex;
+            gap: 5px;
+            z-index: 2000;
+        }
+
+        .lang-btn {
+            padding: 0.4rem 0.6rem;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            background: white;
+            border: 1px solid #4c6ef5;
+            color: #4c6ef5;
+            transition: 0.2s;
+            font-family: var(--font-body);
+        }
+
+        .lang-btn:hover, .lang-btn.active {
+            background: #4c6ef5;
+            color: white;
+        }
+
         /* --- Hero Section --- */
         .hero {
             padding: 160px 20px 100px;
@@ -330,24 +356,11 @@
             <a href="#pledge" data-lang="menu_pledge">연대하기</a>
         </nav>
 
-        <button onclick="toggleLanguage()" style="
-            margin-left: auto; 
-            padding: 0.4rem 0.8rem; 
-            font-size: 0.9rem; 
-            font-weight: bold;
-            border-radius: 20px; 
-            cursor: pointer; 
-            background: white; 
-            border: 2px solid #4c6ef5; 
-            color: #4c6ef5;
-            z-index: 2000;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            transition: 0.2s;
-        " onmouseover="this.style.background='#4c6ef5'; this.style.color='white'" onmouseout="this.style.background='white'; this.style.color='#4c6ef5'">
-            <i class="fas fa-globe"></i> <span id="langBtnText">EN</span>
-        </button>
+        <div class="lang-group">
+            <button onclick="setLanguage('ko')" class="lang-btn active" data-btn-lang="ko">KO</button>
+            <button onclick="setLanguage('en')" class="lang-btn" data-btn-lang="en">EN</button>
+            <button onclick="setLanguage('zh')" class="lang-btn" data-btn-lang="zh">ZH</button>
+        </div>
     </header>
 
     <!-- Hero Section -->
@@ -471,11 +484,11 @@
             <div class="toolkit-card" id="toolkit-2">
                 <div class="toolkit-icon">🛡️</div>
                 <h3 class="toolkit-title" data-lang="tk2_title">Lv.2 보안관 꿈나무 툴킷</h3>
-                <p class="toolkit-desc" data-lang="tk2_desc">AI를 사용할 때 개인정보가 유출되지 않는 법을 배워요.</p>
+                <p class="toolkit-desc" data-lang="tk2_desc">나와 지인의 정보를 안전하게 보호하는 방어구 세트예요.</p>
                 <ul class="toolkit-list">
-                    <li data-lang="tk2_item1">AI 학습 거부 설정 가이드</li>
-                    <li data-lang="tk2_item2">개인정보 가리고 질문하는 마스킹 기법</li>
-                    <li data-lang="tk2_item3">AI 대화 기록 완전 삭제하는 법</li>
+                    <li data-lang="tk2_item1">SNS 비공개 설정 가이드</li>
+                    <li data-lang="tk2_item2">워터마크 생성기 링크</li>
+                    <li data-lang="tk2_item3">AI 대화 기록 완전 삭제법</li>
                 </ul>
                 <!-- Added ID to change href via JS -->
                 <a id="btn-tk2" href="https://docs.google.com/document/d/1ieaA36l3-y8e1Lp_W1kl6h93Ct9aCVo3MJLX3pYrXxY/edit?usp=sharing" target="_blank" class="btn-download">
@@ -487,7 +500,7 @@
             <div class="toolkit-card" id="toolkit-3">
                 <div class="toolkit-icon">🔎</div>
                 <h3 class="toolkit-title" data-lang="tk3_title">Lv.3 보안관 심화 툴킷</h3>
-                <p class="toolkit-desc" data-lang="tk3_desc">가짜 뉴스와 딥페이크를 걸러내는 검증 도구 사용법이에요.</p>
+                <p class="toolkit-desc" data-lang="tk3_desc">거짓 정보를 꿰뚫어보고 검증하는 전문가 장비예요.</p>
                 <ul class="toolkit-list">
                     <li data-lang="tk3_item1">AI로 출처 확인하는 법</li>
                     <li data-lang="tk3_item2">학술 자료 기반 정보 검증 팁</li>
@@ -793,22 +806,22 @@
                 toolkit_subtitle: "Equip yourself with the right toolkit to navigate the digital world safely!",
                 tk1_title: "Lv.1 Survival Toolkit",
                 tk1_desc: "Essential survival kit to stay alive in the dangerous AI jungle.",
-                tk1_item1: "Introduction to AI",
+                tk1_item1: "Basic Terminology PDF",
                 tk1_item2: "Emergency Contact List",
                 tk2_title: "Lv.2 Junior Sheriff Toolkit",
                 tk2_desc: "Defense set to protect the privacy of you and your acquaintances.",
-                tk2_item1: "AI Privacy Guide",
-                tk2_item2: "Basic Prompting Guide",
+                tk2_item1: "SNS Privacy Guide",
+                tk2_item2: "Watermark Generator Link",
+                tk2_item3: "Permanently Delete AI Chat History",
                 tk3_title: "Lv.3 Senior Sheriff Toolkit",
                 tk3_desc: "Expert gear to pierce through lies and verify the truth.",
-                tk3_item1: "Fact-Check 101",
-                tk3_item2: "Research Basics",
-                tk3_item3: "Visual Verification Guide",
+                tk3_item1: "Deepfake Detection AI Tools",
+                tk3_item2: "Fact-Check Checklist",
+                tk3_item3: "Verification Guide",
                 tk4_title: "Lv.4 Campus Ambassador Toolkit",
                 tk4_desc: "Activity package for leaders changing the campus culture.",
-                tk4_item1: "Leadership Essentials",
-                tk4_item2: "High-Impact Prompting + OSINT",
-                tk4_item3: "Safety & Support Guide",
+                tk4_item1: "10-min Edu PPT for Friends",
+                tk4_item2: "Official Ambassador Badge",
                 btn_download: "Download",
 
                 pledge_title: "Stand With Us",
@@ -869,14 +882,133 @@
                 res_lv1_title: "Digital Stray",
                 res_lv1_desc: "Are you alone in the dangerous jungle?<br>Survival knowledge is urgent!",
                 res_lv1_toolkit: "Lv.1 Survival Toolkit"
+            },
+            zh: {
+                // Link Data (Chinese - linking to English for now)
+                link_tk1: "https://docs.google.com/document/d/1feLm0awxVFzE3NZtJk8tfAfkF_-5lj4TsYDVB8GrR2Q/edit?usp=sharing",
+                link_tk2: "https://docs.google.com/document/d/1PmiMVFr3x8biYGdPuqmhlR-UOPc4NnXDmVkFCy0pH1g/edit?usp=sharing",
+                link_tk3: "https://docs.google.com/document/d/1J3PC4-QIea6I9oIUyC6J53Ip1sxAe3NBxFH__4SIREc/edit?usp=sharing",
+                link_tk4: "https://docs.google.com/document/d/17BR0HkAEQLQl8aEUpoUEkjycUMVlFtb9pwUCvrSUosg/edit?usp=sharing",
+
+                menu_test: "自我诊断",
+                menu_toolkit: "工具包",
+                menu_pledge: "参与联署",
+                hero_title: "经过验证的真相与安全的技术，<br>我们共同开启的正确AI时代。",
+                hero_desc: "为了安全的数字校园，大学生AI素养项目 F.A.K.E.，现在开始。",
+                hero_btn: "开始AI使用类型自我诊断",
+
+                stats_title: "数据中的现实",
+                stats_subtitle: "2025年11月，对118名大学生的声音进行了调查。(调查期间: 11.01~11.14)",
+                stat_risk_label: "风险暴露度",
+                stat_risk_main: "每周目击1次以上",
+                stat_risk_desc: "每3名学生中就有2名每周目击虚假信息。虚假信息造成的伤害不再是别人的事。",
+                stat_void_label: "安全网认知",
+                stat_void_main: "\"完全不知道<br>举报处\"",
+                stat_void_desc: "虽然有系统，但与我们的日常生活脱节。我们都处于‘死角’。",
+                stat_witness_label: "直接目击经验",
+                stat_witness_desc: "直接目击假新闻或Deepfake等不道德行为的经验也高达35.6%。比想象中离我们更近。",
+                stat_light_label: "轻度用户风险",
+                stat_light_title: "⚠️ 没有安全区",
+                stat_light_desc: "即使是每天使用不到2小时的‘轻度用户’，也有38%目击了有害内容。使用时间短并不意味着安全。",
+                btn_full_report: "📊 查看完整调查结果",
+
+                toolkit_title: "F.A.K.E. 工具包仓库",
+                toolkit_subtitle: "带上适合等级的装备，安全地航行在数字世界吧！",
+                tk1_title: "Lv.1 生存工具包",
+                tk1_desc: "为了在危险的AI丛林中生存的必备生存工具包。",
+                tk1_item1: "简易AI术语词典 PDF",
+                tk1_item2: "紧急情况联系网列表",
+                tk2_title: "Lv.2 预备治安官工具包",
+                tk2_desc: "安全保护我和熟人信息的防御套装。",
+                tk2_item1: "SNS私密设置指南",
+                tk2_item2: "水印生成器链接",
+                tk2_item3: "AI对话记录完全删除法",
+                tk3_title: "Lv.3 治安官深化工具包",
+                tk3_desc: "看穿虚假信息并进行验证的专家装备。",
+                tk3_item1: "Deepfake检测AI合集",
+                tk3_item2: "事实核查清单",
+                tk3_item3: "真伪判别指南",
+                tk4_title: "Lv.4 校园大使工具包",
+                tk4_desc: "为了改变校园文化的领导者准备的活动套餐。",
+                tk4_item1: "给朋友们的10分钟教育PPT",
+                tk4_item2: "官方大使认证徽章",
+                btn_download: "下载",
+
+                pledge_title: "请一起参与联署",
+                pledge_desc: "\"我是安全使用AI，建设校园和共同体，<br>与数字犯罪受害者团结一致的行动派数字公民！\"",
+                pledge_btn_sign: "签名并参与",
+                pledge_btn_id: "领取 F.A.K.E. ID",
+
+                // --- Report Modal (Static) ---
+                report_modal_title: "数据详细分析报告",
+                report_modal_instr: "请选择感兴趣的主题。",
+                report_insight_label: "💡 分析洞察:",
+                opt_tools: "🛠️ AI工具使用比例",
+                opt_purpose: "🤖 AI使用目的",
+                opt_unethical: "🚫 不道德行为认知",
+                opt_responsibility: "⚖️ 责任归属认知",
+                opt_deepfake: "👮 同意Deepfake处罚",
+                opt_frequency: "👀 虚假信息目击频率",
+                opt_reporting: "📢 举报渠道认知度",
+
+                // --- Test Modal ---
+                test_header: "我的AI伦理分数诊断 (Self-Check)",
+                q1_title: "Q1. 做作业时如何利用AI的回答？",
+                q1_opt1: "🔍 事实核查是必须的！通过可信来源进行交叉验证。",
+                q1_opt2: "🤔 看起来不错就先用。",
+                q1_opt3: "⚡ 复制+粘贴 1秒搞定！",
+                q2_title: "Q2. 如果朋友的Deepfake照片出现在群聊中？",
+                q2_opt1: "🚨 立即举报并要求朋友们停止传播。",
+                q2_opt2: "🤐 虽然觉得不对劲，但还是悄悄退群。",
+                q2_opt3: "🤣 说着\"这个真像\"并转发到其他群。",
+                q3_title: "Q3. 您知道校内正式的AI滥用举报处吗？",
+                q3_opt1: "📞 知道确切的部门名称和联系方式。",
+                q3_opt2: "🏫 人权中心...? 好像在哪里见过...?",
+                q3_opt3: "🤷‍♂️ 有这种东西吗？",
+                q4_title: "Q4. 在SNS上发布AI生成物时会进行标注吗？",
+                q4_opt1: "🏷️ 一定会加上 #AI生成 标签。",
+                q4_opt2: "🎨 想要假装是自己画的时候就不加。",
+                q4_opt3: "❌ 完全不在意。",
+                q5_title: "Q5. 您知道AI生成的图像不受版权法保护吗？",
+                q5_opt1: "🙆‍♂️ 是的，我知道。",
+                q5_opt2: "🙅‍♂️ 不，我不知道。",
+
+                res_rec_label: "推荐解决方案",
+                btn_get_solution: "获取定制解决方案",
+                btn_retry: "重新测试",
+
+                res_lv4_title: "校园大使",
+                res_lv4_desc: "哇！您已经是准备好的领导者了！<br>现在请引导朋友们走上正确的道路。",
+                res_lv4_toolkit: "Lv.4 校园大使工具包",
+
+                res_lv3_title: "校园治安官",
+                res_lv3_desc: "您懂得主动验证信息！<br>要不要尝试更专业的工具？",
+                res_lv3_toolkit: "Lv.3 治安官深化工具包",
+
+                res_lv2_title: "预备治安官",
+                res_lv2_desc: "虽然心意已决，但装备不足？<br>先学习如何保护自己和熟人吧！",
+                res_lv2_toolkit: "Lv.2 预备治安官工具包",
+
+                res_lv1_title: "数字迷途者",
+                res_lv1_desc: "您独自一人在危险的丛林中吗？<br>生存所需的必要知识刻不容缓！",
+                res_lv1_toolkit: "Lv.1 生存工具包"
             }
         };
 
         let currentLang = 'ko';
+        const langOrder = ['ko', 'en', 'zh'];
 
-        function toggleLanguage() {
-            currentLang = currentLang === 'ko' ? 'en' : 'ko';
-            document.getElementById('langBtnText').innerText = currentLang === 'ko' ? 'EN' : 'KO';
+        function setLanguage(lang) {
+            currentLang = lang;
+
+            // Update button active states
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if (btn.getAttribute('data-btn-lang') === lang) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
             
             // Translate all static elements
             document.querySelectorAll('[data-lang]').forEach(el => {
@@ -886,7 +1018,7 @@
                 }
             });
 
-            // *** NEW: Update Toolkit Links based on Language ***
+            // *** Update Toolkit Links based on Language ***
             document.getElementById('btn-tk1').href = translations[currentLang].link_tk1;
             document.getElementById('btn-tk2').href = translations[currentLang].link_tk2;
             document.getElementById('btn-tk3').href = translations[currentLang].link_tk3;
@@ -983,6 +1115,11 @@
                     labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn', 'Copilot', 'Claude', 'Deepseek', 'Others'],
                     label: 'Usage Ratio (%)',
                     desc: "💡 Analysis Insight:<br><strong>ChatGPT (96.6%)</strong> is overwhelmingly dominant. This shows extreme polarization in tool usage. There is a risk that the bias of a specific AI model could be reflected in students' thinking."
+                },
+                zh: {
+                    labels: ['ChatGPT', 'Gemini', 'Perplexity', 'Wrtn', 'Copilot', 'Claude', 'Deepseek', '其他'],
+                    label: '使用率 (%)',
+                    desc: "💡 分析洞察:<br><strong>ChatGPT (96.6%)</strong> 占据压倒性第一。这表明大学生的AI使用极度偏向特定工具。存在特定AI模型的偏差可能直接反映在学生思维中的担忧。"
                 }
             },
             'purpose': {
@@ -999,6 +1136,11 @@
                     labels: ['Info Search', 'Assignment/Report', 'Idea Generation', 'Photo/Video Edit', 'Translation', 'Coding'],
                     label: 'Response Ratio (%)',
                     desc: "💡 Analysis Insight:<br>AI has become a core academic tool for <strong>'data collection' and 'assignments'</strong>, not just for fun. AI ethics education is now a requirement for academic achievement, not an option."
+                },
+                zh: {
+                    labels: ['资料搜索', '作业/报告撰写', '创意生成', '照片/视频编辑', '外语翻译', '编程'],
+                    label: '应答率 (%)',
+                    desc: "💡 分析洞察:<br>不仅仅是单纯的兴趣，已成为<strong>‘资料收集’和‘作业撰写’</strong>等学业的核心工具。现在AI伦理教育不是选择，而是为了学业成就的必要条件。"
                 }
             },
             'unethical': {
@@ -1015,6 +1157,11 @@
                     labels: ['Consuming Deepfake for Fun', 'Spreading False Info', 'Plagiarism', 'Creating Deepfake', 'Generating Full Homework'],
                     label: 'Unethical Perception (%)',
                     desc: "💡 Analysis Insight:<br>Students identified <strong>'consuming deepfakes for fun'</strong> as the most serious issue. There is a growing awareness that watching and enjoying it is also a clear act of harm."
+                },
+                zh: {
+                    labels: ['娱乐性消费Deepfake', '散布虚假事实', '剽窃', '制作Deepfake', '作业全生成'],
+                    label: '不道德行为认知 (%)',
+                    desc: "💡 分析洞察:<br>学生们将<strong>‘以玩笑方式消费Deepfake的行为’</strong>选为最严重的问题。这表明不仅是直接制作，观看和享受也被认为是明显的加害行为。"
                 }
             },
             'responsibility': {
@@ -1031,6 +1178,11 @@
                     labels: ['Initial Creator', 'Uncritical Sharer', 'Platform/Developer', 'University HQ'],
                     label: 'Responsibility (%)',
                     desc: "💡 Analysis Insight:<br>Responsibility is placed heavily on <strong>'uncritical sharers (29.1%)'</strong> as well as creators (46.1%). The excuse \"I just forwarded it\" is no longer valid."
+                },
+                zh: {
+                    labels: ['最初生成者', '无批判共享者', '平台/开发商', '大学本部'],
+                    label: '责任认知 (%)',
+                    desc: "💡 分析洞察:<br>不仅是最初生成者(46.1%)，对<strong>‘无批判共享者(29.1%)’</strong>也问责重大。“只是搬运而已”的辩解不再有效。"
                 }
             },
             'deepfake': {
@@ -1047,6 +1199,11 @@
                     labels: ['Agree with Punishment', 'Neutral', 'Disagree'],
                     label: 'Ratio (%)',
                     desc: "💡 Analysis Insight:<br>More than 8 out of 10 students said <strong>'Deepfake creation should be punished even if it's a joke.'</strong> Students' ethical standards are already much stricter than legal ones."
+                },
+                zh: {
+                    labels: ['赞成处罚', '普通/中立', '反对'],
+                    label: '比率 (%)',
+                    desc: "💡 分析洞察:<br>10人中有8人以上回答<strong>‘即使是玩笑，制作Deepfake也应受到处罚’</strong>。大学生的伦理标准已经比法律标准严格得多。"
                 }
             },
             'frequency': {
@@ -1063,6 +1220,11 @@
                     labels: ['3+ Times/Week', '1-2 Times/Week', 'Almost Everyday', 'Don\'t Know'],
                     label: 'Witness Frequency (%)',
                     desc: "💡 Analysis Insight:<br>Nearly half of students encounter fake info 'at least once a week', and <strong>17.8% see it 'almost everyday'</strong>. This suggests the digital environment is already polluted."
+                },
+                zh: {
+                    labels: ['每周3次以上', '每周1-2次', '几乎每天', '不太清楚'],
+                    label: '目击频率 (%)',
+                    desc: "💡 分析洞察:<br>接近一半的学生‘每周一次以上’遇到虚假信息，特别是<strong>‘几乎每天’看到的回答也达到17.8%</strong>。这暗示数字环境已经被污染。"
                 }
             },
             'reporting': {
@@ -1079,6 +1241,11 @@
                     labels: ['Don\'t Know At All', 'Heard of It', 'Know Exactly'],
                     label: 'Awareness (%)',
                     desc: "💡 Analysis Insight:<br><strong>Over 66% don't know reporting channels at all.</strong> It's a state of 'Institutional Void' where victims don't know where to ask for help. This is why Project F.A.K.E. is urgent."
+                },
+                zh: {
+                    labels: ['完全不知道', '听说过', '确切知道'],
+                    label: '认知度 (%)',
+                    desc: "💡 分析洞察:<br><strong>66%以上完全不知道举报渠道。</strong>这是即使受到伤害也不知道向哪里求助的‘制度性空白’状态。这就是 F.A.K.E. 项目迫在眉睫的原因。"
                 }
             }
         };
