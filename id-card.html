@@ -61,6 +61,16 @@
         input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: #475569; border-radius: 2px; }
         @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
         .modal-content { animation: modalFadeIn 0.2s ease-out; }
+       /* --- [추가] 애니메이션 및 유틸리티 --- */
+        .animate-fade-in { animation: modalFadeIn 0.3s ease-out forwards; }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.7); /* Slate-900 with opacity */
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        /* 스크롤바 숨기기 (깔끔한 디자인) */
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
     </style>
 </head>
 <body>
@@ -69,7 +79,7 @@
     <script type="text/babel">
         const { useState, useRef, useEffect } = React;
 
-        // --- Department Data (Complete List) ---
+        // --- 1. 학과 데이터 (수정 없음) ---
         const departmentData = {
             "Hospitality경영학과": { code: "101", eng: "Dept. of Hospitality Management" },
             "간호학과": { code: "102", eng: "Dept. of Nursing" },
@@ -170,34 +180,23 @@
             "Florida State University": { code: "850", eng: "Florida State University" }
         };
 
-        // Icons
+        // --- 2. 아이콘 컴포넌트들 (수정 없음) ---
         const IconWrapper = ({ children, size = 24, className = "" }) => (
             <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>{children}</svg>
         );
-        const Sparkles = (props) => (<IconWrapper {...props}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L12 3Z"/></IconWrapper>);
-        const Camera = (props) => (<IconWrapper {...props}><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></IconWrapper>);
-        const Wallet = (props) => (<IconWrapper {...props}><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12a2 2 0 0 0 2 2h14v-4"/><path d="M18 12a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v-8Z"/></IconWrapper>);
-        const ImageIcon = (props) => (<IconWrapper {...props}><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></IconWrapper>);
         const Download = (props) => (<IconWrapper {...props}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></IconWrapper>);
         const Trash2 = (props) => (<IconWrapper {...props}><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></IconWrapper>);
-        const UserCircle = (props) => (<IconWrapper {...props}><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/></IconWrapper>);
-        const Building = (props) => (<IconWrapper {...props}><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M8 10h.01"/><path d="M16 10h.01"/><path d="M8 14h.01"/><path d="M16 14h.01"/></IconWrapper>);
         const RefreshCw = (props) => (<IconWrapper {...props}><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></IconWrapper>);
-        const Lock = (props) => (<IconWrapper {...props}><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></IconWrapper>);
-        const CheckCircle2 = (props) => (<IconWrapper {...props}><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></IconWrapper>);
-        const Move = (props) => (<IconWrapper {...props}><polyline points="5 9 2 12 5 15"/><polyline points="9 5 12 2 15 5"/><polyline points="15 19 12 22 9 19"/><polyline points="19 9 22 12 19 15"/><line x1="2" x2="22" y1="12" y2="12"/><line x1="12" x2="12" y1="2" y2="22"/></IconWrapper>);
-        const ZoomIn = (props) => (<IconWrapper {...props}><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="11" x2="11" y1="8" y2="14"/><line x1="8" x2="14" y1="11" y2="11"/></IconWrapper>);
-        const UploadCloud = (props) => (<IconWrapper {...props}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></IconWrapper>);
-        const Maximize = (props) => (<IconWrapper {...props}><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></IconWrapper>);
-        const Minimize = (props) => (<IconWrapper {...props}><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 11h3a2 2 0 0 1 2 2v3"/></IconWrapper>);
-        const RotateCcw = (props) => (<IconWrapper {...props}><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></IconWrapper>);
         const X = (props) => (<IconWrapper {...props}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></IconWrapper>);
+        const ImageIcon = (props) => (<IconWrapper {...props}><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></IconWrapper>);
+        const UploadCloud = (props) => (<IconWrapper {...props}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></IconWrapper>);
 
+        // --- 3. 카드 컴포넌트들 ---
         const FlipCard = ({ card, onDelete, onClick }) => {
             const [isFlipped, setIsFlipped] = useState(false);
 
             const handleDownload = (e, side) => {
-                e.stopPropagation(); 
+                e.stopPropagation();
                 const link = document.createElement('a');
                 link.href = side === 'front' ? card.image : card.backImage;
                 link.download = `fake_id_${side}_${card.id}.png`;
@@ -210,16 +209,13 @@
             };
 
             const handleClick = () => {
-                if (onClick) onClick(); 
-                else setIsFlipped(!isFlipped); 
+                if (onClick) onClick();
+                else setIsFlipped(!isFlipped);
             };
 
             return (
                 <div className="space-y-2">
-                    <div 
-                        className={`card-container aspect-[2/3] w-full ${isFlipped ? 'flipped' : ''}`}
-                        onClick={handleClick}
-                    >
+                    <div className={`card-container aspect-[2/3] w-full ${isFlipped ? 'flipped' : ''}`} onClick={handleClick}>
                         <div className="card-inner">
                             <div className="card-front">
                                 <img src={card.image} className="w-full h-full object-cover" alt="Front" />
@@ -232,7 +228,6 @@
                             </div>
                         </div>
                     </div>
-                    
                     <div className="flex justify-between items-center bg-slate-800 p-2 rounded-xl text-xs shadow-lg">
                         <div className="flex gap-3 px-2">
                             <button onClick={(e) => handleDownload(e, 'front')} className="text-slate-300 hover:text-white flex items-center gap-1 font-semibold transition-colors">
@@ -263,7 +258,7 @@
             if (!card) return null;
 
             const handleDownload = (e, side) => {
-                e.stopPropagation(); 
+                e.stopPropagation();
                 const link = document.createElement('a');
                 link.href = side === 'front' ? card.image : card.backImage;
                 link.download = `fake_id_${side}_${card.id}.png`;
@@ -277,10 +272,7 @@
                             <X size={24} />
                         </button>
 
-                        <div 
-                            className={`card-container aspect-[2/3] w-full mb-6 ${isFlipped ? 'flipped' : ''}`}
-                            onClick={() => setIsFlipped(!isFlipped)}
-                        >
+                        <div className={`card-container aspect-[2/3] w-full mb-6 ${isFlipped ? 'flipped' : ''}`} onClick={() => setIsFlipped(!isFlipped)}>
                             <div className="card-inner">
                                 <div className="card-front">
                                     <img src={card.image} className="w-full h-full object-cover rounded-2xl shadow-2xl" alt="Front" />
@@ -300,24 +292,18 @@
                                     Back <Download size={18}/>
                                 </button>
                             </div>
-                            <button 
-                                onClick={() => { 
-                                    if(confirm('Delete this card?')) { 
-                                        onDelete(card.id); 
-                                        onClose(); 
-                                    } 
-                                }} 
-                                className="p-3 bg-red-500/20 text-red-400 rounded-xl hover:bg-red-500 hover:text-white transition"
-                            >
+                            <button onClick={() => { if(confirm('Delete this card?')) { onDelete(card.id); onClose(); } }} 
+                                className="p-3 bg-red-500/20 text-red-400 rounded-xl hover:bg-red-500 hover:text-white transition">
                                 <Trash2 size={20}/>
                             </button>
                         </div>
-                          <p className="text-center text-slate-400 mt-6 text-sm font-medium animate-pulse">Tap card to flip • Tap background to close</p>
+                        <p className="text-center text-slate-400 mt-6 text-sm font-medium animate-pulse">Tap card to flip • Tap background to close</p>
                     </div>
                 </div>
             );
         };
 
+        // --- 4. 메인 앱 컴포넌트 ---
         const App = () => {
             const [view, setView] = useState('auth'); 
             const [password, setPassword] = useState('');
@@ -325,8 +311,7 @@
             
             const [rawImage, setRawImage] = useState(null);
             const [frontLogo, setFrontLogo] = useState('./fakhu_logo.png'); 
-            const [backLogo, setBackLogo] = useState('./fakhu_logo_horizontal.png'); 
-
+            
             const [frontImage, setFrontImage] = useState(null); 
             const [metaData, setMetaData] = useState({ name: '', role: 'Trainee', affiliation: '' });
             const [serialData, setSerialData] = useState({ classNum: '101', serialNum: '000001', letterCode: 'A' });
@@ -350,7 +335,7 @@
                 localStorage.setItem('fake_id_cards', JSON.stringify(myCards));
             }, [myCards]);
 
-            // [NEW] Logic to update serialData based on Department (Updated for English Support & FSU Exception)
+            // Serial Logic
             useEffect(() => {
                 let letter = 'A';
                 if(metaData.role.includes('Trainee')) letter = 'A';
@@ -359,21 +344,13 @@
                 else if(metaData.role.includes('Ambassador')) letter = 'Z';
 
                 const deptInput = metaData.affiliation.trim();
-                let deptCode = '000'; // Default Code
+                let deptCode = '000'; 
 
-                // Helper to find department info by Korean or English name
                 const findDeptInfo = (input) => {
-                    // Regex: Remove "Dept.", "Department", "Div.", "Division" and optional "of" from start
                     const normalize = (str) => str.toLowerCase().replace(/^(dept\.?|department|div\.?|division)\s+(of\s+)?/i, "").replace(/[^a-z0-9]/g, "");
                     const target = normalize(input);
-                    
-                    // [NEW] FSU Exception
                     if (target === 'fsu') return { code: '850', eng: 'Florida State University' };
-
-                    // 1. Direct Korean Key Match
                     if (departmentData[input]) return departmentData[input];
-                    
-                    // 2. English Value Match
                     for (const key in departmentData) {
                         const info = departmentData[key];
                         if (normalize(info.eng) === target) return info;
@@ -382,19 +359,10 @@
                 };
 
                 const matchedDept = findDeptInfo(deptInput);
-                if (matchedDept) {
-                    deptCode = matchedDept.code;
-                }
+                if (matchedDept) deptCode = matchedDept.code;
 
-                // Random 4 digits
                 const rand4 = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
-
-                setSerialData({
-                    classNum: deptCode,
-                    letterCode: letter,
-                    serialNum: rand4
-                });
-
+                setSerialData({ classNum: deptCode, letterCode: letter, serialNum: rand4 });
             }, [metaData.role, metaData.affiliation]);
 
             const checkPassword = () => {
@@ -417,19 +385,17 @@
 
             const getThemeColor = (role) => {
                 switch(role) {
-                    case 'Trainee': return "#F87171"; // Red
-                    case 'Junior': return "#FACC15"; // Yellow
-                    case 'Senior': return "#4ADE80"; // Green
-                    case 'Ambassador': return "#60A5FA"; // Blue
+                    case 'Trainee': return "#F87171"; 
+                    case 'Junior': return "#FACC15"; 
+                    case 'Senior': return "#4ADE80"; 
+                    case 'Ambassador': return "#60A5FA"; 
                     default: return "#F87171";
                 }
             };
             
-            // Compatibility Helper for Rounded Rectangles (Fixes crash on some browsers)
             const drawRoundRect = (ctx, x, y, w, h, r) => {
-                if (ctx.roundRect) {
-                    ctx.roundRect(x, y, w, h, r);
-                } else {
+                if (ctx.roundRect) { ctx.roundRect(x, y, w, h, r); } 
+                else {
                     if (w < 2 * r) r = w / 2;
                     if (h < 2 * r) r = h / 2;
                     ctx.beginPath();
@@ -442,23 +408,17 @@
                 }
             };
             
-            // Helper for striped text
             const drawStripedText = (ctx, text, x, y, fontSize) => {
                 ctx.save();
                 ctx.font = `500 ${fontSize}px 'Montserrat', monospace`;
                 ctx.textAlign = "right";
                 
                 const patternCanvas = document.createElement('canvas');
-                patternCanvas.width = 6;
-                patternCanvas.height = 6;
+                patternCanvas.width = 6; patternCanvas.height = 6;
                 const pCtx = patternCanvas.getContext('2d');
-                
                 pCtx.strokeStyle = "rgba(255, 255, 255, 0.4)"; 
                 pCtx.lineWidth = 1;
-                pCtx.beginPath();
-                pCtx.moveTo(0, 6);
-                pCtx.lineTo(6, 0);
-                pCtx.stroke();
+                pCtx.beginPath(); pCtx.moveTo(0, 6); pCtx.lineTo(6, 0); pCtx.stroke();
                 
                 const pattern = ctx.createPattern(patternCanvas, 'repeat');
                 ctx.fillStyle = pattern;
@@ -467,60 +427,37 @@
                 ctx.strokeStyle = "rgba(255, 255, 255, 0.9)";
                 ctx.lineWidth = 0.5;
                 ctx.strokeText(text, x, y);
-                
                 ctx.restore();
             };
 
-
-            // [Back Side] - Updated: REMOVED LOGO DRAWING LOGIC
             const generateBackSide = async (serialCode, themeColor) => {
                 const canvas = document.createElement('canvas');
-                const width = 600;
-                const height = 900;
-                canvas.width = width;
-                canvas.height = height;
+                const width = 600; const height = 900;
+                canvas.width = width; canvas.height = height;
                 const ctx = canvas.getContext('2d');
 
-                // 1. Background
-                ctx.fillStyle = themeColor;
-                ctx.fillRect(0, 0, width, height);
-
-                // 2. White Inner Box
+                ctx.fillStyle = themeColor; ctx.fillRect(0, 0, width, height);
                 ctx.fillStyle = "#ffffff";
                 const margin = 25;
                 ctx.beginPath();
-                // [FIX] Use safe drawRoundRect
                 drawRoundRect(ctx, margin, 140, width - (margin*2), height - 140 - margin, 30);
                 ctx.fill();
 
-                // 3. (REMOVED) Back Logo Logic
-                // The previous code block for drawing `backLogo` has been removed here.
-
-                // 4. Content Text
-                const startX = 60;
-                let currentY = 220; 
+                const startX = 60; let currentY = 220; 
                 ctx.textAlign = "left";
 
-                // Updated drawField to accept maxFontSize
                 const drawField = (label, value, isAffiliation = false, maxFontSize = 56) => {
                     ctx.fillStyle = themeColor;
                     ctx.font = "bold 18px 'Montserrat', sans-serif";
                     ctx.fillText(label, startX, currentY);
                     
-                    ctx.beginPath();
-                    ctx.strokeStyle = themeColor;
-                    ctx.lineWidth = 2;
-                    ctx.moveTo(startX, currentY + 10);
-                    ctx.lineTo(width - 60, currentY + 10);
-                    ctx.stroke();
+                    ctx.beginPath(); ctx.strokeStyle = themeColor; ctx.lineWidth = 2;
+                    ctx.moveTo(startX, currentY + 10); ctx.lineTo(width - 60, currentY + 10); ctx.stroke();
 
                     const textOffset = label === 'NAME' ? 110 : 60; currentY += textOffset;;
                     ctx.fillStyle = "#333333";
                     
                     let fontSize = maxFontSize;
-
-                    // [NEW] Enhanced Dynamic Font Sizing for NAME
-                    // If label is NAME, determine starting font size based on length
                     if (label === 'NAME') {
                          if (value.length <= 3) fontSize = 80;
                          else if (value.length <= 5) fontSize = 70;
@@ -532,14 +469,11 @@
                     
                     if (isAffiliation) {
                         let words = value.split(' ');
-                        let line = '';
-                        let testY = currentY;
-                        
+                        let line = ''; let testY = currentY;
                         while (ctx.measureText(value).width > maxWidth && fontSize > 30) {
                              fontSize -= 2;
                              ctx.font = `bold ${fontSize}px 'Montserrat', sans-serif`;
                         }
-
                         for(let n = 0; n < words.length; n++) {
                           let testLine = line + words[n] + ' ';
                           if (ctx.measureText(testLine).width > maxWidth && n > 0) {
@@ -551,36 +485,26 @@
                         ctx.fillText(line, startX, testY);
                         currentY = testY + 20; 
                     } else {
-                         // [NEW] Enhanced Auto-scaling for generic fields (including Name)
-                         // This ensures even if we started large, we scale down if it doesn't fit width
-                         while (ctx.measureText(value).width > maxWidth && fontSize > 20) {
+                          while (ctx.measureText(value).width > maxWidth && fontSize > 20) {
                              fontSize -= 2; 
                              ctx.font = `bold ${fontSize}px 'Montserrat', sans-serif`;
                           }
                         ctx.fillText(value, startX, currentY);
                     }
-                    const nextFieldOffset = label === 'NAME' ? 70 : 120;     currentY += nextFieldOffset;
+                    const nextFieldOffset = label === 'NAME' ? 70 : 120;      currentY += nextFieldOffset;
                 };
 
-                // Draw fields
-                drawField("NAME", metaData.name || "NO NAME", false, 56); // Base is 56, but logic inside overrides it
+                drawField("NAME", metaData.name || "NO NAME", false, 56);
                 drawField("CLASS", metaData.role);
                 
-                // [NEW] Affiliation Logic: Use English Name if in DB (Updated for English Input)
                 let displayAff = metaData.affiliation || "University";
                 const deptInput = metaData.affiliation.trim();
                 
-                // Reuse the finding logic logic (simplified inline or move helper outside)
                 const normalize = (str) => str.toLowerCase().replace(/^(dept\.?|department|div\.?|division)\s+(of\s+)?/i, "").replace(/[^a-z0-9]/g, "");
                 const target = normalize(deptInput);
                 
-                let matchedInfo = departmentData[deptInput]; // Try Korean first
-
-                // [NEW] FSU Exception
-                if (target === 'fsu') {
-                    matchedInfo = { code: '850', eng: 'Florida State University' };
-                }
-
+                let matchedInfo = departmentData[deptInput]; 
+                if (target === 'fsu') matchedInfo = { code: '850', eng: 'Florida State University' };
                 if (!matchedInfo) {
                       for (const key in departmentData) {
                         if (normalize(departmentData[key].eng) === target) {
@@ -589,13 +513,9 @@
                         }
                     }
                 }
-
-                if (matchedInfo) {
-                    displayAff = matchedInfo.eng; // Use Official English Name
-                }
+                if (matchedInfo) displayAff = matchedInfo.eng;
                 drawField("AFFILIATION", displayAff, true);
 
-                // 5. QR Code
                 const verificationUrl = `https://lucanomics.github.io/project-fake-khu/?verify=${serialCode}`;
                 try {
                     const qrDataUrl = await QRCode.toDataURL(verificationUrl, {
@@ -606,41 +526,32 @@
                 } catch (e) {}
 
                 ctx.textAlign = "right";
-                // Reduced Font Size for Serial Number (24 -> 18)
                 drawStripedText(ctx, serialCode, width - 40, height - 210, 18);
 
                 return canvas.toDataURL("image/png");
             };
 
-            // [Front Side]
             const generateFrontCard = async () => {
                 const canvas = canvasRef.current;
                 const ctx = canvas.getContext('2d');
-                const width = 600;
-                const height = 900;
-                canvas.width = width;
-                canvas.height = height;
+                const width = 600; const height = 900;
+                canvas.width = width; canvas.height = height;
 
                 const themeColor = getThemeColor(metaData.role);
 
-                // 1. Background
                 ctx.fillStyle = themeColor; 
                 ctx.fillRect(0, 0, width, height);
                 
-                // 2. White Container
                 ctx.fillStyle = "white";
                 ctx.beginPath();
-                // [FIX] Use safe drawRoundRect
                 drawRoundRect(ctx, 10, 10, width - 20, height - 20, 30);
                 ctx.fill();
 
-                // 3. User Photo Area
                 const sidebarWidth = 120;
                 const viewWidth = width - sidebarWidth - 20;
                 
                 ctx.save();
                 ctx.beginPath();
-                // [FIX] Use safe drawRoundRect
                 drawRoundRect(ctx, 20, 20, viewWidth, height - 40, 25);
                 ctx.clip();
                 
@@ -664,14 +575,11 @@
                 }
                 ctx.restore();
 
-                // 4. Sidebar Background
                 ctx.fillStyle = themeColor;
                 ctx.beginPath();
-                // [FIX] Use safe drawRoundRect
                 drawRoundRect(ctx, width - sidebarWidth, 50, sidebarWidth - 20, height - 100, 40);
                 ctx.fill();
 
-                // 5. Sidebar Text
                 ctx.save();
                 ctx.translate(width - (sidebarWidth / 2) - 10, (height / 2) - 200); 
                 ctx.rotate(Math.PI / 2); 
@@ -684,14 +592,10 @@
                 
                 ctx.fillStyle = "#ffffff";
                 
-                // Reduce base font size for sidebar and add auto-scale logic
-                let sideFontSize = 26; // Reduced from 36
+                let sideFontSize = 26; 
                 ctx.font = `bold ${sideFontSize}px 'Montserrat', sans-serif`;
                 
                 const fullText = `${nameText} | ${idText}`;
-                
-                // Check if text fits in the vertical space (which is effectively height logic here due to rotation)
-                // The available height for text is roughly height - 250 (accounting for logo and padding)
                 const maxSideWidth = height - 250;
                 
                 while (ctx.measureText(fullText).width > maxSideWidth && sideFontSize > 14) {
@@ -702,7 +606,6 @@
                 ctx.fillText(fullText, 0, 0);
                 ctx.restore();
                 
-                // 6. Sidebar Logo
                 if (frontLogo) {
                     try {
                         const logo = await loadImage(frontLogo);
@@ -733,10 +636,8 @@
                 setFrontImage(canvas.toDataURL("image/png"));
             };
 
-            // React Effects
             useEffect(() => {
                 if (canvasRef.current) {
-                    // [OPTIMIZATION] Increased debounce time from 5ms to 300ms to prevent lag
                     const timer = setTimeout(() => generateFrontCard(), 300);
                     return () => clearTimeout(timer);
                 }
@@ -840,108 +741,180 @@
             };
 
             return (
-                <div className="min-h-screen pb-20" onMouseUp={handleMouseUp} onTouchEnd={handleMouseUp}>
+                <div className="min-h-screen pb-32 text-slate-100" onMouseUp={handleMouseUp} onTouchEnd={handleMouseUp}>
                     <canvas ref={canvasRef} id="cardCanvas" style={{display: 'none'}}></canvas>
 
-                    <header className="glass-panel sticky top-0 z-50 px-5 py-4 flex justify-between items-center mb-6">
-                        <div className="flex items-center gap-2">
-                            <i className="fas fa-fingerprint text-white text-2xl"></i>
-                            <span className="font-bold text-lg tracking-tight">F.A.K.E ID</span>
+                    {/* Header */}
+                    <header className="glass-panel sticky top-0 z-40 px-6 py-4 flex justify-between items-center mb-6 shadow-lg">
+                        <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-gradient-to-tr from-blue-500 to-purple-600 rounded-lg flex items-center justify-center shadow-lg">
+                                <i className="fas fa-fingerprint text-white text-lg"></i>
+                            </div>
+                            <span className="font-bold text-lg tracking-tight text-white">F.A.K.E ID</span>
                         </div>
+                        {/* 다크모드 토글 버튼 추가 */}
+                        <button 
+                            onClick={() => document.documentElement.classList.toggle('dark')}
+                            className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-yellow-400 hover:bg-slate-700 transition"
+                        >
+                            <i className="fas fa-moon text-xs"></i>
+                        </button>
                     </header>
 
-                    <main className="max-w-md mx-auto px-4">
+                    <main className="max-w-md mx-auto px-5">
+                        {/* 1. 인증 화면 */}
                         {view === 'auth' && (
-                            <div className="flex flex-col items-center justify-center pt-20 animate-fade-in">
-                                <h2 className="text-2xl font-bold mb-2">Access Required</h2>
-                                <input type="password" placeholder="Enter Password" className="w-full max-w-xs px-4 py-3 bg-slate-800 rounded-xl text-white text-center mb-4" 
-                                    value={password} onChange={e => setPassword(e.target.value)} onKeyPress={e => e.key === 'Enter' && checkPassword()} />
-                                <button onClick={checkPassword} className="w-full max-w-xs py-3 bg-purple-600 rounded-xl font-bold">Unlock</button>
-                                {authError && <p className="text-red-400 mt-2">{authError}</p>}
+                            <div className="flex flex-col items-center justify-center pt-24 animate-fade-in space-y-6">
+                                <div className="text-center space-y-2">
+                                    <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+                                        Access Required
+                                    </h2>
+                                    <p className="text-slate-400 text-sm">프로젝트 멤버 전용 공간입니다.</p>
+                                </div>
+                                <div className="w-full max-w-xs space-y-3">
+                                    <input 
+                                        type="password" 
+                                        placeholder="Enter Password" 
+                                        className="w-full px-4 py-4 bg-slate-800/50 border border-slate-700 rounded-2xl text-white text-center text-lg placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" 
+                                        value={password} 
+                                        onChange={e => setPassword(e.target.value)} 
+                                        onKeyPress={e => e.key === 'Enter' && checkPassword()} 
+                                    />
+                                    <button 
+                                        onClick={checkPassword} 
+                                        className="w-full py-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl font-bold text-lg shadow-lg shadow-blue-900/20 active:scale-95 transition-transform"
+                                    >
+                                        Unlock System
+                                    </button>
+                                </div>
+                                {authError && <p className="text-red-400 text-sm font-medium bg-red-400/10 px-4 py-2 rounded-full animate-bounce">{authError}</p>}
                             </div>
+                        )}
 
+                        {/* 2. 메인 화면 (생성 & 갤러리) */}
                         {(view === 'create' || view === 'gallery') && (
-                            <>
-                                <div className="flex bg-slate-800 p-1 rounded-2xl mb-8">
-                                    <button onClick={() => setView('create')} className={`flex-1 py-3 rounded-xl font-bold ${view === 'create' ? 'bg-slate-600' : 'text-slate-500'}`}>Create</button>
-                                    <button onClick={() => setView('gallery')} className={`flex-1 py-3 rounded-xl font-bold ${view === 'gallery' ? 'bg-slate-600' : 'text-slate-500'}`}>Gallery</button>
+                            <div className="animate-fade-in">
+                                {/* 탭 메뉴 */}
+                                <div className="flex bg-slate-800/50 p-1.5 rounded-2xl mb-8 border border-slate-700/50 backdrop-blur-sm">
+                                    <button onClick={() => setView('create')} className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all ${view === 'create' ? 'bg-slate-700 text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}>
+                                        <i className="fas fa-plus mr-2"></i>Create
+                                    </button>
+                                    <button onClick={() => setView('gallery')} className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all ${view === 'gallery' ? 'bg-slate-700 text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}>
+                                        <i className="fas fa-th-large mr-2"></i>Gallery
+                                    </button>
                                 </div>
 
-                                {view === 'create' ? (
-                                    <div className="space-y-4">
-                                        <div className="relative aspect-[2/3] bg-slate-800 rounded-2xl overflow-hidden shadow-2xl border border-slate-700/50 cursor-move"
+                                {/* Create 탭 */}
+                                {view === 'create' && (
+                                    <div className="space-y-6">
+                                        {/* 사진 업로드/편집 영역 */}
+                                        <div className="relative aspect-[2/3] bg-slate-800 rounded-3xl overflow-hidden shadow-2xl border border-slate-700 cursor-move group"
                                              onMouseDown={handleMouseDown} onMouseMove={handleMouseMove}
                                              onTouchStart={handleTouchStart} onTouchMove={handleTouchMove}>
-                                            {frontImage ? <img src={frontImage} className="w-full h-full object-cover pointer-events-none" /> : 
-                                            <div className="flex items-center justify-center h-full text-slate-500">Upload Photo</div>}
+                                            
+                                            {frontImage ? 
+                                                <img src={frontImage} className="w-full h-full object-cover pointer-events-none" alt="Preview" /> : 
+                                                <div className="flex flex-col items-center justify-center h-full text-slate-500 space-y-3">
+                                                    <div className="w-16 h-16 rounded-full bg-slate-700/50 flex items-center justify-center">
+                                                        <i className="fas fa-camera text-2xl"></i>
+                                                    </div>
+                                                    <span className="font-medium">Upload your photo</span>
+                                                </div>
+                                            }
+                                            {rawImage && <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur px-3 py-1 rounded-full text-xs text-white/80 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">Drag to move</div>}
                                         </div>
 
+                                        {/* 컨트롤러 (사진 있을 때만 표시) */}
                                         {rawImage && (
-                                            <div className="bg-slate-800 p-3 rounded-xl">
-                                                <div className="flex justify-between text-xs text-slate-400 mb-1"><span>Crop / Expand</span><span>Move: Drag Image</span></div>
-                                                <input type="range" min="0.1" max="3" step="0.1" value={scale} onChange={e => setScale(parseFloat(e.target.value))} className="w-full accent-purple-500"/>
-                                                <div className="grid grid-cols-3 gap-2 mt-2">
-                                                    <button onClick={fitToFrame} className="py-2 bg-slate-700 rounded text-xs">Fit</button>
-                                                    <button onClick={fillFrame} className="py-2 bg-slate-700 rounded text-xs">Fill</button>
-                                                    <button onClick={resetTransform} className="py-2 bg-slate-700 rounded text-xs">Reset</button>
+                                            <div className="bg-slate-800/80 p-4 rounded-2xl border border-slate-700/50 backdrop-blur-md">
+                                                <div className="flex justify-between text-xs text-slate-400 mb-2 font-medium">
+                                                    <span>Zoom</span>
+                                                    <span>{Math.round(scale * 100)}%</span>
+                                                </div>
+                                                <input type="range" min="0.1" max="3" step="0.1" value={scale} onChange={e => setScale(parseFloat(e.target.value))} 
+                                                    className="w-full h-2 bg-slate-600 rounded-lg appearance-none cursor-pointer accent-blue-500"/>
+                                                <div className="grid grid-cols-3 gap-2 mt-4">
+                                                    <button onClick={fitToFrame} className="py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-xs font-medium transition">Fit Frame</button>
+                                                    <button onClick={fillFrame} className="py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-xs font-medium transition">Fill Frame</button>
+                                                    <button onClick={resetTransform} className="py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-xs font-medium transition">Reset</button>
                                                 </div>
                                             </div>
                                         )}
 
-                                        <div className="grid grid-cols-2 gap-3">
-                                            <label className="block w-full py-3 bg-slate-800 rounded-xl text-center cursor-pointer hover:bg-slate-700">
-                                                <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
-                                                <span className="text-sm font-bold flex items-center justify-center gap-2"><ImageIcon size={16}/> {rawImage ? 'Change Photo' : 'Upload Photo'}</span>
-                                            </label>
-                                            <label className="block w-full py-3 bg-slate-800 rounded-xl text-center cursor-pointer hover:bg-slate-700">
-                                                <input type="file" accept="image/*" onChange={handleLogoChange} className="hidden" />
-                                                <span className="text-sm font-bold flex items-center justify-center gap-2"><UploadCloud size={16}/> {frontLogo !== './fakhu_logo.png' ? 'Change Logo' : 'Upload Logo'}</span>
-                                            </label>
-                                        </div>
-
-                                        <div className="bg-slate-800 rounded-xl p-2 space-y-2">
-                                            <select value={metaData.role} onChange={e => setMetaData({...metaData, role: e.target.value})} className="w-full p-2 bg-transparent text-white font-bold border-b border-slate-700">
-                                                <option value="Trainee">Trainee (Red)</option>
-                                                <option value="Junior">Junior (Yellow)</option>
-                                                <option value="Senior">Senior (Green)</option>
-                                                <option value="Ambassador">Ambassador (Blue)</option>
-                                            </select>
-                                            <input type="text" placeholder="Name" className="w-full p-2 bg-transparent text-white border-b border-slate-700" value={metaData.name} onChange={e => setMetaData({...metaData, name: e.target.value})} maxLength={15} />
-                                            
-                                            {/* Department Auto-Complete Input */}
-                                            <div className="relative">
-                                                <input 
-                                                    list="dept-list" 
-                                                    type="text" 
-                                                    placeholder="Affiliation (e.g. 경영학과)" 
-                                                    className="w-full p-2 bg-transparent text-white" 
-                                                    value={metaData.affiliation} 
-                                                    onChange={e => setMetaData({...metaData, affiliation: e.target.value})} 
-                                                    maxLength={40} 
-                                                />
-                                                <datalist id="dept-list">
-                                                    {Object.keys(departmentData).map(dept => (
-                                                        <option key={dept} value={dept} />
-                                                    ))}
-                                                </datalist>
+                                        {/* 입력 폼 */}
+                                        <div className="space-y-3">
+                                            <div className="grid grid-cols-2 gap-3">
+                                                <label className="btn-upload flex flex-col items-center justify-center py-4 bg-slate-800 rounded-2xl border border-slate-700 cursor-pointer hover:bg-slate-700 transition active:scale-95">
+                                                    <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
+                                                    <i className="fas fa-image text-blue-400 mb-1 text-xl"></i>
+                                                    <span className="text-xs font-bold text-slate-300">Photo</span>
+                                                </label>
+                                                <label className="btn-upload flex flex-col items-center justify-center py-4 bg-slate-800 rounded-2xl border border-slate-700 cursor-pointer hover:bg-slate-700 transition active:scale-95">
+                                                    <input type="file" accept="image/*" onChange={handleLogoChange} className="hidden" />
+                                                    <i className="fas fa-icons text-purple-400 mb-1 text-xl"></i>
+                                                    <span className="text-xs font-bold text-slate-300">Logo (Opt)</span>
+                                                </label>
                                             </div>
-                                        </div>
 
-                                        <button onClick={saveCard} className="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold shadow-lg">
-                                            {status === 'idle' ? 'Generate ID Card' : 'Processing...'}
-                                        </button>
-                                        <p className="text-center text-xs text-slate-500">{statusMsg}</p>
-                                    </div>
-                                ) : (
-                                    <div className="grid grid-cols-2 gap-4 pb-10">
-                                        {myCards.length === 0 ? <p className="text-slate-500 col-span-2 text-center py-10">No cards yet.</p> :
-                                        myCards.map(card => <FlipCard key={card.id} card={card} onDelete={deleteCard} onClick={() => setSelectedCard(card)} />)}
+                                            <div className="bg-slate-800 rounded-2xl p-4 border border-slate-700 space-y-4">
+                                                <div className="space-y-1">
+                                                    <label className="text-xs text-slate-400 font-bold ml-1">ROLE</label>
+                                                    <select value={metaData.role} onChange={e => setMetaData({...metaData, role: e.target.value})} 
+                                                        className="w-full p-3 bg-slate-900 rounded-xl text-white font-medium border border-slate-700 focus:border-blue-500 focus:outline-none">
+                                                        <option value="Trainee">🔴 Trainee (Red)</option>
+                                                        <option value="Junior">🟡 Junior (Yellow)</option>
+                                                        <option value="Senior">🟢 Senior (Green)</option>
+                                                        <option value="Ambassador">🔵 Ambassador (Blue)</option>
+                                                    </select>
+                                                </div>
+                                                
+                                                <div className="space-y-1">
+                                                    <label className="text-xs text-slate-400 font-bold ml-1">NAME</label>
+                                                    <input type="text" placeholder="ex. KIM FAKE" className="w-full p-3 bg-slate-900 rounded-xl text-white border border-slate-700 focus:border-blue-500 focus:outline-none" 
+                                                        value={metaData.name} onChange={e => setMetaData({...metaData, name: e.target.value})} maxLength={15} />
+                                                </div>
+
+                                                <div className="space-y-1 relative">
+                                                    <label className="text-xs text-slate-400 font-bold ml-1">AFFILIATION</label>
+                                                    <input list="dept-list" type="text" placeholder="ex. 경영학과 or Computer Eng" 
+                                                        className="w-full p-3 bg-slate-900 rounded-xl text-white border border-slate-700 focus:border-blue-500 focus:outline-none" 
+                                                        value={metaData.affiliation} onChange={e => setMetaData({...metaData, affiliation: e.target.value})} maxLength={40} />
+                                                    <datalist id="dept-list">
+                                                        {Object.keys(departmentData).map(dept => <option key={dept} value={dept} />)}
+                                                    </datalist>
+                                                </div>
+                                            </div>
+
+                                            <button onClick={saveCard} disabled={status === 'processing'}
+                                                className={`w-full py-4 rounded-2xl font-bold text-lg shadow-lg flex items-center justify-center gap-2 transition-all 
+                                                ${status === 'processing' ? 'bg-slate-700 text-slate-400 cursor-wait' : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:shadow-blue-500/20 active:scale-95'}`}>
+                                                {status === 'processing' ? <><i className="fas fa-spinner fa-spin"></i> Generating...</> : <><i className="fas fa-magic"></i> Generate ID Card</>}
+                                            </button>
+                                            {statusMsg && <p className="text-center text-xs text-blue-400 font-medium animate-pulse">{statusMsg}</p>}
+                                        </div>
                                     </div>
                                 )}
-                            </>
+
+                                {/* Gallery 탭 */}
+                                {view === 'gallery' && (
+                                    <div className="grid grid-cols-2 gap-4 pb-24">
+                                        {myCards.length === 0 ? (
+                                            <div className="col-span-2 flex flex-col items-center justify-center py-20 text-slate-500 space-y-4">
+                                                <i className="far fa-id-card text-6xl opacity-20"></i>
+                                                <p>발급된 ID 카드가 없습니다.</p>
+                                                <button onClick={() => setView('create')} className="text-blue-400 font-bold text-sm hover:underline">첫 카드 만들기</button>
+                                            </div>
+                                        ) : (
+                                            myCards.map(card => (
+                                                <FlipCard key={card.id} card={card} onDelete={deleteCard} onClick={() => setSelectedCard(card)} />
+                                            ))
+                                        )}
+                                    </div>
+                                )}
+                            </div>
                         )}
-                        
-                                                {/* Detail Modal + 고급 기능 바 (공유·PDF·다크모드) */}
+
+                        {/* 상세 보기 모달 및 하단 바 */}
                         {selectedCard && (
                             <>
                                 <CardModal
@@ -949,64 +922,61 @@
                                     onClose={() => setSelectedCard(null)}
                                     onDelete={deleteCard}
                                 />
-
-                                {/* ← 여기가 진짜로 넣어야 할 자리입니다! ↓↓↓ */}
-                                <div className="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-2xl border-t border-slate-700 p-5 z-50">
-                                    <div className="max-w-md mx-auto flex justify-around items-center text-center">
-
+                                
+                                {/* 하단 고정 액션 바 */}
+                                <div className="fixed bottom-0 left-0 right-0 bg-slate-900/80 backdrop-blur-xl border-t border-slate-700/50 pb-safe pt-3 px-6 z-[6000]">
+                                    <div className="max-w-md mx-auto flex justify-between items-center">
                                         <button onClick={async () => {
                                             try {
                                                 const front = await fetch(selectedCard.image).then(r => r.blob());
                                                 const back = await fetch(selectedCard.backImage).then(r => r.blob());
                                                 const files = [
-                                                    new File([front], "F.A.K.E_ID_앞면.png", {type: "image/png"}),
-                                                    new File([back], "F.A.K.E_ID_뒷면.png", {type: "image/png"})
+                                                    new File([front], "FAKE_ID_Front.png", {type: "image/png"}),
+                                                    new File([back], "FAKE_ID_Back.png", {type: "image/png"})
                                                 ];
                                                 if (navigator.canShare?.({files})) {
-                                                    await navigator.share({files, title: "내 F.A.K.E. ID 카드", text: "경희대 F.A.K.E 인증 완료"});
+                                                    await navigator.share({files, title: "My F.A.K.E ID", text: "경희대 F.A.K.E 프로젝트 인증 ID입니다."});
                                                 } else {
-                                                    alert("공유 안 되는 기기예요. 길게 눌러 저장하세요");
+                                                    alert("이 브라우저에서는 공유 기능을 지원하지 않습니다. 이미지를 다운로드해서 사용하세요.");
                                                 }
-                                            } catch { alert("공유 실패"); }
-                                        }} className="text-green-400 hover:text-green-300 transition">
-                                            <i className="fas fa-share-alt text-2xl"></i>
-                                            <div className="text-xs mt-1">공유</div>
+                                            } catch (e) { console.log(e); alert("공유를 취소했거나 지원하지 않는 환경입니다."); }
+                                        }} className="flex flex-col items-center gap-1 text-slate-400 hover:text-green-400 transition active:scale-95">
+                                            <i className="fas fa-share-nodes text-xl"></i>
+                                            <span className="text-[10px] font-medium">Share</span>
                                         </button>
 
                                         <button onClick={async () => {
                                             const { jsPDF } = window.jspdf;
-                                            const pdf = new jsPDF({orientation: "p", unit: "px", format: [600, 900]});
+                                            const pdf = new jsPDF({orientation: "p", unit: "mm", format: [54, 86]}); // 신용카드 규격
                                             const frontImg = new Image(); frontImg.src = selectedCard.image;
                                             const backImg = new Image(); backImg.src = selectedCard.backImage;
-                                            await Promise.all([
-                                                new Promise(r => frontImg.onload = r),
-                                                new Promise(r => backImg.onload = r)
-                                            ]);
-                                            pdf.addImage(frontImg, "PNG", 0, 0, 600, 900);
+                                            await Promise.all([ new Promise(r => frontImg.onload = r), new Promise(r => backImg.onload = r) ]);
+                                            pdf.addImage(frontImg, "PNG", 0, 0, 54, 86);
                                             pdf.addPage();
-                                            pdf.addImage(backImg, "PNG", 0, 0, 600, 900);
-                                            pdf.save(`F.A.K.E_ID_${selectedCard.name || "Member"}.pdf`);
-                                        }} className="text-red-400 hover:text-red-300 transition">
-                                            <i className="fas fa-file-pdf text-2xl"></i>
-                                            <div className="text-xs mt-1">PDF</div>
+                                            pdf.addImage(backImg, "PNG", 0, 0, 54, 86);
+                                            pdf.save(`FAKE_ID_${selectedCard.name || "Member"}.pdf`);
+                                        }} className="flex flex-col items-center gap-1 text-slate-400 hover:text-red-400 transition active:scale-95">
+                                            <i className="fas fa-file-pdf text-xl"></i>
+                                            <span className="text-[10px] font-medium">PDF</span>
                                         </button>
 
-                                        <button onClick={() => {
-                                            document.documentElement.classList.toggle('dark');
-                                            localStorage.setItem('fake-dark-mode', document.documentElement.classList.contains('dark'));
-                                        }} className="text-yellow-400 hover:text-yellow-300 transition">
-                                            <i className="fas fa-moon text-2xl"></i>
-                                            <div className="text-xs mt-1">다크</div>
-                                        </button>
+                                        <div className="w-px h-8 bg-slate-700"></div>
 
+                                        <button onClick={() => setSelectedCard(null)} className="flex flex-col items-center gap-1 text-slate-400 hover:text-white transition active:scale-95">
+                                            <i className="fas fa-times text-xl"></i>
+                                            <span className="text-[10px] font-medium">Close</span>
+                                        </button>
                                     </div>
+                                    <div className="h-6"></div> {/* Safe area spacer */}
                                 </div>
-                                {/* ↑↑↑ 여기까지 */}
                             </>
                         )}
+                    </main>
+                </div>
+            );
+        };
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
-  
 </body>
 </html>
