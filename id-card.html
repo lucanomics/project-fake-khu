@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F.A.K.E ID - Smart Actor Platform</title>
+    <title>F.A.K.E ID</title>
     
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
@@ -16,8 +16,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- Font Awesome 추가 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 고급 기능 추가 CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-    <style>
+<!-- PWA Manifest (오프라인 + 앱처럼 설치 가능) -->
+<link rel="manifest" href="data:application/manifest+json,{
+  \"name\": \"F.A.K.E ID Card\",
+  \"short_name\": \"F.A.K.E ID\",
+  \"description\": \"경희대학교 F.A.K.E 프로젝트 공식 디지털 명함\",
+  \"start_url\": \"/id-card.html\",
+  \"display\": \"standalone\",
+  \"background_color\": \"#0f172a\",
+  \"theme_color\": \"#4c6ef5\",
+  \"icons\": [
+    {\"src\": \"https://lucanomics.github.io/project-fake-khu/fakhu_logo.png\", \"sizes\": \"192x192\", \"type\": \"image/png\"},
+    {\"src\": \"https://lucanomics.github.io/project-fake-khu/fakhu_logo.png\", \"sizes\": \"512x512\", \"type\": \"image/png\"}
+  ]
+}">
+<meta name="theme-color" content="#0f172a">
+
+   <style>
         body { 
             background-color: #0f172a; 
             color: white; 
@@ -25,49 +44,21 @@
             -webkit-font-smoothing: antialiased;
             touch-action: manipulation;
         }
-        
         .glass-panel { 
             background: rgba(30, 41, 59, 0.7); 
             backdrop-filter: blur(12px); 
             border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
         }
-
-        #cardCanvas {
-            display: block; 
-            margin: 20px auto;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            max-width: 90%; 
-            height: auto;
-        }
-
-        /* Flip Animation */
+        #cardCanvas { display: none; }
         .card-container { perspective: 1000px; cursor: pointer; }
-        .card-inner {
-            position: relative; width: 100%; height: 100%;
-            text-align: center; transition: transform 0.6s; transform-style: preserve-3d;
-        }
+        .card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; }
         .card-container.flipped .card-inner { transform: rotateY(180deg); }
-        .card-front, .card-back {
-            position: absolute; width: 100%; height: 100%;
-            -webkit-backface-visibility: hidden; backface-visibility: hidden;
-            border-radius: 1.5rem; overflow: hidden;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-        }
+        .card-front, .card-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 1.5rem; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); }
         .card-back { transform: rotateY(180deg); background-color: #fff; }
-        
         select option { background-color: #1e293b; color: white; }
         input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
-        input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%;
-            background: #ffffff; cursor: pointer; margin-top: -6px;
-            box-shadow: 0 0 2px rgba(0,0,0,0.5);
-        }
-        input[type=range]::-webkit-slider-runnable-track {
-            width: 100%; height: 4px; cursor: pointer; background: #475569; border-radius: 2px;
-        }
-
-        /* Modal Animation */
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: #ffffff; cursor: pointer; margin-top: -6px; box-shadow: 0 0 2px rgba(0,0,0,0.5); }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: #475569; border-radius: 2px; }
         @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
         .modal-content { animation: modalFadeIn 0.2s ease-out; }
     </style>
@@ -951,21 +942,72 @@
                             </>
                         )}
                         
-                        {/* Detail Modal */}
+                                                {/* Detail Modal + 고급 기능 바 (공유·PDF·다크모드) */}
                         {selectedCard && (
-                            <CardModal 
-                                card={selectedCard} 
-                                onClose={() => setSelectedCard(null)} 
-                                onDelete={deleteCard} 
-                            />
+                            <>
+                                <CardModal
+                                    card={selectedCard}
+                                    onClose={() => setSelectedCard(null)}
+                                    onDelete={deleteCard}
+                                />
+
+                                {/* ← 여기가 진짜로 넣어야 할 자리입니다! ↓↓↓ */}
+                                <div className="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-2xl border-t border-slate-700 p-5 z-50">
+                                    <div className="max-w-md mx-auto flex justify-around items-center text-center">
+
+                                        <button onClick={async () => {
+                                            try {
+                                                const front = await fetch(selectedCard.image).then(r => r.blob());
+                                                const back = await fetch(selectedCard.backImage).then(r => r.blob());
+                                                const files = [
+                                                    new File([front], "F.A.K.E_ID_앞면.png", {type: "image/png"}),
+                                                    new File([back], "F.A.K.E_ID_뒷면.png", {type: "image/png"})
+                                                ];
+                                                if (navigator.canShare?.({files})) {
+                                                    await navigator.share({files, title: "내 F.A.K.E. ID 카드", text: "경희대 F.A.K.E 인증 완료"});
+                                                } else {
+                                                    alert("공유 안 되는 기기예요. 길게 눌러 저장하세요");
+                                                }
+                                            } catch { alert("공유 실패"); }
+                                        }} className="text-green-400 hover:text-green-300 transition">
+                                            <i className="fas fa-share-alt text-2xl"></i>
+                                            <div className="text-xs mt-1">공유</div>
+                                        </button>
+
+                                        <button onClick={async () => {
+                                            const { jsPDF } = window.jspdf;
+                                            const pdf = new jsPDF({orientation: "p", unit: "px", format: [600, 900]});
+                                            const frontImg = new Image(); frontImg.src = selectedCard.image;
+                                            const backImg = new Image(); backImg.src = selectedCard.backImage;
+                                            await Promise.all([
+                                                new Promise(r => frontImg.onload = r),
+                                                new Promise(r => backImg.onload = r)
+                                            ]);
+                                            pdf.addImage(frontImg, "PNG", 0, 0, 600, 900);
+                                            pdf.addPage();
+                                            pdf.addImage(backImg, "PNG", 0, 0, 600, 900);
+                                            pdf.save(`F.A.K.E_ID_${selectedCard.name || "Member"}.pdf`);
+                                        }} className="text-red-400 hover:text-red-300 transition">
+                                            <i className="fas fa-file-pdf text-2xl"></i>
+                                            <div className="text-xs mt-1">PDF</div>
+                                        </button>
+
+                                        <button onClick={() => {
+                                            document.documentElement.classList.toggle('dark');
+                                            localStorage.setItem('fake-dark-mode', document.documentElement.classList.contains('dark'));
+                                        }} className="text-yellow-400 hover:text-yellow-300 transition">
+                                            <i className="fas fa-moon text-2xl"></i>
+                                            <div className="text-xs mt-1">다크</div>
+                                        </button>
+
+                                    </div>
+                                </div>
+                                {/* ↑↑↑ 여기까지 */}
+                            </>
                         )}
-                    </main>
-                </div>
-            );
-        };
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
-    </script>
+  
 </body>
 </html>
