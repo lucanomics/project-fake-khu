@@ -14,6 +14,30 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
+        /* 언어 버튼 예쁘게 (선택사항) */
+.lang-drop-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.6rem 1rem;
+    background: white;
+    border: 2px solid var(--primary);
+    border-radius: 30px;
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+}
+.lang-drop-btn:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+}
+.lang-drop-btn.active .fa-chevron-down {
+    transform: rotate(180deg);
+}
         /* --- Reset & Base Variables --- */
         :root {
             --primary: #4c6ef5;       /* Smart Blue */
@@ -67,6 +91,58 @@
         a { text-decoration: none; color: inherit; transition: 0.3s; }
         ul { list-style: none; }
 
+        .lang-drop-content {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    min-width: 180px;
+    display: none;
+    z-index: 1000;
+}
+.lang-drop-content.show-drop { display: block; }
+.lang-drop-content button {
+    width: 100%;
+    padding: 0.8rem 1.2rem;
+    text-align: left;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+.lang-drop-content button:hover,
+.lang-drop-content button.selected {
+    background: #e7f5ff;
+    color: var(--primary);
+}
+
+        .lang-drop-content {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    min-width: 180px;
+    display: none;
+    z-index: 1000;
+}
+.lang-drop-content.show-drop { display: block; }
+.lang-drop-content button {
+    width: 100%;
+    padding: 0.8rem 1.2rem;
+    text-align: left;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+.lang-drop-content button:hover,
+.lang-drop-content button.selected {
+    background: #e7f5ff;
+    color: var(--primary);
+}
+
         /* --- Header --- */
         header {
             position: fixed;
@@ -80,7 +156,7 @@
             align-items: center;
             z-index: 1000;
             border-bottom: 1px solid rgba(0,0,0,0.05);
-            flex-wrap: nowrap;
+            flex-wrap: wrap;
         }
 
         .logo {
@@ -110,247 +186,6 @@
         }
         .nav-links a:hover { color: var(--primary); }
 
-        <!-- 기존 lang-group 대체 -->
-<div class="lang-selector">
-    <button class="lang-toggle" onclick="toggleLangMenu()">
-        <i class="fas fa-globe"></i>
-        <span id="currentLangName">한국어</span>
-        <i class="fas fa-chevron-down"></i>
-    </button>
-    <div class="lang-dropdown" id="langDropdown">
-        <button onclick="selectLanguage('ko', '한국어')" class="lang-option" data-lang="ko">
-            <span class="lang-native">한국어</span>
-            <span class="lang-english">Korean</span>
-        </button>
-        <button onclick="selectLanguage('en', 'English')" class="lang-option" data-lang="en">
-            <span class="lang-native">English</span>
-        </button>
-        <button onclick="selectLanguage('cn', '中文')" class="lang-option" data-lang="cn">
-            <span class="lang-native">中文</span>
-            <span class="lang-english">Chinese</span>
-        </button>
-        <button onclick="selectLanguage('jp', '日本語')" class="lang-option" data-lang="jp">
-            <span class="lang-native">日本語</span>
-            <span class="lang-english">Japanese</span>
-        </button>
-        <button onclick="selectLanguage('es', 'Español')" class="lang-option" data-lang="es">
-            <span class="lang-native">Español</span>
-            <span class="lang-english">Spanish</span>
-        </button>
-        <button onclick="selectLanguage('af', 'Afrikaans')" class="lang-option" data-lang="af">
-            <span class="lang-native">Afrikaans</span>
-        </button>
-        <button onclick="selectLanguage('hi', 'हिन्दी')" class="lang-option" data-lang="hi">
-            <span class="lang-native">हिन्दी</span>
-            <span class="lang-english">Hindi</span>
-        </button>
-        <button onclick="selectLanguage('id', 'Indonesia')" class="lang-option" data-lang="id">
-            <span class="lang-native">Indonesia</span>
-            <span class="lang-english">Indonesian</span>
-        </button>
-        <button onclick="selectLanguage('ru', 'Русский')" class="lang-option" data-lang="ru">
-            <span class="lang-native">Русский</span>
-            <span class="lang-english">Russian</span>
-        </button>
-        <button onclick="selectLanguage('it', 'Italiano')" class="lang-option" data-lang="it">
-            <span class="lang-native">Italiano</span>
-            <span class="lang-english">Italian</span>
-        </button>
-        <button onclick="selectLanguage('mn', 'Монгол')" class="lang-option" data-lang="mn">
-            <span class="lang-native">Монгол</span>
-            <span class="lang-english">Mongolian</span>
-        </button>
-        <button onclick="selectLanguage('fr', 'Français')" class="lang-option" data-lang="fr">
-            <span class="lang-native">Français</span>
-            <span class="lang-english">French</span>
-        </button>
-    </div>
-</div>
-
-        /* Language Selector Dropdown */
-.lang-selector {
-    position: relative;
-    margin-left: auto;
-    z-index: 2000;
-}
-
-.lang-toggle {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 0.6rem 1rem;
-    background: white;
-    border: 2px solid var(--primary);
-    border-radius: 30px;
-    cursor: pointer;
-    font-family: var(--font-body);
-    font-weight: 600;
-    color: var(--primary);
-    transition: all 0.3s;
-    font-size: 0.95rem;
-}
-
-.lang-toggle:hover {
-    background: var(--primary);
-    color: white;
-    transform: translateY(-2px);
-}
-
-.lang-toggle .fa-chevron-down {
-    font-size: 0.8rem;
-    transition: transform 0.3s;
-}
-
-.lang-toggle.active .fa-chevron-down {
-    transform: rotate(180deg);
-}
-
-.lang-dropdown {
-    position: absolute;
-    top: calc(100% + 10px);
-    right: 0;
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-    padding: 0.5rem 0;
-    min-width: 240px;
-    max-height: 400px;
-    overflow-y: auto;
-    display: none;
-    opacity: 0;
-    transform: translateY(-10px);
-    transition: all 0.3s;
-    border: 1px solid #e9ecef;
-}
-
-.lang-dropdown.show {
-    display: block;
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.lang-option {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.8rem 1.2rem;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-align: left;
-    gap: 12px;
-}
-
-.lang-option:hover {
-    background: #f1f3f5;
-}
-
-.lang-option.active {
-    background: #e7f5ff;
-    color: var(--primary);
-    font-weight: 700;
-}
-
-.lang-native {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--dark);
-    flex: 1;
-}
-
-.lang-english {
-    font-size: 0.85rem;
-    color: #868e96;
-    font-weight: 400;
-}
-
-/* Scrollbar styling for dropdown */
-.lang-dropdown::-webkit-scrollbar {
-    width: 6px;
-}
-
-.lang-dropdown::-webkit-scrollbar-track {
-    background: #f1f3f5;
-    border-radius: 10px;
-}
-
-.lang-dropdown::-webkit-scrollbar-thumb {
-    background: #adb5bd;
-    border-radius: 10px;
-}
-
-.lang-dropdown::-webkit-scrollbar-thumb:hover {
-    background: #868e96;
-}
-
-/* Mobile responsive */
-@media (max-width: 768px) {
-    .lang-dropdown {
-        right: 0;
-        left: auto;
-        min-width: 200px;
-    }
-    
-    .lang-toggle {
-        padding: 0.5rem 0.8rem;
-        font-size: 0.9rem;
-    }
-}
-
-        // Language Dropdown Toggle
-let langDropdownOpen = false;
-
-function toggleLangMenu() {
-    const dropdown = document.getElementById('langDropdown');
-    const toggle = document.querySelector('.lang-toggle');
-    
-    langDropdownOpen = !langDropdownOpen;
-    
-    if (langDropdownOpen) {
-        dropdown.classList.add('show');
-        toggle.classList.add('active');
-    } else {
-        dropdown.classList.remove('show');
-        toggle.classList.remove('active');
-    }
-}
-
-function selectLanguage(code, nativeName) {
-    setLanguage(code);
-    document.getElementById('currentLangName').textContent = nativeName;
-    toggleLangMenu(); // Close dropdown after selection
-    
-    // Update active state
-    document.querySelectorAll('.lang-option').forEach(opt => {
-        opt.classList.toggle('active', opt.getAttribute('data-lang') === code);
-    });
-}
-
-// Close dropdown when clicking outside
-document.addEventListener('click', function(event) {
-    const selector = document.querySelector('.lang-selector');
-    if (selector && !selector.contains(event.target) && langDropdownOpen) {
-        toggleLangMenu();
-    }
-});
-
-// Initialize on page load
-window.addEventListener('DOMContentLoaded', function() {
-    // Set initial active language
-    const currentLang = currentLang || 'ko';
-    const activeOption = document.querySelector(`.lang-option[data-lang="${currentLang}"]`);
-    if (activeOption) {
-        activeOption.classList.add('active');
-    }
-});
-
-    <button onclick="selectLanguage('ko', '한국어')" class="lang-option" data-lang="ko">
-    <span class="flag">🇰🇷</span>
-    <span class="lang-native">한국어</span>
-    <span class="lang-english">Korean</span>
-</button>
 
         /* --- Hero Section --- */
         .hero {
@@ -636,20 +471,29 @@ window.addEventListener('DOMContentLoaded', function() {
             <a href="#pledge" data-lang="menu_pledge">연대하기</a>
         </nav>
 
-        <div class="lang-group">
-            <button onclick="setLanguage('ko')" class="lang-btn active" data-btn-lang="ko">KO</button>
-            <button onclick="setLanguage('en')" class="lang-btn" data-btn-lang="en">EN</button>
-            <button onclick="setLanguage('cn')" class="lang-btn" data-btn-lang="cn">CN</button>
-            <button onclick="setLanguage('jp')" class="lang-btn" data-btn-lang="jp">JP</button>
-            <button onclick="setLanguage('es')" class="lang-btn" data-btn-lang="es">ES</button>
-            <button onclick="setLanguage('af')" class="lang-btn" data-btn-lang="af">AF</button>
-            <button onclick="setLanguage('hi')" class="lang-btn" data-btn-lang="hi">HI</button>
-            <button onclick="setLanguage('id')" class="lang-btn" data-btn-lang="id">ID</button>
-    <button onclick="setLanguage('ru')" class="lang-btn" data-btn-lang="ru">RU</button>
-            <button onclick="setLanguage('it')" class="lang-btn" data-btn-lang="it">IT</button>
-    <button onclick="setLanguage('mn')" class="lang-btn" data-btn-lang="mn">MN</button>
-            <button onclick="setLanguage('fr')" class="lang-btn" data-btn-lang="fr">FR</button>
-        </div>
+        <!-- === 기존 lang-group 전체를 아래로 교체하세요 === -->
+<div class="lang-dropdown">
+    <button class="lang-drop-btn" id="langDropBtn">
+        <i class="fas fa-globe"></i>
+        <span id="currentLangText">KO</span>
+        <i class="fas fa-chevron-down"></i>
+    </button>
+    <div class="lang-drop-content" id="langDropContent">
+        <button onclick="setLanguage('ko')"  data-lang-code="ko">한국어 (KO)</button>
+        <button onclick="setLanguage('en')"  data-lang-code="en">English (EN)</button>
+        <button onclick="setLanguage('cn')"  data-lang-code="cn">中文 (CN)</button>
+        <button onclick="setLanguage('jp')"  data-lang-code="jp">日本語 (JP)</button>
+        <button onclick="setLanguage('es')"  data-lang-code="es">Español (ES)</button>
+        <button onclick="setLanguage('af')"  data-lang-code="af">Afrikaans (AF)</button>
+        <button onclick="setLanguage('hi')"  data-lang-code="hi">हिन्दी (HI)</button>
+        <button onclick="setLanguage('id')"  data-lang-code="id">Bahasa Indonesia (ID)</button>
+        <button onclick="setLanguage('ru')"  data-lang-code="ru">Русский (RU)</button>
+        <button onclick="setLanguage('it')"  data-lang-code="it">Italiano (IT)</button>
+        <button onclick="setLanguage('mn')"  data-lang-code="mn">Монгол (MN)</button>
+        <button onclick="setLanguage('fr')"  data-lang-code="fr">Français (FR)</button>
+    </div>
+</div>
+<!-- === 교체 끝 === -->
     </header>
 
     <!-- Hero Section -->
@@ -2523,6 +2367,51 @@ window.addEventListener('DOMContentLoaded', function() {
             // Uncheck radios
             document.querySelectorAll('input[type="radio"]').forEach(el => el.checked = false);
         }
+                <script>
+// 드롭다운 토글 + 현재 언어 표시
+const langDropBtn = document.getElementById('langDropBtn');
+const langDropContent = document.getElementById('langDropContent');
+const currentLangText = document.getElementById('currentLangText');
+
+langDropBtn.onclick = function(e) {
+    e.stopPropagation();
+    langDropContent.classList.toggle('show-drop');
+    langDropBtn.classList.toggle('active');
+};
+
+// 드롭다운 외부 클릭 시 닫기
+document.addEventListener('click', function() {
+    langDropContent.classList.remove('show-drop');
+    langDropBtn.classList.remove('active');
+});
+
+// setLanguage 호출될 때 버튼 텍스트도 바꿔주기
+const originalSetLanguage = setLanguage;
+setLanguage = function(lang) {
+    originalSetLanguage(lang);
+    
+    // 버튼에 현재 언어 표시 (KO, EN, CN …)
+    const names = {
+        ko: 'KO', en: 'EN', cn: 'CN', jp: 'JP', es: 'ES',
+        af: 'AF', hi: 'HI', id: 'ID', ru: 'RU', it: 'IT',
+        mn: 'MN', fr: 'FR'
+    };
+    currentLangText.textContent = names[lang] || 'KO';
+    
+    // 드롭다운 닫기
+    langDropContent.classList.remove('show-drop');
+    langDropBtn.classList.remove('active');
+    
+    // 선택된 언어에 selected 클래스 주기
+    document.querySelectorAll('#langDropContent button').forEach(btn => {
+        btn.classList.toggle('selected', btn.getAttribute('data-lang-code') === lang);
+    });
+};
+
+// 페이지 로드 시 현재 언어에 맞게 초기화
+window.addEventListener('load', () => {
+    setLanguage(currentLang); // currentLang는 이미 'ko'로 초기화돼 있음
+});
     </script>
 </body>
 </html>
