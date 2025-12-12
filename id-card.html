@@ -823,18 +823,14 @@
 
                                         {/* 입력 폼 */}
                                         <div className="space-y-3">
-                                            <div className="grid grid-cols-2 gap-3">
-                                                <label className="btn-upload flex flex-col items-center justify-center py-4 bg-slate-800 rounded-2xl border border-slate-700 cursor-pointer hover:bg-slate-700 transition active:scale-95">
-                                                    <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
-                                                    <i className="fas fa-image text-blue-400 mb-1 text-xl"></i>
-                                                    <span className="text-xs font-bold text-slate-300">Photo</span>
-                                                </label>
-                                                <label className="btn-upload flex flex-col items-center justify-center py-4 bg-slate-800 rounded-2xl border border-slate-700 cursor-pointer hover:bg-slate-700 transition active:scale-95">
-                                                    <input type="file" accept="image/*" onChange={handleLogoChange} className="hidden" />
-                                                    <i className="fas fa-icons text-purple-400 mb-1 text-xl"></i>
-                                                    <span className="text-xs font-bold text-slate-300">Logo (Opt)</span>
-                                                </label>
-                                            </div>
+                                            {/* Photo 버튼 하나만 꽉 차게 남김 */}
+                                            <label className="btn-upload w-full flex flex-col items-center justify-center py-4 bg-slate-800 rounded-2xl border border-slate-700 cursor-pointer hover:bg-slate-700 transition active:scale-95 mb-3">
+                                                <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
+                                                <div className="flex items-center gap-2">
+                                                    <i className="fas fa-camera text-blue-400 text-xl"></i>
+                                                    <span className="text-sm font-bold text-slate-200">Upload Photo</span>
+                                                </div>
+                                            </label>
 
                                             <div className="bg-slate-800 rounded-2xl p-4 border border-slate-700 space-y-4">
                                                 <div className="space-y-1">
