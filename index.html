@@ -80,7 +80,7 @@
             align-items: center;
             z-index: 1000;
             border-bottom: 1px solid rgba(0,0,0,0.05);
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
         }
 
         .logo {
@@ -97,7 +97,8 @@
             display: flex;
             align-items: center;
             gap: 2rem;
-            margin-left: 8rem;
+            margin-left: auto; /* Push nav to the right but before lang */
+            margin-right: 2rem;
         }
 
         .nav-links a {
@@ -109,32 +110,84 @@
         }
         .nav-links a:hover { color: var(--primary); }
 
-        /* --- Language Buttons --- */
-        .lang-group {
-            margin-left: auto;
-            display: flex;
-            gap: 5px;
-            z-index: 2000;
+        /* --- New Language Dropdown --- */
+        .lang-dropdown {
+            position: relative;
+            display: inline-block;
             flex-shrink: 0;
         }
 
-        .lang-btn {
-            padding: 0.4rem 0.6rem;
-            font-size: 0.85rem;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
+        .lang-drop-btn {
             background: white;
-            border: 1px solid #4c6ef5;
-            color: #4c6ef5;
-            transition: 0.2s;
+            color: var(--dark);
+            padding: 0.5rem 1rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border: 1px solid #e9ecef;
+            border-radius: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
             font-family: var(--font-body);
         }
 
-        .lang-btn:hover, .lang-btn.active {
-            background: #4c6ef5;
-            color: white;
+        .lang-drop-btn:hover, .lang-drop-btn.active {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: #f8f9fa;
         }
+
+        .lang-drop-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 120%;
+            background-color: #ffffff;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            z-index: 3000;
+            border: 1px solid #f1f3f5;
+            overflow: hidden;
+            max-height: 400px; /* Too many languages, scrollable */
+            overflow-y: auto;
+        }
+
+        .lang-drop-content button {
+            color: var(--dark);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-family: var(--font-body);
+            border-bottom: 1px solid #f8f9fa;
+        }
+        
+        /* Font specifics for language names in list */
+        .lang-drop-content button:lang(cn) { font-family: 'Noto Sans SC', sans-serif; }
+        .lang-drop-content button:lang(jp) { font-family: 'Noto Sans JP', sans-serif; }
+        .lang-drop-content button:lang(hi) { font-family: 'Noto Sans Devanagari', sans-serif; }
+
+        .lang-drop-content button:hover {
+            background-color: #f1f3f5;
+            color: var(--primary);
+        }
+
+        .lang-drop-content button.selected {
+            background-color: #e7f5ff;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* Show class for JS toggle */
+        .show-drop { display: block; animation: fadeIn 0.2s ease-out; }
 
         /* --- Hero Section --- */
         .hero {
