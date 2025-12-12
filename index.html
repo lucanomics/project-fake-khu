@@ -457,66 +457,6 @@
             .nav-links { gap: 1rem; flex-wrap: wrap; justify-content: center; }
             .lang-group { width: 100%; justify-content: center; }
         }
-                /* 예쁜 언어 드롭다운 */
-        .lang-dropdown {
-            position: relative;
-            display: inline-block;
-        }
-        .lang-drop-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 0.6rem 1rem;
-            background: white;
-            border: 2px solid var(--primary);
-            border-radius: 30px;
-            color: var(--primary);
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            white-space: nowrap;
-        }
-        .lang-drop-btn:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-2px);
-        }
-        .lang-drop-btn.active .fa-chevron-down {
-            transform: rotate(180deg);
-        }
-        .lang-drop-content {
-            position: absolute;
-            top: calc(100% + 8px);
-            right: 0;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            min-width: 180px;
-            display: none;
-            z-index: 1000;
-        }
-        .lang-drop-content.show-drop { display: block; }
-        .lang-drop-content button {
-    width: 100%;
-    padding: 0.8rem 1.5rem;
-    text-align: left;
-    background: none;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.lang-drop-content button:hover {
-    background: #f1f3f5;
-    color: var(--primary);
-}
-
-.lang-drop-content button.selected {
-    background: #e7f5ff;
-    color: var(--primary);
-    font-weight: 700;
-}
     </style>
 </head>
 <body>
@@ -533,25 +473,19 @@
             <a href="#pledge" data-lang="menu_pledge">연대하기</a>
         </nav>
 
-                <!-- 새롭고 예쁜 드롭다운 언어 선택기 -->
-       <div class="lang-dropdown">
-    <button class="lang-drop-btn" id="langDropBtn">
-        <i class="fas fa-globe"></i> <span id="currentLangText">KO</span> <i class="fas fa-chevron-down"></i>
-    </button>
-    <div class="lang-drop-content" id="langDropContent">
-                <button onclick="setLanguage('ko')" data-lang-code="ko">한국어 (KO)</button>
-                <button onclick="setLanguage('en')" data-lang-code="en">English (EN)</button>
-                <button onclick="setLanguage('cn')" data-lang-code="cn">中文 (CN)</button>
-                <button onclick="setLanguage('jp')" data-lang-code="jp">日本語 (JP)</button>
-                <button onclick="setLanguage('es')" data-lang-code="es">Español (ES)</button>
-                <button onclick="setLanguage('af')" data-lang-code="af">Afrikaans (AF)</button>
-                <button onclick="setLanguage('hi')" data-lang-code="hi">हिन्दी (HI)</button>
-                <button onclick="setLanguage('id')" data-lang-code="id">Bahasa Indonesia (ID)</button>
-                <button onclick="setLanguage('ru')" data-lang-code="ru">Русский (RU)</button>
-                <button onclick="setLanguage('it')" data-lang-code="it">Italiano (IT)</button>
-                <button onclick="setLanguage('mn')" data-lang-code="mn">Монгол (MN)</button>
-                <button onclick="setLanguage('fr')" data-lang-code="fr">Français (FR)</button>
-            </div>
+        <div class="lang-group">
+            <button onclick="setLanguage('ko')" class="lang-btn active" data-btn-lang="ko">KO</button>
+            <button onclick="setLanguage('en')" class="lang-btn" data-btn-lang="en">EN</button>
+            <button onclick="setLanguage('cn')" class="lang-btn" data-btn-lang="cn">CN</button>
+            <button onclick="setLanguage('jp')" class="lang-btn" data-btn-lang="jp">JP</button>
+            <button onclick="setLanguage('es')" class="lang-btn" data-btn-lang="es">ES</button>
+            <button onclick="setLanguage('af')" class="lang-btn" data-btn-lang="af">AF</button>
+            <button onclick="setLanguage('hi')" class="lang-btn" data-btn-lang="hi">HI</button>
+            <button onclick="setLanguage('id')" class="lang-btn" data-btn-lang="id">ID</button>
+    <button onclick="setLanguage('ru')" class="lang-btn" data-btn-lang="ru">RU</button>
+            <button onclick="setLanguage('it')" class="lang-btn" data-btn-lang="it">IT</button>
+    <button onclick="setLanguage('mn')" class="lang-btn" data-btn-lang="mn">MN</button>
+            <button onclick="setLanguage('fr')" class="lang-btn" data-btn-lang="fr">FR</button>
         </div>
     </header>
 
@@ -2426,41 +2360,6 @@
             // Uncheck radios
             document.querySelectorAll('input[type="radio"]').forEach(el => el.checked = false);
         }
-        <script>
-// 언어 드롭다운 작동 코드
-const langDropBtn = document.getElementById('langDropBtn');
-const langDropContent = document.getElementById('langDropContent');
-const currentLangText = document.getElementById('currentLangText');
-
-langDropBtn.onclick = function(e) {
-    e.stopPropagation();
-    langDropContent.classList.toggle('show-drop');
-    langDropBtn.classList.toggle('active');
-};
-
-document.addEventListener('click', function() {
-    langDropContent.classList.remove('show-drop');
-    langDropBtn.classList.remove('active');
-});
-
-// 기존 setLanguage 함수 업그레이드
-const originalSetLanguage = setLanguage;
-setLanguage = function(lang) {
-    originalSetLanguage(lang);
-    
-    const names = {ko:'KO',en:'EN',cn:'CN',jp:'JP',es:'ES',af:'AF',hi:'HI',id:'ID',ru:'RU',it:'IT',mn:'MN',fr:'FR'};
-    currentLangText.textContent = names[lang] || 'KO';
-    
-    langDropContent.classList.remove('show-drop');
-    langDropBtn.classList.remove('active');
-    
-    document.querySelectorAll('#langDropContent button').forEach(b => {
-        b.classList.toggle('selected', b.getAttribute('data-lang-code') === lang);
-    });
-};
-
-// 로드되자마자 한국어로 초기화
-window.addEventListener('load', () => setLanguage('ko'));
     </script>
 </body>
 </html>
