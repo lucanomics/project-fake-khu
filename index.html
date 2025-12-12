@@ -110,84 +110,247 @@
         }
         .nav-links a:hover { color: var(--primary); }
 
-        /* --- New Language Dropdown --- */
-        .lang-dropdown {
-            position: relative;
-            display: inline-block;
-            flex-shrink: 0;
-        }
+        <!-- 기존 lang-group 대체 -->
+<div class="lang-selector">
+    <button class="lang-toggle" onclick="toggleLangMenu()">
+        <i class="fas fa-globe"></i>
+        <span id="currentLangName">한국어</span>
+        <i class="fas fa-chevron-down"></i>
+    </button>
+    <div class="lang-dropdown" id="langDropdown">
+        <button onclick="selectLanguage('ko', '한국어')" class="lang-option" data-lang="ko">
+            <span class="lang-native">한국어</span>
+            <span class="lang-english">Korean</span>
+        </button>
+        <button onclick="selectLanguage('en', 'English')" class="lang-option" data-lang="en">
+            <span class="lang-native">English</span>
+        </button>
+        <button onclick="selectLanguage('cn', '中文')" class="lang-option" data-lang="cn">
+            <span class="lang-native">中文</span>
+            <span class="lang-english">Chinese</span>
+        </button>
+        <button onclick="selectLanguage('jp', '日本語')" class="lang-option" data-lang="jp">
+            <span class="lang-native">日本語</span>
+            <span class="lang-english">Japanese</span>
+        </button>
+        <button onclick="selectLanguage('es', 'Español')" class="lang-option" data-lang="es">
+            <span class="lang-native">Español</span>
+            <span class="lang-english">Spanish</span>
+        </button>
+        <button onclick="selectLanguage('af', 'Afrikaans')" class="lang-option" data-lang="af">
+            <span class="lang-native">Afrikaans</span>
+        </button>
+        <button onclick="selectLanguage('hi', 'हिन्दी')" class="lang-option" data-lang="hi">
+            <span class="lang-native">हिन्दी</span>
+            <span class="lang-english">Hindi</span>
+        </button>
+        <button onclick="selectLanguage('id', 'Indonesia')" class="lang-option" data-lang="id">
+            <span class="lang-native">Indonesia</span>
+            <span class="lang-english">Indonesian</span>
+        </button>
+        <button onclick="selectLanguage('ru', 'Русский')" class="lang-option" data-lang="ru">
+            <span class="lang-native">Русский</span>
+            <span class="lang-english">Russian</span>
+        </button>
+        <button onclick="selectLanguage('it', 'Italiano')" class="lang-option" data-lang="it">
+            <span class="lang-native">Italiano</span>
+            <span class="lang-english">Italian</span>
+        </button>
+        <button onclick="selectLanguage('mn', 'Монгол')" class="lang-option" data-lang="mn">
+            <span class="lang-native">Монгол</span>
+            <span class="lang-english">Mongolian</span>
+        </button>
+        <button onclick="selectLanguage('fr', 'Français')" class="lang-option" data-lang="fr">
+            <span class="lang-native">Français</span>
+            <span class="lang-english">French</span>
+        </button>
+    </div>
+</div>
 
-        .lang-drop-btn {
-            background: white;
-            color: var(--dark);
-            padding: 0.5rem 1rem;
-            font-size: 0.95rem;
-            font-weight: 600;
-            border: 1px solid #e9ecef;
-            border-radius: 50px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: 0.3s;
-            font-family: var(--font-body);
-        }
+        /* Language Selector Dropdown */
+.lang-selector {
+    position: relative;
+    margin-left: auto;
+    z-index: 2000;
+}
 
-        .lang-drop-btn:hover, .lang-drop-btn.active {
-            border-color: var(--primary);
-            color: var(--primary);
-            background: #f8f9fa;
-        }
+.lang-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.6rem 1rem;
+    background: white;
+    border: 2px solid var(--primary);
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-weight: 600;
+    color: var(--primary);
+    transition: all 0.3s;
+    font-size: 0.95rem;
+}
 
-        .lang-drop-content {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 120%;
-            background-color: #ffffff;
-            min-width: 160px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-            border-radius: 12px;
-            z-index: 3000;
-            border: 1px solid #f1f3f5;
-            overflow: hidden;
-            max-height: 400px; /* Too many languages, scrollable */
-            overflow-y: auto;
-        }
+.lang-toggle:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+}
 
-        .lang-drop-content button {
-            color: var(--dark);
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            width: 100%;
-            text-align: left;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-family: var(--font-body);
-            border-bottom: 1px solid #f8f9fa;
-        }
-        
-        /* Font specifics for language names in list */
-        .lang-drop-content button:lang(cn) { font-family: 'Noto Sans SC', sans-serif; }
-        .lang-drop-content button:lang(jp) { font-family: 'Noto Sans JP', sans-serif; }
-        .lang-drop-content button:lang(hi) { font-family: 'Noto Sans Devanagari', sans-serif; }
+.lang-toggle .fa-chevron-down {
+    font-size: 0.8rem;
+    transition: transform 0.3s;
+}
 
-        .lang-drop-content button:hover {
-            background-color: #f1f3f5;
-            color: var(--primary);
-        }
+.lang-toggle.active .fa-chevron-down {
+    transform: rotate(180deg);
+}
 
-        .lang-drop-content button.selected {
-            background-color: #e7f5ff;
-            color: var(--primary);
-            font-weight: 700;
-        }
+.lang-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    padding: 0.5rem 0;
+    min-width: 240px;
+    max-height: 400px;
+    overflow-y: auto;
+    display: none;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s;
+    border: 1px solid #e9ecef;
+}
 
-        /* Show class for JS toggle */
-        .show-drop { display: block; animation: fadeIn 0.2s ease-out; }
+.lang-dropdown.show {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.lang-option {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 1.2rem;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    gap: 12px;
+}
+
+.lang-option:hover {
+    background: #f1f3f5;
+}
+
+.lang-option.active {
+    background: #e7f5ff;
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.lang-native {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--dark);
+    flex: 1;
+}
+
+.lang-english {
+    font-size: 0.85rem;
+    color: #868e96;
+    font-weight: 400;
+}
+
+/* Scrollbar styling for dropdown */
+.lang-dropdown::-webkit-scrollbar {
+    width: 6px;
+}
+
+.lang-dropdown::-webkit-scrollbar-track {
+    background: #f1f3f5;
+    border-radius: 10px;
+}
+
+.lang-dropdown::-webkit-scrollbar-thumb {
+    background: #adb5bd;
+    border-radius: 10px;
+}
+
+.lang-dropdown::-webkit-scrollbar-thumb:hover {
+    background: #868e96;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .lang-dropdown {
+        right: 0;
+        left: auto;
+        min-width: 200px;
+    }
+    
+    .lang-toggle {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.9rem;
+    }
+}
+
+        // Language Dropdown Toggle
+let langDropdownOpen = false;
+
+function toggleLangMenu() {
+    const dropdown = document.getElementById('langDropdown');
+    const toggle = document.querySelector('.lang-toggle');
+    
+    langDropdownOpen = !langDropdownOpen;
+    
+    if (langDropdownOpen) {
+        dropdown.classList.add('show');
+        toggle.classList.add('active');
+    } else {
+        dropdown.classList.remove('show');
+        toggle.classList.remove('active');
+    }
+}
+
+function selectLanguage(code, nativeName) {
+    setLanguage(code);
+    document.getElementById('currentLangName').textContent = nativeName;
+    toggleLangMenu(); // Close dropdown after selection
+    
+    // Update active state
+    document.querySelectorAll('.lang-option').forEach(opt => {
+        opt.classList.toggle('active', opt.getAttribute('data-lang') === code);
+    });
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(event) {
+    const selector = document.querySelector('.lang-selector');
+    if (selector && !selector.contains(event.target) && langDropdownOpen) {
+        toggleLangMenu();
+    }
+});
+
+// Initialize on page load
+window.addEventListener('DOMContentLoaded', function() {
+    // Set initial active language
+    const currentLang = currentLang || 'ko';
+    const activeOption = document.querySelector(`.lang-option[data-lang="${currentLang}"]`);
+    if (activeOption) {
+        activeOption.classList.add('active');
+    }
+});
+
+    <button onclick="selectLanguage('ko', '한국어')" class="lang-option" data-lang="ko">
+    <span class="flag">🇰🇷</span>
+    <span class="lang-native">한국어</span>
+    <span class="lang-english">Korean</span>
+</button>
 
         /* --- Hero Section --- */
         .hero {
