@@ -18,7 +18,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-    <link rel="manifest" href='data:application/manifest+json,{"name":"F.A.K.E ID Card","short_name":"F.A.K.E ID","description":"경희대학교 F.A.K.E 프로젝트 공식 디지털 명함","start_url":"/id-card.html","display":"standalone","background_color":"#0f172a","theme_color":"#4c6ef5","icons":[{"src":"https://lucanomics.github.io/project-fake-khu/fakhu_logo.png","sizes":"192x192","type":"image/png"},{"src":"https://lucanomics.github.io/project-fake-khu/fakhu_logo.png","sizes":"512x512","type":"image/png"}]}'>
+    <link rel="manifest" href='data:application/manifest+json,{"name":"F.A.K.E ID Card","short_name":"F.A.K.E ID","description":"경희대학교 F.A.K.E 프로젝트 공식 디지털 명함","start_url":"/project-fake-khu/id-card.html","display":"standalone","background_color":"#0f172a","theme_color":"#4c6ef5","icons":[{"src":"/project-fake-khu/fakhu_logo.png","sizes":"192x192","type":"image/png"},{"src":"/project-fake-khu/fakhu_logo.png","sizes":"512x512","type":"image/png"}]}'>
     <meta name="theme-color" content="#0f172a">
 
     <style>
@@ -496,9 +496,10 @@
                 if (matchedInfo) displayAff = matchedInfo.eng;
                 drawField("AFFILIATION", displayAff, true);
 
-                const verificationUrl = `https://lucanomics.github.io/project-fake-khu/?verify=${serialCode}`;
+                const verificationUrl = new URL(".", window.location.href);
+                verificationUrl.searchParams.set("verify", serialCode);
                 try {
-                    const qrDataUrl = await QRCode.toDataURL(verificationUrl, {
+                    const qrDataUrl = await QRCode.toDataURL(verificationUrl.href, {
                         width: 140, margin: 0, color: { dark: themeColor, light: '#ffffff' } 
                     });
                     const qrImg = await loadImage(qrDataUrl);
