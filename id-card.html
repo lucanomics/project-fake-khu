@@ -290,7 +290,8 @@
             
             const [rawImage, setRawImage] = useState(null);
             const [frontLogo, setFrontLogo] = useState('./fakhu_logo.png'); 
-            
+            const [backLogo, setBackLogo] = useState('./fakhu_logo_horizontal.png'); 
+
             const [frontImage, setFrontImage] = useState(null); 
             const [metaData, setMetaData] = useState({ name: '', role: 'Trainee', affiliation: '' });
             const [serialData, setSerialData] = useState({ classNum: '101', serialNum: '000001', letterCode: 'A' });
@@ -570,19 +571,8 @@
                 const idText = `${serialData.classNum}${serialData.letterCode}#${serialData.serialNum}`;
                 
                 ctx.fillStyle = "#ffffff";
-                
-                let sideFontSize = 26; 
-                ctx.font = `bold ${sideFontSize}px 'Montserrat', sans-serif`;
-                
-                const fullText = `${nameText} | ${idText}`;
-                const maxSideWidth = height - 250;
-                
-                while (ctx.measureText(fullText).width > maxSideWidth && sideFontSize > 14) {
-                    sideFontSize -= 1;
-                    ctx.font = `bold ${sideFontSize}px 'Montserrat', sans-serif`;
-                }
-
-                ctx.fillText(fullText, 0, 0);
+                ctx.font = "bold 36px 'Montserrat', sans-serif";
+                ctx.fillText(`${nameText} | ${idText}`, 0, 0);
                 ctx.restore();
                 
                 if (frontLogo) {
